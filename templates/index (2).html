@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NEON PILOT - マルチページ & 難易度選択 & ランク昇格完全版</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&family=Orbitron:wght@600;800;900&display=swap');
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #050814;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: #ffffff;
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+  }
+
+  /* トップナビゲーションバー（/home, /game, /shop, /ranking, /settings） */
+  #top-navbar {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 80;
+    display: flex;
+    gap: 6px;
+    padding: 8px 14px;
+    background: rgba(8, 14, 34, 0.92);
+    border: 1.5px solid rgba(0, 243, 255, 0.45);
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 243, 255, 0.25);
+  }
+
+  .nav-link {
+    padding: 6px 13px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    background: rgba(16, 28, 62, 0.85);
+    color: #b8d4ff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .nav-link:hover {
+    background: rgba(0, 243, 255, 0.2);
+    color: #fff;
+  }
+
+  .nav-link.active {
+    background: linear-gradient(90deg, #00f3ff, #00ff88);
+    color: #050814;
+    border-color: #00ff88;
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.5);
+  }
+
+  /* HUD オーバーレイ */
+  #hud {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .hud-panel {
+    background: rgba(10, 18, 40, 0.78);
+    border: 1.5px solid rgba(0, 243, 255, 0.35);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 18px rgba(0, 243, 255, 0.15);
+  }
+
+  #top-left {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 12px 16px;
+    min-width: 265px;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .label-sm {
+    font-size: 12px;
+    color: #8ab4f8;
+    font-weight: 700;
+  }
+
+  .val-orbitron {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 800;
+  }
+
+  .bar-bg {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  #hp-bar {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #00f3ff, #00ff88);
+    box-shadow: 0 0 10px #00f3ff;
+    transition: width 0.15s ease;
+  }
+
+  #dash-bar {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #b829ff, #ff2a85);
+    transition: width 0.08s linear;
+  }
+
+  #top-right {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .currency-box {
+    padding: 10px 16px;
+    border-color: rgba(255, 215, 0, 0.55);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+    text-align: right;
+  }
+
+  .shubux-amount {
+    font-size: 20px;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+  }
+
+  .rank-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 900;
+    padding: 2px 9px;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #1e293b, #334155);
+    border: 1px solid #94a3b8;
+    color: #f8fafc;
+    margin-bottom: 4px;
+  }
+
+  .rank-pill.diamond-rank-style {
+    background: linear-gradient(90deg, #00f3ff, #38bdf8, #e0f2fe);
+    color: #050814;
+    border-color: #ffffff;
+    box-shadow: 0 0 14px #00f3ff;
+  }
+
+  .rank-pill.cosmic-rank-style {
+    background: linear-gradient(90deg, #ff0066, #ffd700, #00ff88, #00f3ff, #b829ff);
+    color: #ffffff;
+    border-color: #ffffff;
+    text-shadow: 0 1px 3px #000;
+    box-shadow: 0 0 16px #ffd700;
+  }
+
+  .diff-pill {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 900;
+    padding: 2px 8px;
+    border-radius: 8px;
+    background: rgba(0, 243, 255, 0.18);
+    border: 1px solid #00f3ff;
+    color: #00f3ff;
+    margin-left: 4px;
+  }
+
+  .badge-pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 900;
+    padding: 2px 7px;
+    border-radius: 6px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  .x2-badge { background: linear-gradient(90deg, #ff2a85, #ffd700); color: #050814; }
+  .plus-badge { background: linear-gradient(90deg, #00f3ff, #00ff88); color: #050814; }
+  .clone-badge { background: linear-gradient(90deg, #00e5ff, #7c4dff); color: #ffffff; }
+  .diamond-badge { background: linear-gradient(90deg, #00f3ff, #bae6fd); color: #050814; box-shadow: 0 0 8px #00f3ff; }
+  .gold-badge { background: linear-gradient(90deg, #ffd700, #f59e0b); color: #050814; box-shadow: 0 0 8px #ffd700; }
+  .rainbow-badge { background: linear-gradient(90deg, #ff3366, #ffd700, #00ff88, #00f3ff, #b829ff); color: #fff; text-shadow: 0 1px 2px #000; }
+  .admin-badge { background: linear-gradient(90deg, #b829ff, #00f3ff); color: #ffffff; }
+  .ultimate-badge { background: linear-gradient(90deg, #ff0055, #ffd700, #00ff88, #00f3ff, #b829ff); color: #fff; border: 1px solid #fff; text-shadow: 0 1px 3px #000; box-shadow: 0 0 10px #ffd700; }
+
+  .kill-box {
+    padding: 8px 14px;
+    border-color: rgba(255, 75, 130, 0.5);
+    text-align: right;
+    min-width: 245px;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 7px;
+    pointer-events: auto;
+  }
+
+  .hud-btn {
+    padding: 8px 13px;
+    border-radius: 10px;
+    border: 1.5px solid #00f3ff;
+    background: rgba(12, 24, 54, 0.9);
+    color: #fff;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
+  }
+
+  .hud-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(0, 243, 255, 0.2);
+  }
+
+  .hud-btn.shop-btn { border-color: #ffd700; color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
+  .hud-btn.admin-btn { border-color: #d55cff; color: #f0b8ff; background: rgba(65, 15, 95, 0.9); box-shadow: 0 0 16px rgba(184, 41, 255, 0.55); }
+  .hud-btn.save-btn { border-color: #00ff88; color: #00ff88; }
+  .hud-btn.save-quit-btn { border-color: #ff6688; color: #ff99aa; background: rgba(60, 14, 28, 0.9); }
+  .hud-btn.auto-on { border-color: #00ff88; color: #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.45); }
+
+  #save-status-text {
+    font-size: 11px;
+    color: #7ef9b8;
+    background: rgba(5, 12, 28, 0.75);
+    padding: 3px 10px;
+    border-radius: 8px;
+  }
+
+  #admin-bar {
+    position: absolute;
+    top: 265px;
+    right: 16px;
+    padding: 10px 12px;
+    border-color: #d55cff;
+    background: rgba(28, 10, 48, 0.94);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    pointer-events: auto;
+    min-width: 245px;
+  }
+
+  .admin-cmd-btn {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #d55cff;
+    background: rgba(184, 41, 255, 0.22);
+    color: #fff;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 700;
+    font-size: 11.5px;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .admin-cmd-btn:hover { background: rgba(184, 41, 255, 0.45); }
+
+  #milestone-banner {
+    position: absolute;
+    top: 85px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-30px);
+    background: linear-gradient(90deg, rgba(255, 180, 0, 0.94), rgba(255, 50, 120, 0.94));
+    border: 2px solid #fff;
+    border-radius: 50px;
+    padding: 10px 28px;
+    font-weight: 900;
+    font-size: 15px;
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    box-shadow: 0 0 30px rgba(255, 200, 0, 0.8);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 95;
+  }
+
+  #milestone-banner.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  #bottom-left {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #b0c8f0;
+    line-height: 1.5;
+  }
+
+  #dash-mobile-btn {
+    position: absolute;
+    bottom: 175px;
+    right: 20px;
+    pointer-events: auto;
+    padding: 12px 18px;
+    border-radius: 50px;
+    border: 2px solid #ff2a85;
+    background: rgba(255, 42, 133, 0.25);
+    color: #fff;
+    font-weight: 900;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 42, 133, 0.5);
+  }
+
+  /* ページ・モーダル共通 */
+  .overlay-screen {
+    position: fixed;
+    inset: 0;
+    padding-top: 48px;
+    background: rgba(4, 7, 18, 0.88);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+
+  .hidden { display: none !important; }
+
+  .modal-card {
+    background: linear-gradient(145deg, #0b132b, #111c3d);
+    border: 2px solid #00f3ff;
+    border-radius: 20px;
+    padding: 28px;
+    max-width: 680px;
+    width: 94%;
+    max-height: 88vh;
+    overflow-y: auto;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
+  }
+
+  .game-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 38px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #00f3ff, #ff2a85, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+  }
+
+  /* 難易度セレクター */
+  .diff-selector {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 14px 0;
+  }
+
+  .diff-btn {
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    background: rgba(15, 25, 55, 0.9);
+    color: #cbd5e1;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 900;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .diff-btn:hover { transform: translateY(-2px); border-color: #fff; }
+  .diff-btn.selected {
+    background: linear-gradient(90deg, #00f3ff, #00ff88);
+    color: #050814;
+    border-color: #ffffff;
+    box-shadow: 0 0 16px rgba(0, 255, 136, 0.65);
+  }
+
+  .primary-btn {
+    margin-top: 10px;
+    padding: 13px 26px;
+    font-size: 15px;
+    font-weight: 900;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: #050814;
+    background: linear-gradient(90deg, #00f3ff, #00ff88);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 25px rgba(0, 243, 255, 0.6);
+    transition: transform 0.15s;
+  }
+
+  .primary-btn:hover { transform: scale(1.05); }
+
+  /* ランキングテーブル */
+  .rank-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 13px;
+  }
+
+  .rank-table th, .rank-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+    text-align: left;
+  }
+
+  .rank-table th { color: #00f3ff; }
+
+  /* ショップモーダル */
+  #shop-modal .shop-container {
+    background: #091024;
+    border: 2px solid #ffd700;
+    border-radius: 20px;
+    width: 96%;
+    max-width: 1200px;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.25);
+  }
+
+  .shop-header {
+    padding: 14px 20px;
+    background: rgba(20, 30, 65, 0.95);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .shop-filters {
+    padding: 8px 20px;
+    background: rgba(12, 20, 48, 0.95);
+    border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .filter-btn {
+    padding: 5px 11px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 243, 255, 0.4);
+    background: rgba(18, 32, 68, 0.8);
+    color: #b8d4ff;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  .filter-btn.active {
+    background: #00f3ff;
+    color: #050814;
+    border-color: #00f3ff;
+  }
+
+  .bulk-buy-btn {
+    margin-left: auto;
+    padding: 5px 13px;
+    border-radius: 20px;
+    border: 1px solid #ffd700;
+    background: linear-gradient(90deg, #ffd700, #ff9900);
+    color: #050814;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  .shop-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+    gap: 12px;
+  }
+
+  .shop-item {
+    background: rgba(18, 28, 60, 0.85);
+    border: 1.5px solid rgba(0, 243, 255, 0.28);
+    border-radius: 14px;
+    padding: 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.12s, border-color 0.12s;
+  }
+
+  .shop-item:hover { transform: translateY(-2px); border-color: #ffd700; }
+
+  .shop-item.featured { border: 2px solid #00ff88; background: linear-gradient(145deg, rgba(0, 255, 136, 0.14), rgba(18, 28, 60, 0.9)); }
+  .shop-item.starter-pack { border: 2px solid #00f3ff; background: linear-gradient(145deg, rgba(0, 243, 255, 0.18), rgba(0, 255, 136, 0.12)); }
+  .shop-item.clone-pack { border: 2px solid #7c4dff; background: linear-gradient(145deg, rgba(0, 229, 255, 0.2), rgba(124, 77, 255, 0.24)); box-shadow: 0 0 20px rgba(124, 77, 255, 0.35); }
+  .shop-item.vip-x2 { border: 2px solid #ff2a85; background: linear-gradient(145deg, rgba(255, 42, 133, 0.2), rgba(255, 215, 0, 0.12)); }
+  .shop-item.rainbow-pack { border: 2px solid #ffd700; background: linear-gradient(135deg, rgba(255,51,102,0.22), rgba(255,215,0,0.18), rgba(0,255,136,0.18), rgba(0,243,255,0.22)); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+  .shop-item.plus-pack { border: 2px solid #00ff88; background: linear-gradient(145deg, rgba(0, 243, 255, 0.24), rgba(0, 255, 136, 0.2)); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+  .shop-item.sub-pack { border: 1.5px solid #38bdf8; background: linear-gradient(145deg, rgba(56, 189, 248, 0.14), rgba(168, 85, 247, 0.14)); }
+  .shop-item.admin-pack { border: 2px solid #d55cff; background: linear-gradient(145deg, rgba(184, 41, 255, 0.28), rgba(255, 42, 133, 0.18)); box-shadow: 0 0 22px rgba(184, 41, 255, 0.45); }
+  .shop-item.diamond-pack { border: 2px solid #00f3ff; background: linear-gradient(135deg, rgba(0, 243, 255, 0.28), rgba(56, 189, 248, 0.25), rgba(224, 242, 254, 0.2)); box-shadow: 0 0 26px rgba(0, 243, 255, 0.5); }
+  .shop-item.gold-pack { border: 2px solid #ffd700; background: linear-gradient(135deg, rgba(255, 215, 0, 0.32), rgba(245, 158, 11, 0.24)); box-shadow: 0 0 26px rgba(255, 215, 0, 0.5); }
+  .shop-item.rank-card { border: 2px solid #a855f7; background: linear-gradient(135deg, rgba(168, 85, 247, 0.24), rgba(59, 130, 246, 0.2)); }
+
+  .shop-item.ultimate-pack {
+    grid-column: 1 / -1;
+    border: 3px solid #ffd700;
+    background: linear-gradient(120deg, rgba(255, 0, 102, 0.28), rgba(255, 200, 0, 0.22), rgba(0, 255, 136, 0.22), rgba(0, 210, 255, 0.28), rgba(184, 41, 255, 0.3));
+    box-shadow: 0 0 32px rgba(255, 215, 0, 0.55);
+  }
+
+  .shop-item.owned { border-color: rgba(120, 255, 180, 0.45); }
+
+  .item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .item-name { font-weight: 900; font-size: 14px; color: #fff; }
+  .item-tag { font-size: 10px; padding: 2px 7px; border-radius: 8px; background: rgba(0, 243, 255, 0.2); color: #00f3ff; white-space: nowrap; }
+  .item-desc { font-size: 11.5px; color: #a8c0e8; margin-bottom: 10px; line-height: 1.42; }
+
+  .buy-btn {
+    width: 100%;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #ffd700, #ffaa00);
+    color: #080c1a;
+  }
+
+  .buy-btn:disabled { background: rgba(255, 255, 255, 0.12); color: #6b7b9c; cursor: not-allowed; }
+  .buy-btn.equipped-btn { background: #00ff88; color: #05140c; }
+</style>
+</head>
+<body>
+
+<!-- トップURLナビゲーションバー -->
+<nav id="top-navbar">
+  <a href="/home" class="nav-link" id="nav-home" onclick="navigateTo(event, 'home')">🏠 /home</a>
+  <a href="/game" class="nav-link" id="nav-game" onclick="navigateTo(event, 'game')">🚀 /game</a>
+  <a href="/shop" class="nav-link" id="nav-shop" onclick="navigateTo(event, 'shop')">🛒 /shop</a>
+  <a href="/ranking" class="nav-link" id="nav-ranking" onclick="navigateTo(event, 'ranking')">🏆 /ranking</a>
+  <a href="/settings" class="nav-link" id="nav-settings" onclick="navigateTo(event, 'settings')">⚙️ /settings</a>
+</nav>
+
+<canvas id="gameCanvas"></canvas>
+
+<!-- HUD -->
+<div id="hud">
+  <div id="top-left" class="hud-panel">
+    <div class="stat-row">
+      <span class="label-sm">SHIELD (耐久値)</span>
+      <span id="hp-text" class="val-orbitron" style="font-size:12px; color:#00ff88;">100 / 100</span>
+    </div>
+    <div class="bar-bg"><div id="hp-bar"></div></div>
+
+    <div class="stat-row">
+      <span class="label-sm">SHOCKWAVE DASH</span>
+      <span id="dash-text" class="val-orbitron" style="font-size:12px; color:#ff66aa;">READY</span>
+    </div>
+    <div class="bar-bg"><div id="dash-bar"></div></div>
+
+    <div class="stat-row" style="margin-bottom:0; margin-top:4px;">
+      <span class="label-sm">WAVE <span id="wave-num" class="val-orbitron" style="color:#fff;">1</span></span>
+      <span class="label-sm">SCORE <span id="score-num" class="val-orbitron" style="color:#00f3ff;">0</span></span>
+    </div>
+  </div>
+
+  <div id="top-right">
+    <div class="hud-panel currency-box">
+      <div>
+        <span id="current-rank-pill" class="rank-pill">🔰 ルーキーランク</span>
+        <span id="current-diff-pill" class="diff-pill">🔵 NORMAL</span>
+      </div>
+      <div class="label-sm" style="color:#ffe680;">
+        所持通貨
+        <span id="ultimate-active-badge" class="badge-pill ultimate-badge hidden">👑🌈 VIP GOD 26</span>
+        <span id="diamond-active-badge" class="badge-pill diamond-badge hidden">💎 DIAMOND</span>
+        <span id="gold-active-badge" class="badge-pill gold-badge hidden">🥇 GOLD</span>
+        <span id="clone-active-badge" class="badge-pill clone-badge hidden">👥 ぶんしん</span>
+        <span id="x2-active-badge" class="badge-pill x2-badge hidden">✕2</span>
+        <span id="plus-active-badge" class="badge-pill plus-badge hidden">SUBS</span>
+        <span id="rainbow-active-badge" class="badge-pill rainbow-badge hidden">🌈 RAINBOW</span>
+        <span id="admin-active-badge" class="badge-pill admin-badge hidden">👑 ADMIN</span>
+      </div>
+      <div class="shubux-amount val-orbitron"><span id="shubux-num">0</span> <span style="font-size:13px;">しゅばっくす</span></div>
+    </div>
+
+    <div class="hud-panel kill-box">
+      <div class="stat-row" style="margin-bottom:2px;">
+        <span class="label-sm" style="color:#ff7aa8;">💀 累計撃破数</span>
+        <span id="kills-num" class="val-orbitron" style="color:#fff; font-size:15px;">0 体</span>
+      </div>
+      <div class="stat-row" style="margin-bottom:2px;">
+        <span class="label-sm">🔥 攻撃 / ヒット報酬</span>
+        <span id="attack-bonus-rate" class="val-orbitron" style="color:#00ff88; font-size:12px;">+1 射撃 / +2 命中</span>
+      </div>
+      <div class="stat-row" style="margin-bottom:2px;">
+        <span class="label-sm">撃破ボーナス単価</span>
+        <span id="kill-bonus-rate" class="val-orbitron" style="color:#ffd700; font-size:12px;">+5 / 撃破</span>
+      </div>
+      <div class="label-sm" id="next-milestone-text" style="font-size:11px; color:#9be7ff;">次の目標: 10体 (+150)</div>
+    </div>
+
+    <div class="btn-group">
+      <button type="button" id="toggle-auto-btn" class="hud-btn hidden" onclick="toggleAutoClick()">⚡ AUTO: OFF</button>
+      <button type="button" id="toggle-admin-btn" class="hud-btn admin-btn hidden" onclick="toggleAdminPanel()">👑 ADMIN</button>
+      <button type="button" class="hud-btn shop-btn" onclick="navigateTo(event, 'shop')">🛒 ショップ & ランク</button>
+      <button type="button" class="hud-btn save-btn" onclick="manualSave()">💾 セーブ</button>
+      <button type="button" id="save-and-quit-btn" class="hud-btn save-quit-btn hidden" onclick="saveAndQuit()">🚪 セーブして終了</button>
+    </div>
+    <div id="save-status-text">💾 localStorage 自動セーブ有効</div>
+  </div>
+
+  <!-- ADMIN パネル -->
+  <div id="admin-bar" class="hud-panel hidden">
+    <div style="font-size:12px; font-weight:900; color:#f0b8ff; border-bottom:1px solid rgba(213,92,255,0.4); padding-bottom:4px;">
+      👑 OP & ADMIN コマンド
+    </div>
+    <button type="button" class="admin-cmd-btn" id="god-mode-btn" onclick="toggleGodMode()">🛡️ 無敵モード (GOD): OFF</button>
+    <button type="button" class="admin-cmd-btn" onclick="adminNukeEnemies()">💥 画面内の敵を全滅 (NUKE)</button>
+    <button type="button" class="admin-cmd-btn" onclick="adminGrantShubux(100000)">💰 +100,000 しゅばっくす</button>
+    <button type="button" class="admin-cmd-btn" onclick="adminGrantShubux(100000000000000)">💎 +100兆 しゅばっくす</button>
+    <button type="button" class="admin-cmd-btn" onclick="adminGrantShubux(1e26)">🌈 +100𥝱 しゅばっくす</button>
+    <button type="button" class="admin-cmd-btn" onclick="adminFullHeal()">💚 シールド完全回復</button>
+  </div>
+
+  <div id="milestone-banner">🏆 撃破マイルストーン達成！ +150 しゅばっくす！</div>
+
+  <div id="bottom-left" class="hud-panel">
+    🖱️ <b>マウス / タッチ移動:</b> 自機が常に飛行＆旋回<br>
+    🔥 <b>クリック / タップ長押し:</b> 攻撃＆命中で「しゅばっくす」獲得！<br>
+    ⚡ <b>右クリック / SPACE:</b> 無敵ショックウェーブダッシュ
+  </div>
+
+  <button type="button" id="dash-mobile-btn" onclick="triggerDash()">⚡ DASH (右クリック)</button>
+</div>
+
+<!-- /home ホーム画面 -->
+<div id="home-screen" class="overlay-screen">
+  <div class="modal-card">
+    <div class="game-title">NEON PILOT</div>
+    <p style="color:#a8c8ff; font-size:13.5px; line-height:1.6; margin-bottom:8px;">
+      ようこそパイロット！<b>難易度</b>を選んで出撃し、<b style="color:#ffd700;">「しゅばっくす」</b>を稼いで<br>
+      <b style="color:#00f3ff;">💎 ダイヤモンドランク</b>や<b style="color:#ffd700;">超神級パック</b>を手に入れよう！
+    </p>
+
+    <div style="font-size:12px; color:#9be7ff; font-weight:900; margin-top:8px;">🎯 難易度を選択（高難易度ほど報酬倍率アップ！）</div>
+    <div class="diff-selector" id="home-diff-selector"></div>
+    <div id="home-diff-desc" style="font-size:12px; color:#00ff88; margin-bottom:8px;">🔵 NORMAL：標準バランス / しゅばっくす獲得倍率 ×1.0</div>
+
+    <div id="start-save-summary" style="background:rgba(0,243,255,0.1); border:1px solid rgba(0,243,255,0.35); border-radius:10px; padding:10px; font-size:13px; color:#9be7ff; margin-bottom:10px;">
+      💾 セーブデータ読み込み中...
+    </div>
+
+    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button type="button" class="primary-btn" onclick="navigateTo(event, 'game')">🚀 出撃する (/game)</button>
+      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo(event, 'shop')">🛒 ショップ & ランク (/shop)</button>
+      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#b829ff,#ff2a85); color:#fff;" onclick="navigateTo(event, 'ranking')">🏆 ランキング (/ranking)</button>
+    </div>
+  </div>
+</div>
+
+<!-- /ranking ランキング画面 -->
+<div id="ranking-screen" class="overlay-screen hidden">
+  <div class="modal-card">
+    <h2 style="font-family:'Orbitron'; font-size:26px; color:#ffd700; margin-bottom:6px;">🏆 GALAXY LEADERBOARD (/ranking)</h2>
+    <p style="color:#a8c8ff; font-size:12.5px; margin-bottom:10px;">あなたのハイスコアと累計撃破数をサーバーランキングに登録できます！</p>
+
+    <div style="display:flex; gap:8px; justify-content:center; margin-bottom:10px;">
+      <input id="pilot-name-input" type="text" maxlength="16" placeholder="パイロット名を入力" style="padding:8px 12px; border-radius:10px; border:1.5px solid #00f3ff; background:#091024; color:#fff; font-family:'M PLUS Rounded 1c'; font-weight:700;">
+      <button type="button" class="hud-btn save-btn" onclick="submitRankingScore()">📤 スコア送信</button>
+    </div>
+
+    <table class="rank-table">
+      <thead>
+        <tr>
+          <th>順位</th>
+          <th>パイロット</th>
+          <th>ランク称号</th>
+          <th>ハイスコア</th>
+          <th>累計撃破</th>
+        </tr>
+      </thead>
+      <tbody id="ranking-tbody"></tbody>
+    </table>
+
+    <button type="button" class="primary-btn" style="margin-top:16px;" onclick="navigateTo(event, 'home')">🏠 ホームに戻る (/home)</button>
+  </div>
+</div>
+
+<!-- /settings 設定画面 -->
+<div id="settings-screen" class="overlay-screen hidden">
+  <div class="modal-card">
+    <h2 style="font-family:'Orbitron'; font-size:26px; color:#00f3ff; margin-bottom:8px;">⚙️ GAME SETTINGS (/settings)</h2>
+    <p style="color:#a8c8ff; font-size:13px; margin-bottom:12px;">ゲームの難易度やオート機能、セーブデータの管理を行えます。</p>
+
+    <div style="text-align:left; background:rgba(0,0,0,0.3); padding:14px; border-radius:14px; margin-bottom:12px;">
+      <div style="font-weight:900; color:#ffd700; margin-bottom:6px;">🎯 難易度設定</div>
+      <div class="diff-selector" id="settings-diff-selector" style="justify-content:flex-start;"></div>
+      <div id="settings-diff-desc" style="font-size:12px; color:#00ff88; margin-top:4px;"></div>
+    </div>
+
+    <div style="text-align:left; background:rgba(0,0,0,0.3); padding:14px; border-radius:14px; margin-bottom:14px;">
+      <div style="font-weight:900; color:#00f3ff; margin-bottom:8px;">💾 セーブデータ管理</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button type="button" class="hud-btn save-btn" onclick="manualSave()">💾 今すぐ手動セーブ</button>
+        <button type="button" onclick="resetSaveData()" style="background:rgba(255,40,80,0.2); border:1px solid #ff5577; color:#ff8899; padding:8px 14px; border-radius:10px; font-weight:900; font-size:12px; cursor:pointer;">
+          🗑️ セーブデータを完全初期化
+        </button>
+      </div>
+    </div>
+
+    <button type="button" class="primary-btn" onclick="navigateTo(event, 'game')">🚀 この設定で出撃 (/game)</button>
+  </div>
+</div>
+
+<!-- ゲームオーバー画面 -->
+<div id="gameover-screen" class="overlay-screen hidden">
+  <div class="modal-card" style="border-color:#ff2a85;">
+    <h2 style="font-family:'Orbitron'; font-size:32px; color:#ff2a85; margin-bottom:10px;">SHIELD DEPLETED</h2>
+    <p style="color:#cde0ff; margin-bottom:14px;">稼いだ「しゅばっくす」と購入ランク・アイテムはすべて保存されました！</p>
+    <div style="background:rgba(0,0,0,0.35); border-radius:12px; padding:14px; margin-bottom:16px; text-align:left; font-size:14px;">
+      <div>難易度: <b id="final-diff" style="color:#00ff88;">NORMAL</b></div>
+      <div>今回のスコア: <b id="final-score" style="color:#00f3ff;">0</b></div>
+      <div>累計撃破数: <b id="final-kills" style="color:#ff7aa8;">0</b> 体</div>
+      <div>所持しゅばっくす: <b id="final-shubux" style="color:#ffd700;">0</b> しゅばっくす</div>
+    </div>
+    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button type="button" class="primary-btn" onclick="startGame()">もう一度出撃</button>
+      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo(event, 'shop')">🛒 ショップで強化</button>
+      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#00ff88,#00cc66);" onclick="saveAndQuit()">🏠 ホームへ戻る</button>
+    </div>
+  </div>
+</div>
+
+<!-- /shop ショップ画面（全153アイテム） -->
+<div id="shop-modal" class="overlay-screen hidden">
+  <div class="shop-container">
+    <div class="shop-header">
+      <div>
+        <h2 style="font-size:20px; color:#ffd700; font-weight:900;">🛒 サイバーアーマリー・ショップ (/shop)</h2>
+        <div id="shop-milestone-info" style="font-size:12px; color:#9be7ff; margin-top:2px;">累計撃破: 0体</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="text-align:right; margin-right:6px;">
+          <div style="font-size:11px; color:#ffe680;">所持残高</div>
+          <div class="val-orbitron" style="font-size:20px; color:#ffd700;"><span id="shop-shubux">0</span> <span style="font-size:12px;">しゅばっくす</span></div>
+        </div>
+        <button type="button" class="hud-btn save-quit-btn" onclick="saveAndQuit()">🏠 ホームへ</button>
+        <button type="button" class="hud-btn" style="border-color:#00ff88; color:#00ff88;" onclick="navigateTo(event, 'game')">🚀 ゲームに戻る</button>
+      </div>
+    </div>
+
+    <div class="shop-filters" id="shop-filters">
+      <button type="button" class="filter-btn active" onclick="setShopFilter('all', this)">すべて (153)</button>
+      <button type="button" class="filter-btn" onclick="setShopFilter('rank', this)">🏆 ランク購入 (6)</button>
+      <button type="button" class="filter-btn" onclick="setShopFilter('special', this)">🌟 パック＆基本 (23)</button>
+      <button type="button" class="filter-btn" onclick="setShopFilter('sub_money', this)">💠 通貨サブスク (20)</button>
+      <button type="button" class="filter-btn" onclick="setShopFilter('sub_dmg', this)">🔥 火力サブスク (20)</button>
+      <button type="button" class="filter-btn" onclick="setShopFilter('sub_speed', this)">⚡ 連射サブスク (16)</button>
+      <button type="button" class="filter-btn" onclick="setShopFilter('sub_way', this)">🔱 拡散サブスク (16)</button>
+      <button type="button" class="filter-btn" onclick="setShopFilter('sub_shield', this)">🛡️ 装甲サブスク (16)</button>
+      <button type="button" class="filter-btn" onclick="setShopFilter('sub_drone', this)">🛰️ ドローン＆分身 (24)</button>
+      <button type="button" class="filter-btn" onclick="setShopFilter('sub_vip', this)">👑 VIPパス (12)</button>
+      <button type="button" class="bulk-buy-btn" onclick="buyAllAffordable()">💰 買える分を一括購入</button>
+    </div>
+
+    <div class="shop-grid" id="shop-grid"></div>
+  </div>
+</div>
+
+<script>
+// Flask から渡される初期ルート（単体HTML直接起動時は 'home'）
+const INITIAL_ROUTE = "{{ initial_route | default('home') }}".includes("initial_route")
+  ? "home"
+  : "{{ initial_route | default('home') }}";
+
+// ==========================================
+// 0. 巨大数値フォーマット & 難易度テーブル
+// ==========================================
+function formatShubux(num) {
+  if (!isFinite(num)) return '∞';
+  if (num < 1e12) return Math.floor(num).toLocaleString();
+  const units = [
+    { val: 1e24, label: '𥝱' },
+    { val: 1e20, label: '垓' },
+    { val: 1e16, label: '京' },
+    { val: 1e12, label: '兆' }
+  ];
+  for (const u of units) {
+    if (num >= u.val) {
+      const divided = num / u.val;
+      const formatted = divided >= 100
+        ? Math.floor(divided).toLocaleString()
+        : divided.toFixed(2).replace(/\.00$/, '');
+      return `${formatted}${u.label}`;
+    }
+  }
+  return Math.floor(num).toLocaleString();
+}
+
+const DIFFICULTY_CONFIG = {
+  easy: {
+    id: 'easy',
+    label: '🟢 EASY',
+    fullName: '🟢 EASY (かんたん)',
+    enemyHp: 0.6,
+    enemySpeed: 0.75,
+    playerDmgTaken: 0.5,
+    rewardMult: 0.8,
+    desc: '敵HP 0.6倍 / 敵速度 0.75倍 / 被ダメージ半分 / 報酬 ×0.8（初心者向け）'
+  },
+  normal: {
+    id: 'normal',
+    label: '🔵 NORMAL',
+    fullName: '🔵 NORMAL (ふつう)',
+    enemyHp: 1.0,
+    enemySpeed: 1.0,
+    playerDmgTaken: 1.0,
+    rewardMult: 1.0,
+    desc: '標準バランス / しゅばっくす獲得倍率 ×1.0'
+  },
+  hard: {
+    id: 'hard',
+    label: '🟠 HARD',
+    fullName: '🟠 HARD (むずかしい)',
+    enemyHp: 1.6,
+    enemySpeed: 1.3,
+    playerDmgTaken: 1.4,
+    rewardMult: 2.0,
+    desc: '敵HP 1.6倍 / 敵速度 1.3倍 / 報酬 2倍！稼ぎ効率アップ'
+  },
+  nightmare: {
+    id: 'nightmare',
+    label: '🔴 NIGHTMARE',
+    fullName: '🔴 NIGHTMARE (悪夢)',
+    enemyHp: 3.0,
+    enemySpeed: 1.65,
+    playerDmgTaken: 2.0,
+    rewardMult: 5.0,
+    desc: '敵HP 3倍 / 敵速度 1.65倍 / 被ダメ 2倍 / 報酬 5倍！上級者向け'
+  },
+  god: {
+    id: 'god',
+    label: '🟣 GOD',
+    fullName: '🟣 GOD (超神級インフレ)',
+    enemyHp: 10.0,
+    enemySpeed: 2.0,
+    playerDmgTaken: 3.0,
+    rewardMult: 25.0,
+    desc: '敵HP 10倍 / 超高速弾幕 / 報酬 25倍！！ダイヤモンドランク以上推奨'
+  }
+};
+
+// ==========================================
+// 1. ランク・パック・サブスク全153アイテム定義
+// ==========================================
+const SAVE_KEY = 'neon_pilot_shubux_save_v9';
+
+const DEFAULT_SAVE = {
+  shubux: 0,
+  totalKills: 0,
+  highScore: 0,
+  pilotName: 'PILOT_01',
+  difficulty: 'normal',
+  claimedMilestones: [],
+  ownedItems: {},
+  autoClickEnabled: false,
+  godModeEnabled: false,
+  lastSavedAt: null
+};
+
+const KILL_MILESTONES = [
+  { kills: 10, reward: 150 },
+  { kills: 25, reward: 300 },
+  { kills: 50, reward: 600 },
+  { kills: 100, reward: 1200 },
+  { kills: 200, reward: 2500 },
+  { kills: 350, reward: 4500 },
+  { kills: 500, reward: 7000 },
+  { kills: 750, reward: 11000 },
+  { kills: 1000, reward: 18000 },
+  { kills: 2000, reward: 35000 },
+  { kills: 3500, reward: 60000 },
+  { kills: 5000, reward: 100000 }
+];
+
+const RANK_ITEMS = [
+  {
+    id: 'rank_bronze',
+    category: 'rank',
+    rankOrder: 1,
+    rankTitle: '🥉 ブロンズランク',
+    name: '🥉 ブロンズランク',
+    tag: 'ランク昇格 #1',
+    price: 10000,
+    cardClass: 'rank-card',
+    desc: 'ランク昇格！獲得量 ×1.5・攻撃力 +50%・最大シールド +500！HUDにブロンズ称号を表示！'
+  },
+  {
+    id: 'rank_silver',
+    category: 'rank',
+    rankOrder: 2,
+    rankTitle: '🥈 シルバーランク',
+    name: '🥈 シルバーランク',
+    tag: 'ランク昇格 #2',
+    price: 100000,
+    cardClass: 'rank-card',
+    desc: 'ランク昇格！獲得量 ×3・攻撃力 ×2・最大シールド +2,000！HUDにシルバー称号を表示！'
+  },
+  {
+    id: 'rank_gold',
+    category: 'rank',
+    rankOrder: 3,
+    rankTitle: '🥇 ゴールドランク',
+    name: '🥇 ゴールドランク',
+    tag: 'ランク昇格 #3',
+    price: 1000000,
+    cardClass: 'gold-pack',
+    desc: 'ゴールドランク昇格！獲得量 ×10・攻撃力 ×5・最大シールド +10,000・毎秒 +5,000 自動入金！'
+  },
+  {
+    id: 'rank_platinum',
+    category: 'rank',
+    rankOrder: 4,
+    rankTitle: '💠 プラチナランク',
+    name: '💠 プラチナランク',
+    tag: 'ランク昇格 #4',
+    price: 100000000,
+    cardClass: 'rank-card',
+    desc: 'プラチナランク昇格！獲得量 ×30・攻撃力 ×15・最大シールド +30,000・毎秒 +50,000 自動入金！'
+  },
+  {
+    id: 'rank_diamond',
+    category: 'rank',
+    rankOrder: 5,
+    rankTitle: '💎 ダイヤモンドランク',
+    name: '💎 ダイヤモンドランク',
+    tag: '最高峰ランク',
+    price: 1000000000000,
+    cardClass: 'diamond-pack',
+    desc: '【ダイヤモンドランク解放】獲得量 ×100・攻撃力 ×100・最大シールド +100,000・毎秒 +100万 自動入金！ダイヤモンド専用オーラ＆称号解放！'
+  },
+  {
+    id: 'rank_cosmic',
+    category: 'rank',
+    rankOrder: 6,
+    rankTitle: '👑🌈 コズミック神ランク',
+    name: '👑🌈 コズミック神ランク',
+    tag: '超越神ランク',
+    price: 10000000000000000,
+    cardClass: 'ultimate-pack',
+    desc: '【超越神ランク】獲得量 ×1,000・攻撃力 ×500・最大シールド +1,000,000・毎秒 +100億 自動入金！'
+  }
+];
+
+const BASE_SHOP_ITEMS = [
+  {
+    id: 'rainbow_op_admin_vip_pack',
+    category: 'special',
+    name: '🌈👑 れいんぼー & OP & ADMIN & VIP PACK（全26機能搭載）',
+    tag: '究極26機能VIP',
+    price: 1000000,
+    cardClass: 'ultimate-pack',
+    desc: '【全26機能コンプリート】①虹色機体 ②虹色弾 ③虹色オーラ ④攻撃力25倍 ⑤連射3倍 ⑥拡散+8WAY ⑦貫通+15 ⑧獲得25倍 ⑨撃破+500 ⑩毎秒+1,000自動増額 ⑪シールド+10,000 ⑫高速回復 ⑬速度+80% ⑭分身4体 ⑮ドローン8機 ⑯巨大カッター ⑰全画面吸引 ⑱オート照準 ⑲オートクリック ⑳ダッシュ短縮 ㉑ADMIN解放 ㉒GOD無敵 ㉓NUKE ㉔通貨付与 ㉕全回復 ㉖VIP称号'
+  },
+  {
+    id: 'gold_item_1m',
+    category: 'special',
+    name: '🥇 ゴールド',
+    tag: '黄金パック',
+    price: 1000000,
+    cardClass: 'gold-pack',
+    desc: '黄金の輝き！しゅばっくす獲得量 10倍・全攻撃力 5倍・最大シールド +5,000・毎秒 +2,500 自動入金！'
+  },
+  {
+    id: 'diamond_pack_1b',
+    category: 'special',
+    name: '💎 ダイヤモンドパック',
+    tag: '10億ダイヤ',
+    price: 1000000000,
+    cardClass: 'diamond-pack',
+    desc: 'ダイヤモンドの結晶パワー！しゅばっくす獲得量 50倍・攻撃力 30倍・拡散 +6WAY・分身 +4体・最大シールド +50,000！'
+  },
+  {
+    id: 'sub_diamond_op_golden_pack',
+    category: 'special',
+    name: '💎👑 サブスク：ダイヤモンド & OP ゴールデンパック',
+    tag: '超VIPサブスク',
+    price: 50000000000,
+    cardClass: 'diamond-pack',
+    desc: '【最強サブスク】しゅばっくす獲得量 150倍・攻撃力 80倍・毎秒 +500,000 自動入金・分身 +6体・ADMIN権限＆無敵モード解放！'
+  },
+  {
+    id: 'gold_pack_100jo',
+    category: 'special',
+    name: '🥇✨ ゴールドパック（超神級）',
+    tag: '100𥝱ゴールド',
+    price: 100000000000000000000000000,
+    cardClass: 'gold-pack',
+    desc: '【超神級ゴールド】しゅばっくす獲得量 10,000倍・攻撃力 5,000倍・毎秒 +100京 自動入金・最大シールド +10,000,000！'
+  },
+  {
+    id: 'rainbow_pack_100jo',
+    category: 'special',
+    name: '🌈✨ レインボーパック（超神級）',
+    tag: '100𥝱レインボー',
+    price: 100000000000000000000000000,
+    cardClass: 'ultimate-pack',
+    desc: '【超神級レインボー】しゅばっくす獲得量 50,000倍・攻撃力 25,000倍・分身8体同時攻撃・虹色超巨大オーラ・毎秒 +1垓 自動入金！'
+  },
+  {
+    id: 'starter_pack',
+    category: 'special',
+    name: '🌟 スターターパック',
+    tag: '超お得パック',
+    price: 19,
+    cardClass: 'starter-pack',
+    desc: '購入即時に +300 しゅばっくす支給！さらに攻撃力＆移動速度 +20%、最大シールド +50！'
+  },
+  {
+    id: 'auto_click',
+    category: 'special',
+    name: '⚡ オートクリック',
+    tag: '必須オート',
+    price: 100,
+    cardClass: 'featured',
+    desc: 'マウスをクリックしなくても自動で超高速連射！撃つだけでしゅばっくすが自動増加！'
+  },
+  {
+    id: 'op_admin_pack',
+    category: 'special',
+    name: '👑 OP & ADMIN PACK',
+    tag: '管理者権限',
+    price: 299,
+    cardClass: 'admin-pack',
+    desc: '全攻撃力5倍・しゅばっくす獲得5倍・シールド+1000・拡散+4WAY！無敵/全滅/通貨付与のADMINパネル解放！'
+  },
+  {
+    id: 'double_shubux',
+    category: 'special',
+    name: '💎 ✕2 しゅばっくす',
+    tag: '永久2倍パス',
+    price: 500,
+    cardClass: 'vip-x2',
+    desc: '攻撃・命中・撃破・コインなど、すべてのしゅばっくす獲得量が永久に2倍になるパス！'
+  },
+  {
+    id: 'rainbow_pack',
+    category: 'special',
+    name: '🌈 レインボーパック',
+    tag: '限定虹パック',
+    price: 777,
+    cardClass: 'rainbow-pack',
+    desc: '七色に輝くレインボー機体＆虹色トレイル解放！さらに攻撃力1.8倍・拡散+2WAY・獲得量2倍！'
+  },
+  {
+    id: 'clone_attack_pack',
+    category: 'special',
+    name: '👥 ぶんしん＆アタックパック',
+    tag: '分身同時攻撃',
+    price: 850,
+    cardClass: 'clone-pack',
+    desc: '自機の左右に2体の分身が出現！本体と同じ武器・同じ弾数で同時攻撃を行い、攻撃力＆攻撃報酬も+50%アップ！'
+  },
+  {
+    id: 'shubux_plus',
+    category: 'special',
+    name: '💠 しゅばっくす PLUS',
+    tag: 'VIPサブスク①',
+    price: 1200,
+    cardClass: 'plus-pack',
+    desc: 'すべてのしゅばっくす獲得量が3倍＆撃破単価+50！さらに毎秒自動でしゅばっくすが口座に増え続ける！'
+  },
+  {
+    id: 'sub_hyper_auto',
+    category: 'special',
+    name: '⚡ ハイパーオート連射サブスク',
+    tag: 'VIPサブスク②',
+    price: 2500,
+    cardClass: 'sub-pack',
+    desc: 'オートクリック機能＋連射速度 +80%＋射撃1回ごとのしゅばっくす報酬 +5！放置でも高速稼ぎ！'
+  },
+  {
+    id: 'sub_omega_fire',
+    category: 'special',
+    name: '🔥 オメガ火力＆拡散サブスク',
+    tag: 'VIPサブスク③',
+    price: 5000,
+    cardClass: 'sub-pack',
+    desc: '全武器ダメージ 2.5倍＋同時発射 +3WAY＋貫通 +3！画面中の敵を弾幕で制圧する火力特化サブスク！'
+  },
+  {
+    id: 'sub_clone_legion',
+    category: 'special',
+    name: '👥 ぶんしん軍団サブスク',
+    tag: 'VIPサブスク④',
+    price: 12000,
+    cardClass: 'sub-pack',
+    desc: '自機の周囲に合計4体の分身を展開！全分身が同じ攻撃を同時発射し、さらにしゅばっくす獲得量 2倍！'
+  },
+  {
+    id: 'sub_golden_miner',
+    category: 'special',
+    name: '💰 ゴールデンマイナーVIPサブスク',
+    tag: 'VIPサブスク⑤',
+    price: 25000,
+    cardClass: 'sub-pack',
+    desc: 'しゅばっくす獲得量 4倍＋毎秒 +200 しゅばっくす自動入金＋全画面オーブ超吸引の資産運用サブスク！'
+  },
+  {
+    id: 'sub_galaxy_vip',
+    category: 'special',
+    name: '🌌 ギャラクシーVIPパス',
+    tag: 'VIPサブスク⑥',
+    price: 100000,
+    cardClass: 'sub-pack',
+    desc: 'しゅばっくす獲得量 8倍＋攻撃力 4倍＋最大シールド +2,000＋支援ドローン +4機の宇宙最強サブスク！'
+  },
+  {
+    id: 'auto_magnet',
+    category: 'special',
+    name: '🧲 オートオーブ吸引',
+    tag: '回収強化',
+    price: 180,
+    desc: '画面内のしゅばっくす＆回復オーブを広範囲から超高速で自動吸収する。'
+  },
+  {
+    id: 'auto_aim',
+    category: 'special',
+    name: '🎯 オート照準アシスト',
+    tag: '射撃補助',
+    price: 350,
+    desc: '近くの敵へ射撃角度を自動追尾微調整し、動き回りながらでも百発百中になる。'
+  },
+  {
+    id: 'plasma_overdrive',
+    category: 'special',
+    name: '🔥 プラズマ出力＆連射強化',
+    tag: '武器強化',
+    price: 400,
+    desc: 'メインショットの攻撃力 +60% ＆ 連射速度 +40% アップ！連射速度が上がるほど攻撃稼ぎ効率もUP！'
+  },
+  {
+    id: 'multi_cannon',
+    category: 'special',
+    name: '🔱 マルチウェイ拡散砲',
+    tag: '武器強化',
+    price: 650,
+    desc: '同時発射弾数が +3WAY 増加＆貫通能力付与！多段ヒットでしゅばっくす大量獲得！'
+  },
+  {
+    id: 'titan_thruster',
+    category: 'special',
+    name: '🛡️ チタン装甲＆スラスター',
+    tag: '機体強化',
+    price: 450,
+    desc: '最大シールド +150、移動速度 +30%、さらに3秒ごとの自動シールド修復機能を追加！'
+  },
+  {
+    id: 'attack_drones',
+    category: 'special',
+    name: '🛰️ 自動攻撃ビットドローン',
+    tag: '支援ドローン',
+    price: 900,
+    desc: '自機の周囲を回転しながら自動で敵を狙い撃つ支援ビットを3機展開＆回転カッターリング付与！'
+  }
+];
+
+const EXTRA_SUBSCRIPTIONS = [];
+for (let i = 1; i <= 20; i++) {
+  const price = Math.round(150 * Math.pow(1.48, i - 1));
+  EXTRA_SUBSCRIPTIONS.push({
+    id: `extra_sub_money_${i}`, category: 'sub_money',
+    name: `💠 しゅばっくす増殖サブスク Lv.${i}`, tag: `通貨サブスク #${i}`, price, cardClass: 'sub-pack',
+    desc: `毎秒 +${(i * 25).toLocaleString()} 自動入金＋撃破単価 +${i * 10}＋獲得倍率 ×${+(1 + i * 0.12).toFixed(2)}！`,
+    effect: { autoIncome: i * 25, killFlat: i * 10, shubuxMult: +(1 + i * 0.12).toFixed(2) }
+  });
+}
+for (let i = 1; i <= 20; i++) {
+  const price = Math.round(180 * Math.pow(1.46, i - 1));
+  const dmgAdd = +(i * 0.35).toFixed(2);
+  EXTRA_SUBSCRIPTIONS.push({
+    id: `extra_sub_dmg_${i}`, category: 'sub_dmg',
+    name: `🔥 プラズマ火力サブスク Lv.${i}`, tag: `火力サブスク #${i}`, price, cardClass: 'sub-pack',
+    desc: `全攻撃力 +${Math.round(dmgAdd * 100)}% アップ＋弾丸貫通 +${Math.ceil(i / 4)}！`,
+    effect: { dmgAdd, pierceAdd: Math.ceil(i / 4) }
+  });
+}
+for (let i = 1; i <= 16; i++) {
+  const price = Math.round(220 * Math.pow(1.52, i - 1));
+  const rateAdd = +(i * 0.15).toFixed(2);
+  EXTRA_SUBSCRIPTIONS.push({
+    id: `extra_sub_speed_${i}`, category: 'sub_speed',
+    name: `⚡ 超高速連射サブスク Lv.${i}`, tag: `連射サブスク #${i}`, price, cardClass: 'sub-pack',
+    desc: `連射速度 +${Math.round(rateAdd * 100)}% アップ＋射撃1回ごとの報酬 +${i * 2}！`,
+    effect: { fireRateAdd: rateAdd, shootFlat: i * 2 }
+  });
+}
+for (let i = 1; i <= 16; i++) {
+  const price = Math.round(350 * Math.pow(1.55, i - 1));
+  const wayAdd = i <= 8 ? 1 : 2;
+  const dmgAdd = +(i * 0.15).toFixed(2);
+  EXTRA_SUBSCRIPTIONS.push({
+    id: `extra_sub_way_${i}`, category: 'sub_way',
+    name: `🔱 マルチウェイ拡散サブスク Lv.${i}`, tag: `拡散サブスク #${i}`, price, cardClass: 'sub-pack',
+    desc: `同時発射弾数 +${wayAdd}WAY 増加＋攻撃力 +${Math.round(dmgAdd * 100)}%！`,
+    effect: { wayAdd, dmgAdd }
+  });
+}
+for (let i = 1; i <= 16; i++) {
+  const price = Math.round(200 * Math.pow(1.5, i - 1));
+  const hpBonus = i * 120;
+  const spdAdd = +(i * 0.04).toFixed(2);
+  EXTRA_SUBSCRIPTIONS.push({
+    id: `extra_sub_shield_${i}`, category: 'sub_shield',
+    name: `🛡️ チタン装甲＆修復サブスク Lv.${i}`, tag: `装甲サブスク #${i}`, price, cardClass: 'sub-pack',
+    desc: `最大シールド +${hpBonus.toLocaleString()}＋移動速度 +${Math.round(spdAdd * 100)}%＋自動修復機能！`,
+    effect: { hpBonus, speedAdd: spdAdd, autoRepair: true }
+  });
+}
+for (let i = 1; i <= 12; i++) {
+  const price = Math.round(500 * Math.pow(1.62, i - 1));
+  const droneAdd = i <= 6 ? 1 : 2;
+  const dmgAdd = +(i * 0.2).toFixed(2);
+  EXTRA_SUBSCRIPTIONS.push({
+    id: `extra_sub_drone_${i}`, category: 'sub_drone',
+    name: `🛰️ 支援ドローン艦隊サブスク Lv.${i}`, tag: `ドローン #${i}`, price, cardClass: 'sub-pack',
+    desc: `自動攻撃ドローン +${droneAdd}機配備＋全攻撃力 +${Math.round(dmgAdd * 100)}%！`,
+    effect: { droneAdd, dmgAdd }
+  });
+}
+for (let i = 1; i <= 12; i++) {
+  const price = Math.round(700 * Math.pow(1.65, i - 1));
+  const cloneTarget = Math.min(8, 2 + Math.floor((i + 1) / 2));
+  const mult = +(1 + i * 0.15).toFixed(2);
+  EXTRA_SUBSCRIPTIONS.push({
+    id: `extra_sub_clone_${i}`, category: 'sub_drone',
+    name: `👥 ぶんしん軍団拡張サブスク Lv.${i}`, tag: `分身サブスク #${i}`, price, cardClass: 'sub-pack',
+    desc: `分身機体を最大${cloneTarget}体まで展開＆同時攻撃＋獲得倍率 ×${mult}！`,
+    effect: { cloneTarget, shubuxMult: mult }
+  });
+}
+for (let i = 1; i <= 12; i++) {
+  const price = Math.round(1200 * Math.pow(1.72, i - 1));
+  const mult = +(1.2 + i * 0.25).toFixed(2);
+  const dmgAdd = +(i * 0.5).toFixed(2);
+  const income = i * 150;
+  const hpBonus = i * 350;
+  EXTRA_SUBSCRIPTIONS.push({
+    id: `extra_sub_vip_${i}`, category: 'sub_vip',
+    name: `👑 ギャラクシーVIPパス Tier.${i}`, tag: `VIPパス #${i}`, price, cardClass: 'vip-x2',
+    desc: `獲得倍率 ×${mult}＋攻撃力 +${Math.round(dmgAdd * 100)}%＋毎秒 +${income.toLocaleString()} 自動入金＋シールド +${hpBonus.toLocaleString()}！`,
+    effect: { shubuxMult: mult, dmgAdd, autoIncome: income, hpBonus }
+  });
+}
+
+const SHOP_ITEMS = [...RANK_ITEMS, ...BASE_SHOP_ITEMS, ...EXTRA_SUBSCRIPTIONS];
+
+let saveData = JSON.parse(JSON.stringify(DEFAULT_SAVE));
+let currentShopFilter = 'all';
+
+// ==========================================
+// 2. SPA ルーティング (/home, /game, /shop, /ranking, /settings)
+// ==========================================
+function navigateTo(event, route) {
+  if (event) event.preventDefault();
+  try {
+    window.history.pushState({ route }, '', `/${route}`);
+  } catch (e) {}
+  applyRouteView(route);
+}
+
+window.addEventListener('popstate', () => {
+  const path = window.location.pathname.replace('/', '') || 'home';
+  applyRouteView(path);
+});
+
+function applyRouteView(route) {
+  const validRoutes = ['home', 'game', 'shop', 'ranking', 'settings'];
+  const activeRoute = validRoutes.includes(route) ? route : 'home';
+
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById(`nav-${activeRoute}`);
+  if (navEl) navEl.classList.add('active');
+
+  // 全画面オーバーレイを一旦隠す
+  document.getElementById('home-screen').classList.add('hidden');
+  document.getElementById('shop-modal').classList.add('hidden');
+  document.getElementById('ranking-screen').classList.add('hidden');
+  document.getElementById('settings-screen').classList.add('hidden');
+  document.getElementById('gameover-screen').classList.add('hidden');
+  isShopOpen = false;
+
+  if (activeRoute === 'home') {
+    gameState = 'start';
+    document.getElementById('home-screen').classList.remove('hidden');
+    renderDifficultySelectors();
+    updateSaveSummaryUI();
+  } else if (activeRoute === 'game') {
+    if (gameState !== 'playing') {
+      startGame();
+    }
+  } else if (activeRoute === 'shop') {
+    isShopOpen = true;
+    document.getElementById('shop-modal').classList.remove('hidden');
+    renderShop();
+  } else if (activeRoute === 'ranking') {
+    document.getElementById('ranking-screen').classList.remove('hidden');
+    loadRankingBoard();
+  } else if (activeRoute === 'settings') {
+    document.getElementById('settings-screen').classList.remove('hidden');
+    renderDifficultySelectors();
+  }
+}
+
+function renderDifficultySelectors() {
+  const currentDiff = saveData.difficulty || 'normal';
+  const cfg = DIFFICULTY_CONFIG[currentDiff] || DIFFICULTY_CONFIG.normal;
+
+  ['home-diff-selector', 'settings-diff-selector'].forEach(containerId => {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = '';
+    Object.values(DIFFICULTY_CONFIG).forEach(d => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `diff-btn ${d.id === currentDiff ? 'selected' : ''}`;
+      btn.textContent = d.label;
+      btn.onclick = () => selectDifficulty(d.id);
+      el.appendChild(btn);
+    });
+  });
+
+  const homeDesc = document.getElementById('home-diff-desc');
+  const setDesc = document.getElementById('settings-diff-desc');
+  if (homeDesc) homeDesc.textContent = `${cfg.fullName}：${cfg.desc}`;
+  if (setDesc) setDesc.textContent = `${cfg.fullName}：${cfg.desc}`;
+}
+
+function selectDifficulty(diffId) {
+  if (!DIFFICULTY_CONFIG[diffId]) return;
+  saveData.difficulty = diffId;
+  writeSave();
+  renderDifficultySelectors();
+  syncPlayerStats();
+  updateHUD();
+  showMilestoneBanner(`🎯 難易度を【${DIFFICULTY_CONFIG[diffId].fullName}】に変更しました！`);
+}
+
+async function loadRankingBoard() {
+  const tbody = document.getElementById('ranking-tbody');
+  const nameInput = document.getElementById('pilot-name-input');
+  if (nameInput && !nameInput.value) nameInput.value = saveData.pilotName || 'PILOT_01';
+
+  let list = [
+    { name: saveData.pilotName || 'YOU', rank: getHighestRank().rankTitle, score: saveData.highScore, kills: saveData.totalKills }
+  ];
+
+  try {
+    const res = await fetch('/api/ranking');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.leaderboard) list = data.leaderboard;
+    }
+  } catch (e) {}
+
+  tbody.innerHTML = '';
+  list.forEach((row, idx) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-weight:900; color:#ffd700;">#${idx + 1}</td>
+      <td style="font-weight:900;">${row.name}</td>
+      <td>${row.rank}</td>
+      <td style="color:#00f3ff; font-family:'Orbitron';">${Number(row.score).toLocaleString()}</td>
+      <td style="color:#ff7aa8;">${Number(row.kills).toLocaleString()} 体</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function submitRankingScore() {
+  const nameInput = document.getElementById('pilot-name-input');
+  const name = (nameInput ? nameInput.value.trim() : '') || 'PILOT_01';
+  saveData.pilotName = name;
+  writeSave();
+
+  try {
+    const res = await fetch('/api/ranking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        rank: getHighestRank().rankTitle,
+        score: Math.max(score, saveData.highScore),
+        kills: saveData.totalKills
+      })
+    });
+    if (res.ok) {
+      showMilestoneBanner('🏆 ランキングにスコアを登録しました！');
+      loadRankingBoard();
+      return;
+    }
+  } catch (e) {}
+  showMilestoneBanner('💾 ローカル戦績を更新しました！');
+  loadRankingBoard();
+}
+
+// ==========================================
+// 3. localStorage セーブ・ロード管理システム
+// ==========================================
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      saveData = { ...DEFAULT_SAVE, ...parsed };
+      if (!saveData.ownedItems) saveData.ownedItems = {};
+      if (!Array.isArray(saveData.claimedMilestones)) saveData.claimedMilestones = [];
+      if (!DIFFICULTY_CONFIG[saveData.difficulty]) saveData.difficulty = 'normal';
+    }
+  } catch (e) {}
+  updateSaveSummaryUI();
+}
+
+function writeSave(showIndicator = false) {
+  try {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    saveData.lastSavedAt = `${hh}:${mm}:${ss}`;
+    localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+
+    const statusEl = document.getElementById('save-status-text');
+    if (statusEl) {
+      statusEl.textContent = showIndicator
+        ? `✅ セーブ完了！ (${saveData.lastSavedAt})`
+        : `💾 自動セーブ済み (${saveData.lastSavedAt})`;
+      statusEl.style.color = '#00ff88';
+    }
+    updateSaveSummaryUI();
+  } catch (e) {}
+}
+
+function manualSave() {
+  writeSave(true);
+}
+
+function saveAndQuit() {
+  writeSave(true);
+  navigateTo(null, 'home');
+  showMilestoneBanner(`💾 データを保存してホームに戻りました！（所持: ${formatShubux(saveData.shubux)} しゅばっくす）`);
+}
+
+function resetSaveData() {
+  if (!confirm('本当にセーブデータをすべて初期化しますか？')) return;
+  try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+  saveData = JSON.parse(JSON.stringify(DEFAULT_SAVE));
+  syncPlayerStats();
+  renderDifficultySelectors();
+  updateHUD();
+  updateSaveSummaryUI();
+  alert('セーブデータを初期化しました。');
+}
+
+function updateSaveSummaryUI() {
+  const el = document.getElementById('start-save-summary');
+  if (!el) return;
+  const countOwned = Object.keys(saveData.ownedItems || {}).length;
+  const savedTime = saveData.lastSavedAt ? ` / 最終保存: ${saveData.lastSavedAt}` : '';
+  el.innerHTML = `💾 <b>保存データ:</b> 所持 <b style="color:#ffd700;">${formatShubux(saveData.shubux)}</b> しゅばっくす / 撃破 <b>${saveData.totalKills.toLocaleString()}</b> 体 / 購入済み <b>${countOwned}/${SHOP_ITEMS.length}</b> 個${savedTime}`;
+}
+
+loadSave();
+
+function getHighestRank() {
+  const owned = saveData.ownedItems || {};
+  let best = { rankOrder: 0, rankTitle: '🔰 ルーキーランク', id: 'none' };
+  for (const r of RANK_ITEMS) {
+    if (owned[r.id] && r.rankOrder > best.rankOrder) best = r;
+  }
+  return best;
+}
+
+function getUpgrades() {
+  const owned = saveData.ownedItems || {};
+  const diffCfg = DIFFICULTY_CONFIG[saveData.difficulty] || DIFFICULTY_CONFIG.normal;
+
+  const hasUltimatePack = !!owned['rainbow_op_admin_vip_pack'];
+  const hasGoldItem1M = !!owned['gold_item_1m'];
+  const hasDiamondPack1B = !!owned['diamond_pack_1b'];
+  const hasSubDiamondOpGolden = !!owned['sub_diamond_op_golden_pack'];
+  const hasGoldPack100Jo = !!owned['gold_pack_100jo'];
+  const hasRainbowPack100Jo = !!owned['rainbow_pack_100jo'];
+  const hasDiamondRank = !!owned['rank_diamond'] || !!owned['rank_cosmic'];
+
+  const hasStarterPack = !!owned['starter_pack'];
+  const hasAutoClick = !!owned['auto_click'] || !!owned['op_admin_pack'] || !!owned['sub_hyper_auto'] || hasUltimatePack || hasSubDiamondOpGolden;
+  const hasAdminPack = !!owned['op_admin_pack'] || hasUltimatePack || hasSubDiamondOpGolden;
+  const hasDoubleShubux = !!owned['double_shubux'];
+  const hasRainbowPack = !!owned['rainbow_pack'] || hasUltimatePack || hasRainbowPack100Jo;
+  const hasClonePack = !!owned['clone_attack_pack'] || !!owned['sub_clone_legion'] || hasUltimatePack || hasDiamondPack1B || hasSubDiamondOpGolden || hasRainbowPack100Jo;
+  const hasShubuxPlus = !!owned['shubux_plus'];
+  const hasSubHyperAuto = !!owned['sub_hyper_auto'];
+  const hasSubOmegaFire = !!owned['sub_omega_fire'];
+  const hasSubCloneLegion = !!owned['sub_clone_legion'];
+  const hasSubGoldenMiner = !!owned['sub_golden_miner'];
+  const hasSubGalaxyVip = !!owned['sub_galaxy_vip'];
+
+  const hasAutoMagnet = !!owned['auto_magnet'] || hasAdminPack || hasSubGoldenMiner || hasDiamondPack1B || hasGoldPack100Jo || hasRainbowPack100Jo;
+  const hasAutoAim = !!owned['auto_aim'] || hasAdminPack || hasDiamondPack1B || hasGoldPack100Jo || hasRainbowPack100Jo;
+  const hasPlasmaOverdrive = !!owned['plasma_overdrive'];
+  const hasMultiCannon = !!owned['multi_cannon'];
+  const hasTitanThruster = !!owned['titan_thruster'];
+  const hasAttackDrones = !!owned['attack_drones'];
+
+  let dmgMult = 1.0;
+  let fireRateMult = 1.0;
+  let extraWays = 0;
+  let pierce = 0;
+  let maxHpBonus = 0;
+  let speedMult = 1.0;
+  let droneCount = 0;
+  let shubuxMult = diffCfg.rewardMult; // 難易度による報酬倍率を反映
+  let cloneCount = 0;
+  let autoIncomePerSec = 0;
+  let shootFlatBonus = 0;
+  let killFlatBonus = 0;
+  let extraAutoRepair = false;
+  let hasExtraSubOwned = false;
+
+  if (owned['rank_bronze']) { shubuxMult *= 1.5; dmgMult += 0.5; maxHpBonus += 500; }
+  if (owned['rank_silver']) { shub
