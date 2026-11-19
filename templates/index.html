@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>NEON PILOT - サウンド完全版</title>
+<title>NEON PILOT - マウスカーソル対応版</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&family=Orbitron:wght@600;800;900&display=swap');
 
@@ -22,52 +22,50 @@
     background-color: #050814;
     font-family: 'M PLUS Rounded 1c', sans-serif;
     color: #ffffff;
+    cursor: default;
   }
 
   canvas {
-    position: fixed;
-    inset: 0;
     display: block;
     width: 100%;
     height: 100%;
-    z-index: 1;
-    cursor: crosshair;
+    cursor: crosshair; /* ゲーム中は十字照準カーソル */
   }
 
-  /* トップナビゲーションバー */
+  /* クリックできる要素すべてにポインター（指先マーク）を適用 */
+  button, .nav-link, .filter-btn, .diff-btn, .shop-item, .admin-cmd-btn, input {
+    cursor: pointer !important;
+  }
+
+  /* トップURLナビゲーションバー */
   #top-navbar {
     position: fixed;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 100;
+    z-index: 80;
     display: flex;
     gap: 6px;
     padding: 8px 14px;
-    background: rgba(8, 14, 34, 0.95);
+    background: rgba(8, 14, 34, 0.92);
     border: 1.5px solid rgba(0, 243, 255, 0.45);
     border-top: none;
     border-radius: 0 0 16px 16px;
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 20px rgba(0, 243, 255, 0.25);
-    max-width: 98vw;
-    overflow-x: auto;
-    pointer-events: auto;
   }
 
   .nav-link {
-    padding: 6px 12px;
+    padding: 6px 13px;
     border-radius: 10px;
     border: 1px solid rgba(0, 243, 255, 0.3);
-    background: rgba(16, 28, 62, 0.9);
+    background: rgba(16, 28, 62, 0.85);
     color: #b8d4ff;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-    font-size: 11.5px;
+    text-decoration: none;
+    font-size: 12px;
     font-weight: 900;
     cursor: pointer;
     transition: all 0.15s;
-    white-space: nowrap;
-    pointer-events: auto;
   }
 
   .nav-link:hover {
@@ -85,13 +83,16 @@
   /* HUD オーバーレイ */
   #hud {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 10;
   }
 
   .hud-panel {
-    background: rgba(10, 18, 40, 0.82);
+    background: rgba(10, 18, 40, 0.78);
     border: 1.5px solid rgba(0, 243, 255, 0.35);
     border-radius: 12px;
     backdrop-filter: blur(8px);
@@ -100,10 +101,10 @@
 
   #top-left {
     position: absolute;
-    top: 52px;
+    top: 16px;
     left: 16px;
     padding: 12px 16px;
-    min-width: 260px;
+    min-width: 265px;
   }
 
   .stat-row {
@@ -150,13 +151,12 @@
 
   #top-right {
     position: absolute;
-    top: 52px;
+    top: 16px;
     right: 16px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 8px;
-    pointer-events: auto;
   }
 
   .currency-box {
@@ -206,6 +206,9 @@
     vertical-align: middle;
   }
 
+  .x2-badge { background: linear-gradient(90deg, #ff2a85, #ffd700); color: #050814; }
+  .plus-badge { background: linear-gradient(90deg, #00f3ff, #00ff88); color: #050814; }
+  .clone-badge { background: linear-gradient(90deg, #00e5ff, #7c4dff); color: #ffffff; }
   .ultimate-badge { background: linear-gradient(90deg, #ff0055, #ffd700, #00ff88, #00f3ff, #b829ff); color: #fff; border: 1px solid #fff; text-shadow: 0 1px 3px #000; box-shadow: 0 0 10px #ffd700; }
 
   .kill-box {
@@ -227,7 +230,7 @@
     padding: 8px 13px;
     border-radius: 10px;
     border: 1.5px solid #00f3ff;
-    background: rgba(12, 24, 54, 0.95);
+    background: rgba(12, 24, 54, 0.9);
     color: #fff;
     font-family: 'M PLUS Rounded 1c', sans-serif;
     font-weight: 900;
@@ -235,31 +238,61 @@
     cursor: pointer;
     transition: all 0.15s ease;
     box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
-    pointer-events: auto;
   }
 
   .hud-btn:hover {
     transform: translateY(-2px);
-    background: rgba(0, 243, 255, 0.25);
+    background: rgba(0, 243, 255, 0.2);
   }
 
   .hud-btn.shop-btn { border-color: #ffd700; color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
+  .hud-btn.admin-btn { border-color: #d55cff; color: #f0b8ff; background: rgba(65, 15, 95, 0.9); box-shadow: 0 0 16px rgba(184, 41, 255, 0.55); }
   .hud-btn.save-btn { border-color: #00ff88; color: #00ff88; }
-  .hud-btn.save-quit-btn { border-color: #ff6688; color: #ff99aa; background: rgba(60, 14, 28, 0.95); }
+  .hud-btn.save-quit-btn { border-color: #ff6688; color: #ff99aa; background: rgba(60, 14, 28, 0.9); }
+  .hud-btn.auto-on { border-color: #00ff88; color: #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.45); }
   .hud-btn.sound-on { border-color: #00ff88; color: #00ff88; box-shadow: 0 0 12px rgba(0, 255, 136, 0.4); }
   .hud-btn.sound-off { border-color: #6b7b9c; color: #6b7b9c; background: rgba(20, 24, 38, 0.9); }
 
   #save-status-text {
     font-size: 11px;
     color: #7ef9b8;
-    background: rgba(5, 12, 28, 0.8);
+    background: rgba(5, 12, 28, 0.75);
     padding: 3px 10px;
     border-radius: 8px;
   }
 
+  #admin-bar {
+    position: absolute;
+    top: 265px;
+    right: 16px;
+    padding: 10px 12px;
+    border-color: #d55cff;
+    background: rgba(28, 10, 48, 0.94);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    pointer-events: auto;
+    min-width: 245px;
+  }
+
+  .admin-cmd-btn {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #d55cff;
+    background: rgba(184, 41, 255, 0.22);
+    color: #fff;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 700;
+    font-size: 11.5px;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .admin-cmd-btn:hover { background: rgba(184, 41, 255, 0.45); }
+
   #milestone-banner {
     position: absolute;
-    top: 90px;
+    top: 85px;
     left: 50%;
     transform: translateX(-50%) translateY(-30px);
     background: linear-gradient(90deg, rgba(255, 180, 0, 0.94), rgba(255, 50, 120, 0.94));
@@ -267,7 +300,7 @@
     border-radius: 50px;
     padding: 10px 28px;
     font-weight: 900;
-    font-size: 14px;
+    font-size: 15px;
     color: #fff;
     text-shadow: 0 2px 6px rgba(0,0,0,0.6);
     box-shadow: 0 0 30px rgba(255, 200, 0, 0.8);
@@ -295,13 +328,13 @@
 
   #dash-mobile-btn {
     position: absolute;
-    bottom: 24px;
+    bottom: 175px;
     right: 20px;
     pointer-events: auto;
     padding: 12px 18px;
     border-radius: 50px;
     border: 2px solid #ff2a85;
-    background: rgba(255, 42, 133, 0.35);
+    background: rgba(255, 42, 133, 0.25);
     color: #fff;
     font-weight: 900;
     font-size: 13px;
@@ -313,14 +346,13 @@
   .overlay-screen {
     position: fixed;
     inset: 0;
-    padding-top: 52px;
+    padding-top: 48px;
     background: rgba(4, 7, 18, 0.88);
     backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 50;
-    pointer-events: auto;
   }
 
   .hidden { display: none !important; }
@@ -336,7 +368,6 @@
     overflow-y: auto;
     text-align: center;
     box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
-    pointer-events: auto;
   }
 
   .game-title {
@@ -349,6 +380,7 @@
     margin-bottom: 6px;
   }
 
+  /* 難易度セレクター */
   .diff-selector {
     display: flex;
     flex-wrap: wrap;
@@ -368,7 +400,6 @@
     font-size: 12.5px;
     cursor: pointer;
     transition: all 0.15s;
-    pointer-events: auto;
   }
 
   .diff-btn:hover { transform: translateY(-2px); border-color: #fff; }
@@ -392,10 +423,25 @@
     cursor: pointer;
     box-shadow: 0 0 25px rgba(0, 243, 255, 0.6);
     transition: transform 0.15s;
-    pointer-events: auto;
   }
 
   .primary-btn:hover { transform: scale(1.05); }
+
+  /* ランキングテーブル */
+  .rank-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 13px;
+  }
+
+  .rank-table th, .rank-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+    text-align: left;
+  }
+
+  .rank-table th { color: #00f3ff; }
 
   /* ショップモーダル */
   #shop-modal .shop-container {
@@ -409,7 +455,6 @@
     flex-direction: column;
     overflow: hidden;
     box-shadow: 0 0 50px rgba(255, 215, 0, 0.25);
-    pointer-events: auto;
   }
 
   .shop-header {
@@ -443,13 +488,25 @@
     font-weight: 700;
     font-size: 11px;
     cursor: pointer;
-    pointer-events: auto;
   }
 
   .filter-btn.active {
     background: #00f3ff;
     color: #050814;
     border-color: #00f3ff;
+  }
+
+  .bulk-buy-btn {
+    margin-left: auto;
+    padding: 5px 13px;
+    border-radius: 20px;
+    border: 1px solid #ffd700;
+    background: linear-gradient(90deg, #ffd700, #ff9900);
+    color: #050814;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    cursor: pointer;
   }
 
   .shop-grid {
@@ -470,9 +527,11 @@
     flex-direction: column;
     justify-content: space-between;
     transition: transform 0.12s, border-color 0.12s;
+    cursor: pointer;
   }
 
   .shop-item:hover { transform: translateY(-2px); border-color: #ffd700; }
+
   .shop-item.ultimate-pack {
     grid-column: 1 / -1;
     border: 3px solid #ffd700;
@@ -505,7 +564,6 @@
     cursor: pointer;
     background: linear-gradient(90deg, #ffd700, #ffaa00);
     color: #080c1a;
-    pointer-events: auto;
   }
 
   .buy-btn:disabled { background: rgba(255, 255, 255, 0.12); color: #6b7b9c; cursor: not-allowed; }
@@ -516,12 +574,11 @@
 
 <!-- トップURLナビゲーションバー -->
 <nav id="top-navbar">
-  <button type="button" class="nav-link" id="nav-home" onclick="navigateTo('home')">🏠 /home</button>
-  <button type="button" class="nav-link" id="nav-game" onclick="navigateTo('game')">🚀 /game</button>
-  <button type="button" class="nav-link" id="nav-shop" onclick="navigateTo('shop')">🛒 /shop</button>
-  <button type="button" class="nav-link" id="nav-ranking" onclick="navigateTo('ranking')">🏆 /ranking</button>
-  <button type="button" class="nav-link" id="nav-settings" onclick="navigateTo('settings')">⚙️ /settings</button>
-  <button type="button" class="nav-link" id="nav-page" onclick="navigateTo('page')">📄 url/[ぺーじ]</button>
+  <a href="/home" class="nav-link" id="nav-home" onclick="navigateTo(event, 'home')">🏠 /home</a>
+  <a href="/game" class="nav-link" id="nav-game" onclick="navigateTo(event, 'game')">🚀 /game</a>
+  <a href="/shop" class="nav-link" id="nav-shop" onclick="navigateTo(event, 'shop')">🛒 /shop</a>
+  <a href="/ranking" class="nav-link" id="nav-ranking" onclick="navigateTo(event, 'ranking')">🏆 /ranking</a>
+  <a href="/settings" class="nav-link" id="nav-settings" onclick="navigateTo(event, 'settings')">⚙️ /settings</a>
 </nav>
 
 <canvas id="gameCanvas"></canvas>
@@ -555,7 +612,7 @@
       </div>
       <div class="label-sm" style="color:#ffe680;">
         所持通貨
-        <span id="legendary-active-badge" class="badge-pill ultimate-badge hidden">🌈🌉 LEGENDARY 100k</span>
+        <span id="ultimate-active-badge" class="badge-pill ultimate-badge hidden">👑🌈 VIP GOD 26</span>
       </div>
       <div class="shubux-amount val-orbitron"><span id="shubux-num">0</span> <span style="font-size:13px;">しゅばっくす</span></div>
     </div>
@@ -569,14 +626,29 @@
 
     <div class="btn-group">
       <button type="button" id="sound-toggle-btn" class="hud-btn sound-on" onclick="toggleSound()">🔊 SOUND: ON</button>
-      <button type="button" class="hud-btn shop-btn" onclick="navigateTo('shop')">🛒 ショップ & ランク</button>
+      <button type="button" id="toggle-auto-btn" class="hud-btn hidden" onclick="toggleAutoClick()">⚡ AUTO: OFF</button>
+      <button type="button" id="toggle-admin-btn" class="hud-btn admin-btn hidden" onclick="toggleAdminPanel()">👑 ADMIN</button>
+      <button type="button" class="hud-btn shop-btn" onclick="navigateTo(event, 'shop')">🛒 ショップ & ランク</button>
       <button type="button" class="hud-btn save-btn" onclick="manualSave()">💾 セーブ</button>
-      <button type="button" id="save-and-quit-btn" class="hud-btn save-quit-btn hidden" onclick="saveAndQuit()">🚪 ホームへ</button>
+      <button type="button" id="save-and-quit-btn" class="hud-btn save-quit-btn hidden" onclick="saveAndQuit()">🚪 セーブして終了</button>
     </div>
-    <div id="save-status-text">💾 自動セーブ有効</div>
+    <div id="save-status-text">💾 localStorage 自動セーブ有効</div>
+  </div>
+
+  <!-- ADMIN パネル -->
+  <div id="admin-bar" class="hud-panel hidden">
+    <div style="font-size:12px; font-weight:900; color:#f0b8ff; border-bottom:1px solid rgba(213,92,255,0.4); padding-bottom:4px;">
+      👑 OP & ADMIN コマンド
+    </div>
+    <button type="button" class="admin-cmd-btn" id="god-mode-btn" onclick="toggleGodMode()">🛡️ 無敵モード (GOD): OFF</button>
+    <button type="button" class="admin-cmd-btn" onclick="adminNukeEnemies()">💥 画面内の敵を全滅 (NUKE)</button>
+    <button type="button" class="admin-cmd-btn" onclick="adminGrantShubux(100000)">💰 +100,000 しゅばっくす</button>
+    <button type="button" class="admin-cmd-btn" onclick="adminGrantShubux(1e26)">🌈 +100𥝱 しゅばっくす</button>
+    <button type="button" class="admin-cmd-btn" onclick="adminFullHeal()">💚 シールド完全回復</button>
   </div>
 
   <div id="milestone-banner">🏆 マイルストーン達成！</div>
+
   <button type="button" id="dash-mobile-btn" onclick="triggerDash()">⚡ DASH (右クリック)</button>
 </div>
 
@@ -585,7 +657,7 @@
   <div class="modal-card">
     <div class="game-title">NEON PILOT</div>
     <p style="color:#a8c8ff; font-size:13.5px; line-height:1.6; margin-bottom:8px;">
-      サウンド機能搭載版！難易度を選んで出撃し、しゅばっくすを稼ごう！
+      サウンド＆マウスカーソル対応版！難易度を選んで出撃しよう！
     </p>
 
     <div style="font-size:12px; color:#9be7ff; font-weight:900; margin-top:8px;">🎯 難易度を選択</div>
@@ -593,39 +665,33 @@
     <div id="home-diff-desc" style="font-size:12px; color:#00ff88; margin-bottom:8px;">🔵 NORMAL：標準バランス</div>
 
     <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:10px;">
-      <button type="button" class="primary-btn" onclick="navigateTo('game')">🚀 出撃する (/game)</button>
-      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo('shop')">🛒 ショップ (/shop)</button>
-      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#00f3ff,#38bdf8);" onclick="navigateTo('page')">📄 url/[ぺーじ]</button>
+      <button type="button" class="primary-btn" onclick="navigateTo(event, 'game')">🚀 出撃する (/game)</button>
+      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo(event, 'shop')">🛒 ショップ (/shop)</button>
+      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#b829ff,#ff2a85); color:#fff;" onclick="navigateTo(event, 'ranking')">🏆 ランキング (/ranking)</button>
     </div>
   </div>
 </div>
 
-<!-- url/[ぺーじ] カスタムページ画面 -->
-<div id="page-screen" class="overlay-screen hidden">
-  <div class="modal-card">
-    <h2 style="font-family:'Orbitron'; font-size:26px; color:#00f3ff; margin-bottom:8px;">📄 ページナビゲーション</h2>
-    <div style="display:flex; gap:8px; justify-content:center; margin-bottom:14px;">
-      <input id="custom-page-input" type="text" value="custom" style="padding:8px 12px; border-radius:10px; border:1.5px solid #00f3ff; background:#091024; color:#fff; font-weight:700; width:60%;">
-      <button type="button" class="primary-btn" style="margin-top:0; padding:8px 16px;" onclick="goToCustomPage()">移動</button>
-    </div>
-    <button type="button" class="primary-btn" onclick="navigateTo('home')">🏠 ホームに戻る</button>
-  </div>
-</div>
-
-<!-- ランキング画面 -->
+<!-- /ranking ランキング画面 -->
 <div id="ranking-screen" class="overlay-screen hidden">
   <div class="modal-card">
-    <h2 style="font-family:'Orbitron'; font-size:26px; color:#ffd700; margin-bottom:6px;">🏆 ランクボード</h2>
-    <button type="button" class="primary-btn" style="margin-top:16px;" onclick="navigateTo('home')">🏠 ホーム</button>
+    <h2 style="font-family:'Orbitron'; font-size:26px; color:#ffd700; margin-bottom:6px;">🏆 ランキング</h2>
+    <table class="rank-table">
+      <thead>
+        <tr><th>順位</th><th>パイロット</th><th>ハイスコア</th><th>累計撃破</th></tr>
+      </thead>
+      <tbody id="ranking-tbody"></tbody>
+    </table>
+    <button type="button" class="primary-btn" style="margin-top:16px;" onclick="navigateTo(event, 'home')">🏠 ホームに戻る</button>
   </div>
 </div>
 
-<!-- 設定画面 -->
+<!-- /settings 設定画面 -->
 <div id="settings-screen" class="overlay-screen hidden">
   <div class="modal-card">
     <h2 style="font-family:'Orbitron'; font-size:26px; color:#00f3ff; margin-bottom:8px;">⚙️ 設定</h2>
     <div class="diff-selector" id="settings-diff-selector"></div>
-    <button type="button" class="primary-btn" onclick="navigateTo('home')">🏠 ホーム</button>
+    <button type="button" class="primary-btn" onclick="navigateTo(event, 'game')">🚀 出撃</button>
   </div>
 </div>
 
@@ -635,8 +701,8 @@
     <h2 style="font-family:'Orbitron'; font-size:32px; color:#ff2a85; margin-bottom:10px;">SHIELD DEPLETED</h2>
     <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:15px;">
       <button type="button" class="primary-btn" onclick="startGame()">もう一度出撃</button>
-      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo('shop')">🛒 ショップ</button>
-      <button type="button" class="primary-btn" onclick="navigateTo('home')">🏠 ホーム</button>
+      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo(event, 'shop')">🛒 ショップ</button>
+      <button type="button" class="primary-btn" onclick="navigateTo(event, 'home')">🏠 ホーム</button>
     </div>
   </div>
 </div>
@@ -650,7 +716,7 @@
         <div style="text-align:right; margin-right:6px;">
           <div style="font-size:11px; color:#ffe680;">残高: <span id="shop-shubux" class="val-orbitron" style="color:#ffd700;">0</span> しゅばっくす</div>
         </div>
-        <button type="button" class="hud-btn" style="border-color:#00ff88; color:#00ff88;" onclick="navigateTo('game')">🚀 ゲームへ</button>
+        <button type="button" class="hud-btn" style="border-color:#00ff88; color:#00ff88;" onclick="navigateTo(event, 'game')">🚀 ゲームへ</button>
       </div>
     </div>
     <div class="shop-filters" id="shop-filters">
@@ -695,53 +761,54 @@ function playSound(type) {
   initAudio();
   if (!audioCtx) return;
 
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
+  try {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    const now = audioCtx.currentTime;
 
-  const now = audioCtx.currentTime;
-
-  if (type === 'laser') {
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(800, now);
-    osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
-    gain.gain.setValueAtTime(0.12, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
-    osc.start(now);
-    osc.stop(now + 0.1);
-  } else if (type === 'explosion') {
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(120, now);
-    osc.frequency.linearRampToValueAtTime(30, now + 0.25);
-    gain.gain.setValueAtTime(0.2, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
-    osc.start(now);
-    osc.stop(now + 0.25);
-  } else if (type === 'dash') {
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(300, now);
-    osc.frequency.exponentialRampToValueAtTime(900, now + 0.2);
-    gain.gain.setValueAtTime(0.25, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
-    osc.start(now);
-    osc.stop(now + 0.2);
-  } else if (type === 'buy') {
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(440, now);
-    osc.frequency.setValueAtTime(880, now + 0.08);
-    gain.gain.setValueAtTime(0.2, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
-    osc.start(now);
-    osc.stop(now + 0.2);
-  } else if (type === 'select') {
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(600, now);
-    gain.gain.setValueAtTime(0.1, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
-    osc.start(now);
-    osc.stop(now + 0.08);
-  }
+    if (type === 'laser') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(800, now);
+      osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+      osc.start(now);
+      osc.stop(now + 0.1);
+    } else if (type === 'explosion') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(120, now);
+      osc.frequency.linearRampToValueAtTime(30, now + 0.25);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+      osc.start(now);
+      osc.stop(now + 0.25);
+    } else if (type === 'dash') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(300, now);
+      osc.frequency.exponentialRampToValueAtTime(900, now + 0.2);
+      gain.gain.setValueAtTime(0.25, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+      osc.start(now);
+      osc.stop(now + 0.2);
+    } else if (type === 'buy') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(440, now);
+      osc.frequency.setValueAtTime(880, now + 0.08);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+      osc.start(now);
+      osc.stop(now + 0.2);
+    } else if (type === 'select') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, now);
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+      osc.start(now);
+      osc.stop(now + 0.08);
+    }
+  } catch (e) {}
 }
 
 // ==========================================
@@ -755,7 +822,7 @@ const DIFFICULTY_CONFIG = {
   god: { id: 'god', label: '🟣 GOD', rewardMult: 25.0 }
 };
 
-const SAVE_KEY = 'neon_pilot_shubux_save_v13';
+const SAVE_KEY = 'neon_pilot_shubux_save_v14';
 let saveData = {
   shubux: 0,
   totalKills: 0,
@@ -811,55 +878,20 @@ window.addEventListener('mousemove', (e) => {
 
 window.addEventListener('click', () => {
   if (gameState === 'playing') {
-    const eff = getActiveEffects();
-    saveData.shubux += 5 * eff.shubuxMult;
+    saveData.shubux += 5;
     score += 10;
     playSound('laser');
     updateHUD();
   }
 });
 
-function getActiveEffects() {
-  let shubuxMult = DIFFICULTY_CONFIG[saveData.difficulty]?.rewardMult || 1.0;
-  let dmgMult = 1.0;
-  let maxHpBonus = 0;
-  let autoIncome = 0;
-
-  for (const itemId in saveData.ownedItems) {
-    const item = SHOP_ITEMS.find(i => i.id === itemId);
-    if (item && item.effect) {
-      if (item.effect.shubuxMult) shubuxMult *= item.effect.shubuxMult;
-      if (item.effect.dmgMult) dmgMult *= item.effect.dmgMult;
-      if (item.effect.maxHpBonus) maxHpBonus += item.effect.maxHpBonus;
-      if (item.effect.autoIncome) autoIncome += item.effect.autoIncome;
-    }
-  }
-  return { shubuxMult, dmgMult, maxHpBonus, autoIncome };
-}
-
-setInterval(() => {
-  const eff = getActiveEffects();
-  if (eff.autoIncome > 0) {
-    saveData.shubux += eff.autoIncome;
-    updateHUD();
-  }
-}, 1000);
-
-function navigateTo(route) {
+function navigateTo(event, route) {
+  if (event) event.preventDefault();
   playSound('select');
-  const cleanRoute = String(route || 'home').replace(/^\//, '');
   try {
-    history.pushState({ route: cleanRoute }, '', `/${cleanRoute}`);
-  } catch (e) {
-    location.hash = `#/${cleanRoute}`;
-  }
-  applyRouteView(cleanRoute);
-}
-
-function goToCustomPage() {
-  const input = document.getElementById('custom-page-input');
-  const pageName = (input ? input.value.trim() : '') || 'custom';
-  navigateTo(pageName);
+    history.pushState({ route }, '', `/${route}`);
+  } catch (e) {}
+  applyRouteView(route);
 }
 
 window.addEventListener('popstate', () => {
@@ -873,38 +905,28 @@ function applyRouteView(route) {
   document.getElementById('ranking-screen').classList.add('hidden');
   document.getElementById('settings-screen').classList.add('hidden');
   document.getElementById('gameover-screen').classList.add('hidden');
-  document.getElementById('page-screen').classList.add('hidden');
 
   document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
 
   if (route === 'home') {
     gameState = 'start';
     document.getElementById('home-screen').classList.remove('hidden');
-    const btn = document.getElementById('nav-home');
-    if (btn) btn.classList.add('active');
+    document.getElementById('nav-home').classList.add('active');
     renderDifficultySelectors();
   } else if (route === 'game') {
     if (gameState !== 'playing') startGame();
-    const btn = document.getElementById('nav-game');
-    if (btn) btn.classList.add('active');
+    document.getElementById('nav-game').classList.add('active');
   } else if (route === 'shop') {
     document.getElementById('shop-modal').classList.remove('hidden');
-    const btn = document.getElementById('nav-shop');
-    if (btn) btn.classList.add('active');
+    document.getElementById('nav-shop').classList.add('active');
     renderShop();
   } else if (route === 'ranking') {
     document.getElementById('ranking-screen').classList.remove('hidden');
-    const btn = document.getElementById('nav-ranking');
-    if (btn) btn.classList.add('active');
+    document.getElementById('nav-ranking').classList.add('active');
   } else if (route === 'settings') {
     document.getElementById('settings-screen').classList.remove('hidden');
-    const btn = document.getElementById('nav-settings');
-    if (btn) btn.classList.add('active');
+    document.getElementById('nav-settings').classList.add('active');
     renderDifficultySelectors();
-  } else {
-    document.getElementById('page-screen').classList.remove('hidden');
-    const btn = document.getElementById('nav-page');
-    if (btn) btn.classList.add('active');
   }
 }
 
@@ -931,14 +953,12 @@ function renderDifficultySelectors() {
 function startGame() {
   gameState = 'playing';
   score = 0;
-  const eff = getActiveEffects();
-  maxHp = 100 + eff.maxHpBonus;
+  maxHp = 100;
   hp = maxHp;
   enemies = [];
   document.querySelectorAll('.overlay-screen').forEach(el => el.classList.add('hidden'));
   history.pushState({ route: 'game' }, '', '/game');
-  const btn = document.getElementById('nav-game');
-  if (btn) btn.classList.add('active');
+  document.getElementById('nav-game').classList.add('active');
   playSound('dash');
 }
 
@@ -959,24 +979,14 @@ function loadSave() {
 }
 
 function updateHUD() {
-  const eff = getActiveEffects();
-  maxHp = 100 + eff.maxHpBonus;
-  if (hp > maxHp) hp = maxHp;
-
   document.getElementById('shubux-num').textContent = Math.floor(saveData.shubux).toLocaleString();
   document.getElementById('score-num').textContent = score;
   document.getElementById('hp-text').textContent = `${hp} / ${maxHp}`;
   document.getElementById('shop-shubux').textContent = Math.floor(saveData.shubux).toLocaleString();
-
-  const badge = document.getElementById('legendary-active-badge');
-  if (saveData.ownedItems['rainbow_bridge_legendary_pack']) {
-    badge.classList.remove('hidden');
-  } else {
-    badge.classList.add('hidden');
-  }
 }
 
 function setShopFilter(filter, btnEl) {
+  playSound('select');
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   if (btnEl) btnEl.classList.add('active');
   renderShop();
@@ -1010,9 +1020,6 @@ function buyItem(id) {
   if (saveData.shubux >= item.price) {
     saveData.shubux -= item.price;
     saveData.ownedItems[id] = true;
-    if (item.effect && item.effect.shubuxFlat) {
-      saveData.shubux += item.effect.shubuxFlat;
-    }
     playSound('buy');
     updateHUD();
     renderShop();
@@ -1054,7 +1061,6 @@ function gameLoop() {
         playSound('explosion');
         if (hp <= 0) {
           gameState = 'gameover';
-          saveData.totalKills += 1;
           document.getElementById('gameover-screen').classList.remove('hidden');
         }
       }
@@ -1067,8 +1073,7 @@ function gameLoop() {
 }
 
 loadSave();
-const initialPath = location.pathname.replace(/^\//, '') || 'home';
-applyRouteView(initialPath);
+applyRouteView('home');
 gameLoop();
 </script>
 </body>
