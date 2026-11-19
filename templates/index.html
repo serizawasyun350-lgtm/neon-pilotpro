@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>NEON PILOT - 完全修正版</title>
+<title>NEON PILOT - サウンド完全版</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&family=Orbitron:wght@600;800;900&display=swap');
 
@@ -184,21 +184,6 @@
     margin-bottom: 4px;
   }
 
-  .rank-pill.diamond-rank-style {
-    background: linear-gradient(90deg, #00f3ff, #38bdf8, #e0f2fe);
-    color: #050814;
-    border-color: #ffffff;
-    box-shadow: 0 0 14px #00f3ff;
-  }
-
-  .rank-pill.cosmic-rank-style {
-    background: linear-gradient(90deg, #ff0066, #ffd700, #00ff88, #00f3ff, #b829ff);
-    color: #ffffff;
-    border-color: #ffffff;
-    text-shadow: 0 1px 3px #000;
-    box-shadow: 0 0 16px #ffd700;
-  }
-
   .diff-pill {
     display: inline-block;
     font-size: 10.5px;
@@ -221,13 +206,6 @@
     vertical-align: middle;
   }
 
-  .x2-badge { background: linear-gradient(90deg, #ff2a85, #ffd700); color: #050814; }
-  .plus-badge { background: linear-gradient(90deg, #00f3ff, #00ff88); color: #050814; }
-  .clone-badge { background: linear-gradient(90deg, #00e5ff, #7c4dff); color: #ffffff; }
-  .diamond-badge { background: linear-gradient(90deg, #00f3ff, #bae6fd); color: #050814; box-shadow: 0 0 8px #00f3ff; }
-  .gold-badge { background: linear-gradient(90deg, #ffd700, #f59e0b); color: #050814; box-shadow: 0 0 8px #ffd700; }
-  .rainbow-badge { background: linear-gradient(90deg, #ff3366, #ffd700, #00ff88, #00f3ff, #b829ff); color: #fff; text-shadow: 0 1px 2px #000; }
-  .admin-badge { background: linear-gradient(90deg, #b829ff, #00f3ff); color: #ffffff; }
   .ultimate-badge { background: linear-gradient(90deg, #ff0055, #ffd700, #00ff88, #00f3ff, #b829ff); color: #fff; border: 1px solid #fff; text-shadow: 0 1px 3px #000; box-shadow: 0 0 10px #ffd700; }
 
   .kill-box {
@@ -266,10 +244,10 @@
   }
 
   .hud-btn.shop-btn { border-color: #ffd700; color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
-  .hud-btn.admin-btn { border-color: #d55cff; color: #f0b8ff; background: rgba(65, 15, 95, 0.95); box-shadow: 0 0 16px rgba(184, 41, 255, 0.55); }
   .hud-btn.save-btn { border-color: #00ff88; color: #00ff88; }
   .hud-btn.save-quit-btn { border-color: #ff6688; color: #ff99aa; background: rgba(60, 14, 28, 0.95); }
-  .hud-btn.auto-on { border-color: #00ff88; color: #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.45); }
+  .hud-btn.sound-on { border-color: #00ff88; color: #00ff88; box-shadow: 0 0 12px rgba(0, 255, 136, 0.4); }
+  .hud-btn.sound-off { border-color: #6b7b9c; color: #6b7b9c; background: rgba(20, 24, 38, 0.9); }
 
   #save-status-text {
     font-size: 11px;
@@ -278,36 +256,6 @@
     padding: 3px 10px;
     border-radius: 8px;
   }
-
-  #admin-bar {
-    position: absolute;
-    top: 300px;
-    right: 16px;
-    padding: 10px 12px;
-    border-color: #d55cff;
-    background: rgba(28, 10, 48, 0.95);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    pointer-events: auto;
-    min-width: 245px;
-  }
-
-  .admin-cmd-btn {
-    padding: 6px 10px;
-    border-radius: 8px;
-    border: 1px solid #d55cff;
-    background: rgba(184, 41, 255, 0.25);
-    color: #fff;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-    font-weight: 700;
-    font-size: 11.5px;
-    cursor: pointer;
-    text-align: left;
-    pointer-events: auto;
-  }
-
-  .admin-cmd-btn:hover { background: rgba(184, 41, 255, 0.45); }
 
   #milestone-banner {
     position: absolute;
@@ -449,21 +397,6 @@
 
   .primary-btn:hover { transform: scale(1.05); }
 
-  .rank-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 14px;
-    font-size: 13px;
-  }
-
-  .rank-table th, .rank-table td {
-    padding: 10px;
-    border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-    text-align: left;
-  }
-
-  .rank-table th { color: #00f3ff; }
-
   /* ショップモーダル */
   #shop-modal .shop-container {
     background: #091024;
@@ -519,20 +452,6 @@
     border-color: #00f3ff;
   }
 
-  .bulk-buy-btn {
-    margin-left: auto;
-    padding: 5px 13px;
-    border-radius: 20px;
-    border: 1px solid #ffd700;
-    background: linear-gradient(90deg, #ffd700, #ff9900);
-    color: #050814;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-    font-weight: 900;
-    font-size: 11px;
-    cursor: pointer;
-    pointer-events: auto;
-  }
-
   .shop-grid {
     flex: 1;
     overflow-y: auto;
@@ -554,18 +473,6 @@
   }
 
   .shop-item:hover { transform: translateY(-2px); border-color: #ffd700; }
-  .shop-item.featured { border: 2px solid #00ff88; background: linear-gradient(145deg, rgba(0, 255, 136, 0.14), rgba(18, 28, 60, 0.9)); }
-  .shop-item.starter-pack { border: 2px solid #00f3ff; background: linear-gradient(145deg, rgba(0, 243, 255, 0.18), rgba(0, 255, 136, 0.12)); }
-  .shop-item.clone-pack { border: 2px solid #7c4dff; background: linear-gradient(145deg, rgba(0, 229, 255, 0.2), rgba(124, 77, 255, 0.24)); box-shadow: 0 0 20px rgba(124, 77, 255, 0.35); }
-  .shop-item.vip-x2 { border: 2px solid #ff2a85; background: linear-gradient(145deg, rgba(255, 42, 133, 0.2), rgba(255, 215, 0, 0.12)); }
-  .shop-item.rainbow-pack { border: 2px solid #ffd700; background: linear-gradient(135deg, rgba(255,51,102,0.22), rgba(255,215,0,0.18), rgba(0,255,136,0.18), rgba(0,243,255,0.22)); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
-  .shop-item.plus-pack { border: 2px solid #00ff88; background: linear-gradient(145deg, rgba(0, 243, 255, 0.24), rgba(0, 255, 136, 0.2)); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
-  .shop-item.sub-pack { border: 1.5px solid #38bdf8; background: linear-gradient(145deg, rgba(56, 189, 248, 0.14), rgba(168, 85, 247, 0.14)); }
-  .shop-item.admin-pack { border: 2px solid #d55cff; background: linear-gradient(145deg, rgba(184, 41, 255, 0.28), rgba(255, 42, 133, 0.18)); box-shadow: 0 0 22px rgba(184, 41, 255, 0.45); }
-  .shop-item.diamond-pack { border: 2px solid #00f3ff; background: linear-gradient(135deg, rgba(0, 243, 255, 0.28), rgba(56, 189, 248, 0.25), rgba(224, 242, 254, 0.2)); box-shadow: 0 0 26px rgba(0, 243, 255, 0.5); }
-  .shop-item.gold-pack { border: 2px solid #ffd700; background: linear-gradient(135deg, rgba(255, 215, 0, 0.32), rgba(245, 158, 11, 0.24)); box-shadow: 0 0 26px rgba(255, 215, 0, 0.5); }
-  .shop-item.rank-card { border: 2px solid #a855f7; background: linear-gradient(135deg, rgba(168, 85, 247, 0.24), rgba(59, 130, 246, 0.2)); }
-
   .shop-item.ultimate-pack {
     grid-column: 1 / -1;
     border: 3px solid #ffd700;
@@ -649,14 +556,6 @@
       <div class="label-sm" style="color:#ffe680;">
         所持通貨
         <span id="legendary-active-badge" class="badge-pill ultimate-badge hidden">🌈🌉 LEGENDARY 100k</span>
-        <span id="ultimate-active-badge" class="badge-pill ultimate-badge hidden">👑🌈 VIP GOD 26</span>
-        <span id="diamond-active-badge" class="badge-pill diamond-badge hidden">💎 DIAMOND</span>
-        <span id="gold-active-badge" class="badge-pill gold-badge hidden">🥇 GOLD</span>
-        <span id="clone-active-badge" class="badge-pill clone-badge hidden">👥 ぶんしん</span>
-        <span id="x2-active-badge" class="badge-pill x2-badge hidden">✕2</span>
-        <span id="plus-active-badge" class="badge-pill plus-badge hidden">SUBS</span>
-        <span id="rainbow-active-badge" class="badge-pill rainbow-badge hidden">🌈 RAINBOW</span>
-        <span id="admin-active-badge" class="badge-pill admin-badge hidden">👑 ADMIN</span>
       </div>
       <div class="shubux-amount val-orbitron"><span id="shubux-num">0</span> <span style="font-size:13px;">しゅばっくす</span></div>
     </div>
@@ -666,48 +565,18 @@
         <span class="label-sm" style="color:#ff7aa8;">💀 累計撃破数</span>
         <span id="kills-num" class="val-orbitron" style="color:#fff; font-size:15px;">0 体</span>
       </div>
-      <div class="stat-row" style="margin-bottom:2px;">
-        <span class="label-sm">🔥 攻撃 / ヒット報酬</span>
-        <span id="attack-bonus-rate" class="val-orbitron" style="color:#00ff88; font-size:12px;">+1 射撃 / +2 命中</span>
-      </div>
-      <div class="stat-row" style="margin-bottom:2px;">
-        <span class="label-sm">撃破ボーナス単価</span>
-        <span id="kill-bonus-rate" class="val-orbitron" style="color:#ffd700; font-size:12px;">+5 / 撃破</span>
-      </div>
-      <div class="label-sm" id="next-milestone-text" style="font-size:11px; color:#9be7ff;">次の目標: 10体 (+150)</div>
     </div>
 
     <div class="btn-group">
-      <button type="button" id="toggle-auto-btn" class="hud-btn hidden" onclick="toggleAutoClick()">⚡ AUTO: OFF</button>
-      <button type="button" id="toggle-admin-btn" class="hud-btn admin-btn hidden" onclick="toggleAdminPanel()">👑 ADMIN</button>
+      <button type="button" id="sound-toggle-btn" class="hud-btn sound-on" onclick="toggleSound()">🔊 SOUND: ON</button>
       <button type="button" class="hud-btn shop-btn" onclick="navigateTo('shop')">🛒 ショップ & ランク</button>
       <button type="button" class="hud-btn save-btn" onclick="manualSave()">💾 セーブ</button>
-      <button type="button" id="save-and-quit-btn" class="hud-btn save-quit-btn hidden" onclick="saveAndQuit()">🚪 セーブして終了</button>
+      <button type="button" id="save-and-quit-btn" class="hud-btn save-quit-btn hidden" onclick="saveAndQuit()">🚪 ホームへ</button>
     </div>
     <div id="save-status-text">💾 自動セーブ有効</div>
   </div>
 
-  <!-- ADMIN パネル -->
-  <div id="admin-bar" class="hud-panel hidden">
-    <div style="font-size:12px; font-weight:900; color:#f0b8ff; border-bottom:1px solid rgba(213,92,255,0.4); padding-bottom:4px;">
-      👑 OP & ADMIN コマンド
-    </div>
-    <button type="button" class="admin-cmd-btn" id="god-mode-btn" onclick="toggleGodMode()">🛡️ 無敵モード (GOD): OFF</button>
-    <button type="button" class="admin-cmd-btn" onclick="adminNukeEnemies()">💥 画面内の敵を全滅 (NUKE)</button>
-    <button type="button" class="admin-cmd-btn" onclick="adminGrantShubux(100000)">💰 +100,000 しゅばっくす</button>
-    <button type="button" class="admin-cmd-btn" onclick="adminGrantShubux(100000000000000)">💎 +100兆 しゅばっくす</button>
-    <button type="button" class="admin-cmd-btn" onclick="adminGrantShubux(1e26)">🌈 +100𥝱 しゅばっくす</button>
-    <button type="button" class="admin-cmd-btn" onclick="adminFullHeal()">💚 シールド完全回復</button>
-  </div>
-
-  <div id="milestone-banner">🏆 撃破マイルストーン達成！</div>
-
-  <div id="bottom-left" class="hud-panel">
-    🖱️ <b>マウス / タッチ移動:</b> 自機が常に飛行＆旋回<br>
-    🔥 <b>クリック / タップ長押し:</b> 攻撃＆命中で「しゅばっくす」獲得！<br>
-    ⚡ <b>右クリック / SPACE:</b> 無敵ショックウェーブダッシュ
-  </div>
-
+  <div id="milestone-banner">🏆 マイルストーン達成！</div>
   <button type="button" id="dash-mobile-btn" onclick="triggerDash()">⚡ DASH (右クリック)</button>
 </div>
 
@@ -716,22 +585,16 @@
   <div class="modal-card">
     <div class="game-title">NEON PILOT</div>
     <p style="color:#a8c8ff; font-size:13.5px; line-height:1.6; margin-bottom:8px;">
-      ようこそパイロット！<b>難易度</b>を選んで出撃し、<b style="color:#ffd700;">「しゅばっくす」</b>を稼いで<br>
-      <b style="color:#00f3ff;">🌈🌉 レインボーブリッジ & ちょちょちょうれじぇんだりーパック</b>を手に入れよう！
+      サウンド機能搭載版！難易度を選んで出撃し、しゅばっくすを稼ごう！
     </p>
 
-    <div style="font-size:12px; color:#9be7ff; font-weight:900; margin-top:8px;">🎯 難易度を選択（高難易度ほど報酬倍率アップ！）</div>
+    <div style="font-size:12px; color:#9be7ff; font-weight:900; margin-top:8px;">🎯 難易度を選択</div>
     <div class="diff-selector" id="home-diff-selector"></div>
-    <div id="home-diff-desc" style="font-size:12px; color:#00ff88; margin-bottom:8px;">🔵 NORMAL：標準バランス / しゅばっくす獲得倍率 ×1.0</div>
+    <div id="home-diff-desc" style="font-size:12px; color:#00ff88; margin-bottom:8px;">🔵 NORMAL：標準バランス</div>
 
-    <div id="start-save-summary" style="background:rgba(0,243,255,0.1); border:1px solid rgba(0,243,255,0.35); border-radius:10px; padding:10px; font-size:13px; color:#9be7ff; margin-bottom:10px;">
-      💾 セーブデータ読み込み中...
-    </div>
-
-    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:10px;">
       <button type="button" class="primary-btn" onclick="navigateTo('game')">🚀 出撃する (/game)</button>
-      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo('shop')">🛒 ショップ & ランク (/shop)</button>
-      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#b829ff,#ff2a85); color:#fff;" onclick="navigateTo('ranking')">🏆 ランキング (/ranking)</button>
+      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo('shop')">🛒 ショップ (/shop)</button>
       <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#00f3ff,#38bdf8);" onclick="navigateTo('page')">📄 url/[ぺーじ]</button>
     </div>
   </div>
@@ -740,73 +603,29 @@
 <!-- url/[ぺーじ] カスタムページ画面 -->
 <div id="page-screen" class="overlay-screen hidden">
   <div class="modal-card">
-    <h2 style="font-family:'Orbitron'; font-size:26px; color:#00f3ff; margin-bottom:8px;">📄 URL / ページナビゲーション</h2>
-    <p style="color:#a8c8ff; font-size:13px; margin-bottom:14px;">お好きなページ名を入力してカスタムURLパスへ移動できます（例: secret, bonus, stage2）。</p>
-
+    <h2 style="font-family:'Orbitron'; font-size:26px; color:#00f3ff; margin-bottom:8px;">📄 ページナビゲーション</h2>
     <div style="display:flex; gap:8px; justify-content:center; margin-bottom:14px;">
-      <input id="custom-page-input" type="text" placeholder="ページ名を入力 (例: bonus)" style="padding:8px 12px; border-radius:10px; border:1.5px solid #00f3ff; background:#091024; color:#fff; font-family:'M PLUS Rounded 1c'; font-weight:700; width:60%;">
-      <button type="button" class="primary-btn" style="margin-top:0; padding:8px 18px;" onclick="goToCustomPage()">移動する</button>
+      <input id="custom-page-input" type="text" value="custom" style="padding:8px 12px; border-radius:10px; border:1.5px solid #00f3ff; background:#091024; color:#fff; font-weight:700; width:60%;">
+      <button type="button" class="primary-btn" style="margin-top:0; padding:8px 16px;" onclick="goToCustomPage()">移動</button>
     </div>
-
-    <div style="background:rgba(0,0,0,0.35); padding:16px; border-radius:12px; color:#00ff88; font-weight:900; margin-bottom:14px;">
-      現在のページパス: <span id="current-page-display" style="color:#ffd700;">/page</span>
-    </div>
-
-    <button type="button" class="primary-btn" onclick="navigateTo('home')">🏠 ホームに戻る (/home)</button>
+    <button type="button" class="primary-btn" onclick="navigateTo('home')">🏠 ホームに戻る</button>
   </div>
 </div>
 
-<!-- /ranking ランキング画面 -->
+<!-- ランキング画面 -->
 <div id="ranking-screen" class="overlay-screen hidden">
   <div class="modal-card">
-    <h2 style="font-family:'Orbitron'; font-size:26px; color:#ffd700; margin-bottom:6px;">🏆 GALAXY LEADERBOARD (/ranking)</h2>
-    <p style="color:#a8c8ff; font-size:12.5px; margin-bottom:10px;">あなたのハイスコアと累計撃破数をランキングに登録できます！</p>
-
-    <div style="display:flex; gap:8px; justify-content:center; margin-bottom:10px;">
-      <input id="pilot-name-input" type="text" maxlength="16" placeholder="パイロット名を入力" style="padding:8px 12px; border-radius:10px; border:1.5px solid #00f3ff; background:#091024; color:#fff; font-family:'M PLUS Rounded 1c'; font-weight:700;">
-      <button type="button" class="hud-btn save-btn" onclick="submitRankingScore()">📤 スコア送信</button>
-    </div>
-
-    <table class="rank-table">
-      <thead>
-        <tr>
-          <th>順位</th>
-          <th>パイロット</th>
-          <th>ランク称号</th>
-          <th>ハイスコア</th>
-          <th>累計撃破</th>
-        </tr>
-      </thead>
-      <tbody id="ranking-tbody"></tbody>
-    </table>
-
-    <button type="button" class="primary-btn" style="margin-top:16px;" onclick="navigateTo('home')">🏠 ホームに戻る (/home)</button>
+    <h2 style="font-family:'Orbitron'; font-size:26px; color:#ffd700; margin-bottom:6px;">🏆 ランクボード</h2>
+    <button type="button" class="primary-btn" style="margin-top:16px;" onclick="navigateTo('home')">🏠 ホーム</button>
   </div>
 </div>
 
-<!-- /settings 設定画面 -->
+<!-- 設定画面 -->
 <div id="settings-screen" class="overlay-screen hidden">
   <div class="modal-card">
-    <h2 style="font-family:'Orbitron'; font-size:26px; color:#00f3ff; margin-bottom:8px;">⚙️ GAME SETTINGS (/settings)</h2>
-    <p style="color:#a8c8ff; font-size:13px; margin-bottom:12px;">ゲームの難易度やセーブデータの管理を行えます。</p>
-
-    <div style="text-align:left; background:rgba(0,0,0,0.3); padding:14px; border-radius:14px; margin-bottom:12px;">
-      <div style="font-weight:900; color:#ffd700; margin-bottom:6px;">🎯 難易度設定</div>
-      <div class="diff-selector" id="settings-diff-selector" style="justify-content:flex-start;"></div>
-      <div id="settings-diff-desc" style="font-size:12px; color:#00ff88; margin-top:4px;"></div>
-    </div>
-
-    <div style="text-align:left; background:rgba(0,0,0,0.3); padding:14px; border-radius:14px; margin-bottom:14px;">
-      <div style="font-weight:900; color:#00f3ff; margin-bottom:8px;">💾 セーブデータ管理</div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <button type="button" class="hud-btn save-btn" onclick="manualSave()">💾 今すぐ手動セーブ</button>
-        <button type="button" onclick="resetSaveData()" style="background:rgba(255,40,80,0.2); border:1px solid #ff5577; color:#ff8899; padding:8px 14px; border-radius:10px; font-weight:900; font-size:12px; cursor:pointer;">
-          🗑️ セーブデータを完全初期化
-        </button>
-      </div>
-    </div>
-
-    <button type="button" class="primary-btn" onclick="navigateTo('game')">🚀 この設定で出撃 (/game)</button>
+    <h2 style="font-family:'Orbitron'; font-size:26px; color:#00f3ff; margin-bottom:8px;">⚙️ 設定</h2>
+    <div class="diff-selector" id="settings-diff-selector"></div>
+    <button type="button" class="primary-btn" onclick="navigateTo('home')">🏠 ホーム</button>
   </div>
 </div>
 
@@ -814,198 +633,225 @@
 <div id="gameover-screen" class="overlay-screen hidden">
   <div class="modal-card" style="border-color:#ff2a85;">
     <h2 style="font-family:'Orbitron'; font-size:32px; color:#ff2a85; margin-bottom:10px;">SHIELD DEPLETED</h2>
-    <p style="color:#cde0ff; margin-bottom:14px;">稼いだ「しゅばっくす」と購入アイテムはすべて保存されました！</p>
-    <div style="background:rgba(0,0,0,0.35); border-radius:12px; padding:14px; margin-bottom:16px; text-align:left; font-size:14px;">
-      <div>難易度: <b id="final-diff" style="color:#00ff88;">NORMAL</b></div>
-      <div>今回のスコア: <b id="final-score" style="color:#00f3ff;">0</b></div>
-      <div>累計撃破数: <b id="final-kills" style="color:#ff7aa8;">0</b> 体</div>
-      <div>所持しゅばっくす: <b id="final-shubux" style="color:#ffd700;">0</b> しゅばっくす</div>
-    </div>
-    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:15px;">
       <button type="button" class="primary-btn" onclick="startGame()">もう一度出撃</button>
-      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo('shop')">🛒 ショップで強化</button>
-      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#00ff88,#00cc66);" onclick="saveAndQuit()">🏠 ホームへ戻る</button>
+      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo('shop')">🛒 ショップ</button>
+      <button type="button" class="primary-btn" onclick="navigateTo('home')">🏠 ホーム</button>
     </div>
   </div>
 </div>
 
-<!-- /shop ショップ画面 -->
+<!-- ショップ画面 -->
 <div id="shop-modal" class="overlay-screen hidden">
   <div class="shop-container">
     <div class="shop-header">
-      <div>
-        <h2 style="font-size:20px; color:#ffd700; font-weight:900;">🛒 サイバーアーマリー・ショップ (/shop)</h2>
-        <div id="shop-milestone-info" style="font-size:12px; color:#9be7ff; margin-top:2px;">累計撃破: 0体</div>
-      </div>
+      <h2 style="font-size:20px; color:#ffd700; font-weight:900;">🛒 ショップ</h2>
       <div style="display:flex; align-items:center; gap:10px;">
         <div style="text-align:right; margin-right:6px;">
-          <div style="font-size:11px; color:#ffe680;">所持残高</div>
-          <div class="val-orbitron" style="font-size:20px; color:#ffd700;"><span id="shop-shubux">0</span> <span style="font-size:12px;">しゅばっくす</span></div>
+          <div style="font-size:11px; color:#ffe680;">残高: <span id="shop-shubux" class="val-orbitron" style="color:#ffd700;">0</span> しゅばっくす</div>
         </div>
-        <button type="button" class="hud-btn save-quit-btn" onclick="saveAndQuit()">🏠 ホームへ</button>
-        <button type="button" class="hud-btn" style="border-color:#00ff88; color:#00ff88;" onclick="navigateTo('game')">🚀 ゲームに戻る</button>
+        <button type="button" class="hud-btn" style="border-color:#00ff88; color:#00ff88;" onclick="navigateTo('game')">🚀 ゲームへ</button>
       </div>
     </div>
-
     <div class="shop-filters" id="shop-filters">
       <button type="button" class="filter-btn active" onclick="setShopFilter('all', this)">すべて</button>
-      <button type="button" class="filter-btn" onclick="setShopFilter('rank', this)">🏆 ランク購入</button>
-      <button type="button" class="filter-btn" onclick="setShopFilter('special', this)">🌟 パック＆基本</button>
-      <button type="button" class="filter-btn" onclick="setShopFilter('sub_money', this)">💠 通貨サブスク</button>
-      <button type="button" class="filter-btn" onclick="setShopFilter('sub_dmg', this)">🔥 火力サブスク</button>
-      <button type="button" class="filter-btn" onclick="setShopFilter('sub_speed', this)">⚡ 連射サブスク</button>
-      <button type="button" class="filter-btn" onclick="setShopFilter('sub_way', this)">🔱 拡散サブスク</button>
-      <button type="button" class="filter-btn" onclick="setShopFilter('sub_shield', this)">🛡️ 装甲サブスク</button>
-      <button type="button" class="filter-btn" onclick="setShopFilter('sub_drone', this)">🛰️ ドローン＆分身</button>
-      <button type="button" class="filter-btn" onclick="setShopFilter('sub_vip', this)">👑 VIPパス</button>
-      <button type="button" class="bulk-buy-btn" onclick="buyAllAffordable()">💰 買える分を一括購入</button>
+      <button type="button" class="filter-btn" onclick="setShopFilter('special', this)">パック</button>
     </div>
-
     <div class="shop-grid" id="shop-grid"></div>
   </div>
 </div>
 
 <script>
 // ==========================================
-// 0. 数値フォーマット & 難易度テーブル
+// Web Audio API によるサウンドシステム
 // ==========================================
-function formatShubux(num) {
-  if (!isFinite(num)) return '∞';
-  if (num < 1e12) return Math.floor(num).toLocaleString();
-  const units = [
-    { val: 1e24, label: '𥝱' },
-    { val: 1e20, label: '垓' },
-    { val: 1e16, label: '京' },
-    { val: 1e12, label: '兆' }
-  ];
-  for (const u of units) {
-    if (num >= u.val) {
-      const divided = num / u.val;
-      const formatted = divided >= 100
-        ? Math.floor(divided).toLocaleString()
-        : divided.toFixed(2).replace(/\.00$/, '');
-      return `${formatted}${u.label}`;
-    }
+let audioCtx = null;
+let soundEnabled = true;
+
+function initAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
-  return Math.floor(num).toLocaleString();
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
 }
 
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('sound-toggle-btn');
+  if (soundEnabled) {
+    btn.textContent = '🔊 SOUND: ON';
+    btn.className = 'hud-btn sound-on';
+    playSound('select');
+  } else {
+    btn.textContent = '🔇 SOUND: OFF';
+    btn.className = 'hud-btn sound-off';
+  }
+}
+
+function playSound(type) {
+  if (!soundEnabled) return;
+  initAudio();
+  if (!audioCtx) return;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  const now = audioCtx.currentTime;
+
+  if (type === 'laser') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(800, now);
+    osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
+    gain.gain.setValueAtTime(0.12, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+    osc.start(now);
+    osc.stop(now + 0.1);
+  } else if (type === 'explosion') {
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(120, now);
+    osc.frequency.linearRampToValueAtTime(30, now + 0.25);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+    osc.start(now);
+    osc.stop(now + 0.25);
+  } else if (type === 'dash') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(300, now);
+    osc.frequency.exponentialRampToValueAtTime(900, now + 0.2);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  } else if (type === 'buy') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(440, now);
+    osc.frequency.setValueAtTime(880, now + 0.08);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  } else if (type === 'select') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, now);
+    gain.gain.setValueAtTime(0.1, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+    osc.start(now);
+    osc.stop(now + 0.08);
+  }
+}
+
+// ==========================================
+// ゲーム & ショップ設定
+// ==========================================
 const DIFFICULTY_CONFIG = {
-  easy: { id: 'easy', label: '🟢 EASY', fullName: '🟢 EASY (かんたん)', enemyHp: 0.6, enemySpeed: 0.75, playerDmgTaken: 0.5, rewardMult: 0.8, desc: '敵HP 0.6倍 / 被ダメ半分 / 報酬 ×0.8' },
-  normal: { id: 'normal', label: '🔵 NORMAL', fullName: '🔵 NORMAL (ふつう)', enemyHp: 1.0, enemySpeed: 1.0, playerDmgTaken: 1.0, rewardMult: 1.0, desc: '標準バランス / 報酬 ×1.0' },
-  hard: { id: 'hard', label: '🟠 HARD', fullName: '🟠 HARD (むずかしい)', enemyHp: 1.6, enemySpeed: 1.3, playerDmgTaken: 1.4, rewardMult: 2.0, desc: '敵HP 1.6倍 / 報酬 2倍！' },
-  nightmare: { id: 'nightmare', label: '🔴 NIGHTMARE', fullName: '🔴 NIGHTMARE (悪夢)', enemyHp: 3.0, enemySpeed: 1.65, playerDmgTaken: 2.0, rewardMult: 5.0, desc: '敵HP 3倍 / 報酬 5倍！' },
-  god: { id: 'god', label: '🟣 GOD', fullName: '🟣 GOD (超神級)', enemyHp: 10.0, enemySpeed: 2.0, playerDmgTaken: 3.0, rewardMult: 25.0, desc: '敵HP 10倍 / 報酬 25倍！！' }
+  easy: { id: 'easy', label: '🟢 EASY', rewardMult: 0.8 },
+  normal: { id: 'normal', label: '🔵 NORMAL', rewardMult: 1.0 },
+  hard: { id: 'hard', label: '🟠 HARD', rewardMult: 2.0 },
+  nightmare: { id: 'nightmare', label: '🔴 NIGHTMARE', rewardMult: 5.0 },
+  god: { id: 'god', label: '🟣 GOD', rewardMult: 25.0 }
 };
 
-// ==========================================
-// 1. 全アイテム定義（新パック含む）
-// ==========================================
-const SAVE_KEY = 'neon_pilot_shubux_save_v12';
-
-const DEFAULT_SAVE = {
+const SAVE_KEY = 'neon_pilot_shubux_save_v13';
+let saveData = {
   shubux: 0,
   totalKills: 0,
   highScore: 0,
   pilotName: 'PILOT_01',
   difficulty: 'normal',
-  claimedMilestones: [],
-  ownedItems: {},
-  autoClickEnabled: false,
-  godModeEnabled: false,
-  lastSavedAt: null
+  ownedItems: {}
 };
 
-const KILL_MILESTONES = [
-  { kills: 10, reward: 150 },
-  { kills: 25, reward: 300 },
-  { kills: 50, reward: 600 },
-  { kills: 100, reward: 1200 },
-  { kills: 200, reward: 2500 },
-  { kills: 500, reward: 7000 },
-  { kills: 1000, reward: 18000 },
-  { kills: 5000, reward: 100000 }
-];
-
-const RANK_ITEMS = [
-  { id: 'rank_bronze', category: 'rank', rankOrder: 1, rankTitle: '🥉 ブロンズランク', name: '🥉 ブロンズランク', tag: 'ランク昇格 #1', price: 10000, cardClass: 'rank-card', desc: '獲得量 ×1.5・攻撃力 +50%・最大シールド +500！' },
-  { id: 'rank_silver', category: 'rank', rankOrder: 2, rankTitle: '🥈 シルバーランク', name: '🥈 シルバーランク', tag: 'ランク昇格 #2', price: 100000, cardClass: 'rank-card', desc: '獲得量 ×3・攻撃力 ×2・最大シールド +2,000！' },
-  { id: 'rank_gold', category: 'rank', rankOrder: 3, rankTitle: '🥇 ゴールドランク', name: '🥇 ゴールドランク', tag: 'ランク昇格 #3', price: 1000000, cardClass: 'gold-pack', desc: '獲得量 ×10・攻撃力 ×5・最大シールド +10,000・毎秒 +5,000 自動入金！' },
-  { id: 'rank_platinum', category: 'rank', rankOrder: 4, rankTitle: '💠 プラチナランク', name: '💠 プラチナランク', tag: 'ランク昇格 #4', price: 100000000, cardClass: 'rank-card', desc: '獲得量 ×30・攻撃力 ×15・最大シールド +30,000・毎秒 +50,000 自動入金！' },
-  { id: 'rank_diamond', category: 'rank', rankOrder: 5, rankTitle: '💎 ダイヤモンドランク', name: '💎 ダイヤモンドランク', tag: '最高峰ランク', price: 1000000000000, cardClass: 'diamond-pack', desc: '獲得量 ×100・攻撃力 ×100・最大シールド +100,000・毎秒 +100万 自動入金！' },
-  { id: 'rank_cosmic', category: 'rank', rankOrder: 6, rankTitle: '👑🌈 コズミック神ランク', name: '👑🌈 コズミック神ランク', tag: '超越神ランク', price: 10000000000000000, cardClass: 'ultimate-pack', desc: '獲得量 ×1,000・攻撃力 ×500・最大シールド +1,000,000・毎秒 +100億 自動入金！' }
-];
-
-const BASE_SHOP_ITEMS = [
+const SHOP_ITEMS = [
   {
     id: 'rainbow_bridge_legendary_pack',
     category: 'special',
-    name: '🌈🌉 レインボーブリッジ & OP & ちょちょちょうれじぇんだりーパック',
+    name: '🌈🌉 レインボーブリッジ & ちょちょちょうれじぇんだりーパック',
     tag: '機能100000',
     price: 100000,
     cardClass: 'ultimate-pack',
-    desc: '【機能100,000搭載】しゅばっくす獲得量 100,000倍・全攻撃力 100,000倍・最大シールド +100,000・毎秒 +100,000 自動入金・分身8体・虹色オーラ・ADMIN無敵権限解放！'
+    desc: '【機能100,000】獲得量 100,000倍・攻撃力 100,000倍・シールド +100,000・毎秒 +100,000 自動入金！'
   },
   {
-    id: 'rainbow_op_admin_vip_pack',
+    id: 'starter_pack',
     category: 'special',
-    name: '🌈👑 れいんぼー & OP & ADMIN & VIP PACK（全26機能搭載）',
-    tag: '究極26機能VIP',
-    price: 1000000,
-    cardClass: 'ultimate-pack',
-    desc: '攻撃力25倍・連射3倍・拡散+8WAY・獲得25倍・毎秒+1,000自動増額・シールド+10,000・分身4体・ADMIN解放！'
-  },
-  { id: 'gold_item_1m', category: 'special', name: '🥇 ゴールド', tag: '黄金パック', price: 1000000, cardClass: 'gold-pack', desc: '獲得量 10倍・攻撃力 5倍・最大シールド +5,000・毎秒 +2,500 自動入金！' },
-  { id: 'diamond_pack_1b', category: 'special', name: '💎 ダイヤモンドパック', tag: '10億ダイヤ', price: 1000000000, cardClass: 'diamond-pack', desc: '獲得量 50倍・攻撃力 30倍・拡散 +6WAY・分身 +4体・シールド +50,000！' },
-  { id: 'starter_pack', category: 'special', name: '🌟 スターターパック', tag: '超お得パック', price: 19, cardClass: 'starter-pack', desc: '購入即時に +300 しゅばっくす支給！攻撃力＆速度 +20%、シールド +50！' },
-  { id: 'auto_click', category: 'special', name: '⚡ オートクリック', tag: '必須オート', price: 100, cardClass: 'featured', desc: 'クリックしなくても自動で超高速連射！' },
-  { id: 'op_admin_pack', category: 'special', name: '👑 OP & ADMIN PACK', tag: '管理者権限', price: 299, cardClass: 'admin-pack', desc: '攻撃力5倍・獲得5倍・シールド+1000・ADMINパネル解放！' },
-  { id: 'double_shubux', category: 'special', name: '💎 ✕2 しゅばっくす', tag: '永久2倍パス', price: 500, cardClass: 'vip-x2', desc: 'すべてのしゅばっくす獲得量が永久に2倍！' },
-  { id: 'rainbow_pack', category: 'special', name: '🌈 レインボーパック', tag: '限定虹パック', price: 777, cardClass: 'rainbow-pack', desc: '虹色機体＆トレイル解放！攻撃力1.8倍・拡散+2WAY・獲得量2倍！' },
-  { id: 'clone_attack_pack', category: 'special', name: '👥 ぶんしん＆アタックパック', tag: '分身同時攻撃', price: 850, cardClass: 'clone-pack', desc: '自機の左右に2体の分身が出現し同時攻撃！' },
-  { id: 'shubux_plus', category: 'special', name: '💠 しゅばっくす PLUS', tag: 'VIPサブスク①', price: 1200, cardClass: 'plus-pack', desc: '獲得量3倍＆撃破単価+50！毎秒自動でしゅばっくす増加！' },
-  { id: 'auto_magnet', category: 'special', name: '🧲 オートオーブ吸引', tag: '回収強化', price: 180, desc: '画面内のオーブを広範囲から自動吸収する。' },
-  { id: 'auto_aim', category: 'special', name: '🎯 オート照準アシスト', tag: '射撃補助', price: 350, desc: '近くの敵へ射撃角度を自動追尾微調整する。' },
-  { id: 'plasma_overdrive', category: 'special', name: '🔥 プラズマ出力＆連射強化', tag: '武器強化', price: 400, desc: '攻撃力 +60% ＆ 連射速度 +40% アップ！' },
-  { id: 'multi_cannon', category: 'special', name: '🔱 マルチウェイ拡散砲', tag: '武器強化', price: 650, desc: '同時発射弾数が +3WAY 増加＆貫通能力付与！' },
-  { id: 'titan_thruster', category: 'special', name: '🛡️ チタン装甲＆スラスター', tag: '機体強化', price: 450, desc: '最大シールド +150、移動速度 +30%、自動修復追加！' },
-  { id: 'attack_drones', category: 'special', name: '🛰️ 自動攻撃ビットドローン', tag: '支援ドローン', price: 900, desc: '自機の周囲を回転しながら自動攻撃するビットを3機展開！' }
+    name: '🌟 スターターパック',
+    tag: 'お得',
+    price: 100,
+    desc: '+1,000しゅばっくす支給＆攻撃力2倍！',
+    effect: { shubuxFlat: 1000, dmgMult: 2 }
+  }
 ];
 
-const EXTRA_SUBSCRIPTIONS = [];
-for (let i = 1; i <= 15; i++) {
-  const price = Math.round(150 * Math.pow(1.5, i - 1));
-  EXTRA_SUBSCRIPTIONS.push({
-    id: `extra_sub_money_${i}`, category: 'sub_money',
-    name: `💠 しゅばっくす増殖サブスク Lv.${i}`, tag: `通貨 #${i}`, price, cardClass: 'sub-pack',
-    desc: `毎秒 +${(i * 25).toLocaleString()} 自動入金＋撃破単価 +${i * 10}＋獲得倍率 ×${+(1 + i * 0.12).toFixed(2)}！`,
-    effect: { autoIncome: i * 25, killFlat: i * 10, shubuxMult: +(1 + i * 0.12).toFixed(2) }
-  });
-  EXTRA_SUBSCRIPTIONS.push({
-    id: `extra_sub_dmg_${i}`, category: 'sub_dmg',
-    name: `🔥 プラズマ火力サブスク Lv.${i}`, tag: `火力 #${i}`, price: Math.round(180 * Math.pow(1.48, i - 1)), cardClass: 'sub-pack',
-    desc: `全攻撃力 +${Math.round(i * 35)}% アップ＋弾丸貫通 +${Math.ceil(i / 4)}！`,
-    effect: { dmgAdd: i * 0.35, pierceAdd: Math.ceil(i / 4) }
-  });
+let gameState = 'start';
+let score = 0;
+let hp = 100;
+let maxHp = 100;
+let playerX = window.innerWidth / 2;
+let playerY = window.innerHeight / 2;
+let enemies = [];
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+window.addEventListener('mousemove', (e) => {
+  playerX = e.clientX;
+  playerY = e.clientY;
+});
+
+window.addEventListener('click', () => {
+  if (gameState === 'playing') {
+    const eff = getActiveEffects();
+    saveData.shubux += 5 * eff.shubuxMult;
+    score += 10;
+    playSound('laser');
+    updateHUD();
+  }
+});
+
+function getActiveEffects() {
+  let shubuxMult = DIFFICULTY_CONFIG[saveData.difficulty]?.rewardMult || 1.0;
+  let dmgMult = 1.0;
+  let maxHpBonus = 0;
+  let autoIncome = 0;
+
+  for (const itemId in saveData.ownedItems) {
+    const item = SHOP_ITEMS.find(i => i.id === itemId);
+    if (item && item.effect) {
+      if (item.effect.shubuxMult) shubuxMult *= item.effect.shubuxMult;
+      if (item.effect.dmgMult) dmgMult *= item.effect.dmgMult;
+      if (item.effect.maxHpBonus) maxHpBonus += item.effect.maxHpBonus;
+      if (item.effect.autoIncome) autoIncome += item.effect.autoIncome;
+    }
+  }
+  return { shubuxMult, dmgMult, maxHpBonus, autoIncome };
 }
 
-const SHOP_ITEMS = [...RANK_ITEMS, ...BASE_SHOP_ITEMS, ...EXTRA_SUBSCRIPTIONS];
+setInterval(() => {
+  const eff = getActiveEffects();
+  if (eff.autoIncome > 0) {
+    saveData.shubux += eff.autoIncome;
+    updateHUD();
+  }
+}, 1000);
 
-let saveData = JSON.parse(JSON.stringify(DEFAULT_SAVE));
-let currentShopFilter = 'all';
-let isShopOpen = false;
-let isAdminPanelOpen = false;
-
-// ==========================================
-// 2. SPA ルーティング & url/[ぺーじ] 機能（file:// 対応）
-// ==========================================
 function navigateTo(route) {
+  playSound('select');
   const cleanRoute = String(route || 'home').replace(/^\//, '');
   try {
-    window.history.pushState({ route: cleanRoute }, '', `/${cleanRoute}`);
+    history.pushState({ route: cleanRoute }, '', `/${cleanRoute}`);
   } catch (e) {
-    // file:// 環境で pushState が制限された場合はハッシュでURL状態を保持
-    try { window.location.hash = `#/${cleanRoute}`; } catch (err) {}
+    location.hash = `#/${cleanRoute}`;
   }
   applyRouteView(cleanRoute);
 }
@@ -1017,885 +863,213 @@ function goToCustomPage() {
 }
 
 window.addEventListener('popstate', () => {
-  const path = getInitialRoute();
+  const path = location.pathname.replace(/^\//, '') || 'home';
   applyRouteView(path);
 });
 
-function getInitialRoute() {
-  if (window.location.hash && window.location.hash.startsWith('#/')) {
-    return window.location.hash.replace('#/', '') || 'home';
-  }
-  const path = window.location.pathname.replace(/^\//, '');
-  if (!path || path.endsWith('.html') || path.includes('/')) return 'home';
-  return path;
-}
-
 function applyRouteView(route) {
-  const activeRoute = route || 'home';
-
-  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-  const navEl = document.getElementById(`nav-${activeRoute}`);
-  if (navEl) navEl.classList.add('active');
-
   document.getElementById('home-screen').classList.add('hidden');
   document.getElementById('shop-modal').classList.add('hidden');
   document.getElementById('ranking-screen').classList.add('hidden');
   document.getElementById('settings-screen').classList.add('hidden');
   document.getElementById('gameover-screen').classList.add('hidden');
   document.getElementById('page-screen').classList.add('hidden');
-  isShopOpen = false;
 
-  if (activeRoute === 'home') {
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+
+  if (route === 'home') {
     gameState = 'start';
     document.getElementById('home-screen').classList.remove('hidden');
-    document.getElementById('save-and-quit-btn').classList.add('hidden');
+    const btn = document.getElementById('nav-home');
+    if (btn) btn.classList.add('active');
     renderDifficultySelectors();
-    updateSaveSummaryUI();
-  } else if (activeRoute === 'game') {
-    if (gameState !== 'playing') {
-      startGame();
-    }
-    document.getElementById('save-and-quit-btn').classList.remove('hidden');
-  } else if (activeRoute === 'shop') {
-    isShopOpen = true;
+  } else if (route === 'game') {
+    if (gameState !== 'playing') startGame();
+    const btn = document.getElementById('nav-game');
+    if (btn) btn.classList.add('active');
+  } else if (route === 'shop') {
     document.getElementById('shop-modal').classList.remove('hidden');
+    const btn = document.getElementById('nav-shop');
+    if (btn) btn.classList.add('active');
     renderShop();
-  } else if (activeRoute === 'ranking') {
+  } else if (route === 'ranking') {
     document.getElementById('ranking-screen').classList.remove('hidden');
-    loadRankingBoard();
-  } else if (activeRoute === 'settings') {
+    const btn = document.getElementById('nav-ranking');
+    if (btn) btn.classList.add('active');
+  } else if (route === 'settings') {
     document.getElementById('settings-screen').classList.remove('hidden');
+    const btn = document.getElementById('nav-settings');
+    if (btn) btn.classList.add('active');
     renderDifficultySelectors();
   } else {
-    // url/[ぺーじ] カスタムページ表示
-    const pageNav = document.getElementById('nav-page');
-    if (pageNav) pageNav.classList.add('active');
     document.getElementById('page-screen').classList.remove('hidden');
-    document.getElementById('current-page-display').textContent = `/${activeRoute}`;
-    const input = document.getElementById('custom-page-input');
-    if (input) input.value = activeRoute;
+    const btn = document.getElementById('nav-page');
+    if (btn) btn.classList.add('active');
   }
 }
 
 function renderDifficultySelectors() {
-  const currentDiff = saveData.difficulty || 'normal';
-  const cfg = DIFFICULTY_CONFIG[currentDiff] || DIFFICULTY_CONFIG.normal;
-
-  ['home-diff-selector', 'settings-diff-selector'].forEach(containerId => {
-    const el = document.getElementById(containerId);
+  ['home-diff-selector', 'settings-diff-selector'].forEach(id => {
+    const el = document.getElementById(id);
     if (!el) return;
     el.innerHTML = '';
     Object.values(DIFFICULTY_CONFIG).forEach(d => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = `diff-btn ${d.id === currentDiff ? 'selected' : ''}`;
+      btn.className = `diff-btn ${d.id === saveData.difficulty ? 'selected' : ''}`;
       btn.textContent = d.label;
-      btn.onclick = () => selectDifficulty(d.id);
+      btn.onclick = () => {
+        playSound('select');
+        saveData.difficulty = d.id;
+        renderDifficultySelectors();
+      };
       el.appendChild(btn);
     });
   });
-
-  const homeDesc = document.getElementById('home-diff-desc');
-  const setDesc = document.getElementById('settings-diff-desc');
-  if (homeDesc) homeDesc.textContent = `${cfg.fullName}：${cfg.desc}`;
-  if (setDesc) setDesc.textContent = `${cfg.fullName}：${cfg.desc}`;
 }
 
-function selectDifficulty(diffId) {
-  if (!DIFFICULTY_CONFIG[diffId]) return;
-  saveData.difficulty = diffId;
-  writeSave();
-  renderDifficultySelectors();
-  syncPlayerStats();
-  updateHUD();
-  showMilestoneBanner(`🎯 難易度を【${DIFFICULTY_CONFIG[diffId].fullName}】に変更しました！`);
+function startGame() {
+  gameState = 'playing';
+  score = 0;
+  const eff = getActiveEffects();
+  maxHp = 100 + eff.maxHpBonus;
+  hp = maxHp;
+  enemies = [];
+  document.querySelectorAll('.overlay-screen').forEach(el => el.classList.add('hidden'));
+  history.pushState({ route: 'game' }, '', '/game');
+  const btn = document.getElementById('nav-game');
+  if (btn) btn.classList.add('active');
+  playSound('dash');
 }
 
-async function loadRankingBoard() {
-  const tbody = document.getElementById('ranking-tbody');
-  const nameInput = document.getElementById('pilot-name-input');
-  if (nameInput && !nameInput.value) nameInput.value = saveData.pilotName || 'PILOT_01';
-
-  let list = [
-    { name: saveData.pilotName || 'YOU', rank: getHighestRank().rankTitle, score: Math.max(score, saveData.highScore), kills: saveData.totalKills },
-    { name: 'CYBER_ACE', rank: '💎 ダイヤモンドランク', score: 85000, kills: 210 },
-    { name: 'NEON_GHOST', rank: '🥇 ゴールドランク', score: 42000, kills: 120 }
-  ];
-
-  try {
-    const res = await fetch('/api/ranking');
-    if (res.ok) {
-      const data = await res.json();
-      if (data.leaderboard) list = data.leaderboard;
-    }
-  } catch (e) {}
-
-  tbody.innerHTML = '';
-  list.forEach((row, idx) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td style="font-weight:900; color:#ffd700;">#${idx + 1}</td>
-      <td style="font-weight:900;">${row.name}</td>
-      <td>${row.rank}</td>
-      <td style="color:#00f3ff; font-family:'Orbitron';">${Number(row.score).toLocaleString()}</td>
-      <td style="color:#ff7aa8;">${Number(row.kills).toLocaleString()} 体</td>
-    `;
-    tbody.appendChild(tr);
-  });
+function manualSave() {
+  localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+  playSound('buy');
+  alert('セーブしました！');
 }
 
-async function submitRankingScore() {
-  const nameInput = document.getElementById('pilot-name-input');
-  const name = (nameInput ? nameInput.value.trim() : '') || 'PILOT_01';
-  saveData.pilotName = name;
-  writeSave();
-
-  try {
-    const res = await fetch('/api/ranking', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name,
-        rank: getHighestRank().rankTitle,
-        score: Math.max(score, saveData.highScore),
-        kills: saveData.totalKills
-      })
-    });
-    if (res.ok) {
-      showMilestoneBanner('🏆 ランキングにスコアを登録しました！');
-      loadRankingBoard();
-      return;
-    }
-  } catch (e) {}
-  showMilestoneBanner('💾 ローカル戦績を更新しました！');
-  loadRankingBoard();
-}
-
-// ==========================================
-// 3. セーブ・ロード & アップグレード計算
-// ==========================================
 function loadSave() {
   try {
     const raw = localStorage.getItem(SAVE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw);
-      saveData = { ...DEFAULT_SAVE, ...parsed };
-      if (!saveData.ownedItems) saveData.ownedItems = {};
-      if (!Array.isArray(saveData.claimedMilestones)) saveData.claimedMilestones = [];
-      if (!DIFFICULTY_CONFIG[saveData.difficulty]) saveData.difficulty = 'normal';
+      saveData = { ...saveData, ...JSON.parse(raw) };
     }
   } catch (e) {}
-  updateSaveSummaryUI();
-}
-
-function writeSave(showIndicator = false) {
-  try {
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2, '0');
-    const mm = String(now.getMinutes()).padStart(2, '0');
-    const ss = String(now.getSeconds()).padStart(2, '0');
-    saveData.lastSavedAt = `${hh}:${mm}:${ss}`;
-    localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
-
-    const statusEl = document.getElementById('save-status-text');
-    if (statusEl) {
-      statusEl.textContent = showIndicator
-        ? `✅ セーブ完了！ (${saveData.lastSavedAt})`
-        : `💾 自動セーブ済み (${saveData.lastSavedAt})`;
-      statusEl.style.color = '#00ff88';
-    }
-    updateSaveSummaryUI();
-  } catch (e) {}
-}
-
-function manualSave() {
-  writeSave(true);
-}
-
-function saveAndQuit() {
-  writeSave(true);
-  navigateTo('home');
-  showMilestoneBanner(`💾 データを保存してホームに戻りました！（所持: ${formatShubux(saveData.shubux)} しゅばっくす）`);
-}
-
-function resetSaveData() {
-  if (!confirm('本当にセーブデータをすべて初期化しますか？')) return;
-  try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
-  saveData = JSON.parse(JSON.stringify(DEFAULT_SAVE));
-  syncPlayerStats();
-  renderDifficultySelectors();
-  updateHUD();
-  updateSaveSummaryUI();
-  alert('セーブデータを初期化しました。');
-}
-
-function updateSaveSummaryUI() {
-  const el = document.getElementById('start-save-summary');
-  if (!el) return;
-  const countOwned = Object.keys(saveData.ownedItems || {}).length;
-  const savedTime = saveData.lastSavedAt ? ` / 最終保存: ${saveData.lastSavedAt}` : '';
-  el.innerHTML = `💾 <b>保存データ:</b> 所持 <b style="color:#ffd700;">${formatShubux(saveData.shubux)}</b> しゅばっくす / 撃破 <b>${saveData.totalKills.toLocaleString()}</b> 体 / 購入済み <b>${countOwned}/${SHOP_ITEMS.length}</b> 個${savedTime}`;
-}
-
-loadSave();
-
-function getHighestRank() {
-  const owned = saveData.ownedItems || {};
-  let best = { rankOrder: 0, rankTitle: '🔰 ルーキーランク', id: 'none' };
-  for (const r of RANK_ITEMS) {
-    if (owned[r.id] && r.rankOrder > best.rankOrder) best = r;
-  }
-  return best;
-}
-
-function getUpgrades() {
-  const owned = saveData.ownedItems || {};
-  const diffCfg = DIFFICULTY_CONFIG[saveData.difficulty] || DIFFICULTY_CONFIG.normal;
-
-  const hasLegendaryBridge = !!owned['rainbow_bridge_legendary_pack'];
-  const hasUltimatePack = !!owned['rainbow_op_admin_vip_pack'];
-  const hasGoldItem1M = !!owned['gold_item_1m'];
-  const hasDiamondPack1B = !!owned['diamond_pack_1b'];
-  const hasDiamondRank = !!owned['rank_diamond'] || !!owned['rank_cosmic'];
-
-  const hasAutoClick = !!owned['auto_click'] || !!owned['op_admin_pack'] || hasUltimatePack || hasLegendaryBridge;
-  const hasAdminPack = !!owned['op_admin_pack'] || hasUltimatePack || hasLegendaryBridge;
-  const hasRainbowPack = !!owned['rainbow_pack'] || hasUltimatePack || hasLegendaryBridge;
-  const hasClonePack = !!owned['clone_attack_pack'] || hasUltimatePack || hasDiamondPack1B || hasLegendaryBridge;
-
-  let dmgMult = 1.0;
-  let fireRateMult = 1.0;
-  let extraWays = 0;
-  let pierce = 0;
-  let maxHpBonus = 0;
-  let speedMult = 1.0;
-  let droneCount = 0;
-  let shubuxMult = diffCfg.rewardMult;
-  let cloneCount = 0;
-  let autoIncomePerSec = 0;
-  let killFlatBonus = 0;
-
-  if (owned['rank_bronze']) { shubuxMult *= 1.5; dmgMult += 0.5; maxHpBonus += 500; }
-  if (owned['rank_silver']) { shubuxMult *= 3; dmgMult *= 2; maxHpBonus += 2000; }
-  if (owned['rank_gold']) { shubuxMult *= 10; dmgMult *= 5; maxHpBonus += 10000; autoIncomePerSec += 5000; }
-  if (owned['rank_platinum']) { shubuxMult *= 30; dmgMult *= 15; maxHpBonus += 30000; autoIncomePerSec += 50000; }
-  if (owned['rank_diamond']) { shubuxMult *= 100; dmgMult *= 100; maxHpBonus += 100000; autoIncomePerSec += 1000000; }
-  if (owned['rank_cosmic']) { shubuxMult *= 1000; dmgMult *= 500; maxHpBonus += 1000000; autoIncomePerSec += 1e10; }
-
-  // レインボーブリッジ & OP & ちょちょちょうれじぇんだりーパック（機能100,000）
-  if (hasLegendaryBridge) {
-    shubuxMult *= 100000;
-    dmgMult *= 100000;
-    maxHpBonus += 100000;
-    autoIncomePerSec += 100000;
-    fireRateMult *= 3.0;
-    extraWays += 10;
-    pierce += 20;
-    cloneCount = 8;
-    droneCount += 8;
-  }
-
-  if (hasUltimatePack) {
-    shubuxMult *= 25;
-    dmgMult *= 25;
-    fireRateMult *= 3.0;
-    extraWays += 8;
-    pierce += 15;
-    maxHpBonus += 10000;
-    autoIncomePerSec += 1000;
-    cloneCount = Math.max(cloneCount, 4);
-    droneCount += 8;
-  }
-
-  if (hasGoldItem1M) { shubuxMult *= 10; dmgMult *= 5; maxHpBonus += 5000; autoIncomePerSec += 2500; }
-  if (hasDiamondPack1B) { shubuxMult *= 50; dmgMult *= 30; extraWays += 6; maxHpBonus += 50000; cloneCount = Math.max(cloneCount, 4); }
-  if (owned['starter_pack']) { dmgMult += 0.2; speedMult += 0.2; maxHpBonus += 50; }
-  if (hasAdminPack) { dmgMult *= 5; shubuxMult *= 5; maxHpBonus += 1000; extraWays += 4; }
-  if (owned['double_shubux']) { shubuxMult *= 2; }
-  if (hasRainbowPack) { dmgMult *= 1.8; shubuxMult *= 2; extraWays += 2; }
-  if (hasClonePack) { cloneCount = Math.max(cloneCount, 2); dmgMult += 0.5; }
-  if (owned['shubux_plus']) { shubuxMult *= 3; killFlatBonus += 50; autoIncomePerSec += 25; }
-  if (owned['plasma_overdrive']) { dmgMult += 0.6; fireRateMult += 0.4; }
-  if (owned['multi_cannon']) { extraWays += 3; pierce += 2; }
-  if (owned['titan_thruster']) { maxHpBonus += 150; speedMult += 0.3; }
-  if (owned['attack_drones']) { droneCount += 3; }
-
-  for (const sub of EXTRA_SUBSCRIPTIONS) {
-    if (owned[sub.id] && sub.effect) {
-      if (sub.effect.autoIncome) autoIncomePerSec += sub.effect.autoIncome;
-      if (sub.effect.killFlat) killFlatBonus += sub.effect.killFlat;
-      if (sub.effect.shubuxMult) shubuxMult *= sub.effect.shubuxMult;
-      if (sub.effect.dmgAdd) dmgMult += sub.effect.dmgAdd;
-      if (sub.effect.pierceAdd) pierce += sub.effect.pierceAdd;
-    }
-  }
-
-  return {
-    hasLegendaryBridge, hasUltimatePack, hasDiamondRank,
-    hasAutoClick, hasAdminPack, hasRainbowPack, hasClonePack,
-    hasAutoMagnet: !!owned['auto_magnet'] || hasAdminPack || hasLegendaryBridge,
-    hasAutoAim: !!owned['auto_aim'] || hasAdminPack || hasLegendaryBridge,
-    dmgMult, fireRateMult, extraWays, pierce, maxHpBonus, speedMult,
-    droneCount, shubuxMult, cloneCount, autoIncomePerSec, killFlatBonus
-  };
-}
-
-// ==========================================
-// 4. ゲームエンジン & ループ
-// ==========================================
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-let W = canvas.width = window.innerWidth;
-let H = canvas.height = window.innerHeight;
-
-window.addEventListener('resize', () => {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-});
-
-let gameState = 'start';
-let score = 0;
-let wave = 1;
-let frameCount = 0;
-let hueCycle = 0;
-
-const player = {
-  x: W / 2, y: H / 2, vx: 0, vy: 0, angle: -Math.PI / 2, radius: 18,
-  hp: 100, maxHp: 100, fireTimer: 0, dashCooldown: 0, dashActiveTimer: 0, invulnTimer: 0
-};
-
-let mouse = { x: W / 2, y: H / 2, down: false };
-let bullets = [];
-let enemies = [];
-let particles = [];
-let pickups = [];
-let floatingTexts = [];
-let stars = Array.from({ length: 80 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.8 + 0.5, spd: Math.random() * 0.8 + 0.2 }));
-
-window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-window.addEventListener('mousedown', e => {
-  if (e.button === 0) mouse.down = true;
-  if (e.button === 2 && gameState === 'playing' && !isShopOpen) triggerDash();
-});
-window.addEventListener('mouseup', e => { if (e.button === 0) mouse.down = false; });
-window.addEventListener('contextmenu', e => e.preventDefault());
-window.addEventListener('keydown', e => {
-  if (e.code === 'Space' && gameState === 'playing' && !isShopOpen) {
-    e.preventDefault();
-    triggerDash();
-  }
-});
-
-function syncPlayerStats() {
-  const upg = getUpgrades();
-  const prevMax = player.maxHp;
-  player.maxHp = 100 + upg.maxHpBonus;
-  if (player.maxHp > prevMax) player.hp += (player.maxHp - prevMax);
-  if (player.hp > player.maxHp) player.hp = player.maxHp;
-}
-
-function addShubux(amount, x = player.x, y = player.y - 25, showText = true) {
-  if (amount <= 0) return;
-  saveData.shubux += amount;
-  if (showText && floatingTexts.length < 35) {
-    floatingTexts.push({ x, y, text: `+${formatShubux(amount)}`, color: '#ffd700', life: 45, vy: -1.4 });
-  }
-}
-
-function showMilestoneBanner(msg) {
-  const banner = document.getElementById('milestone-banner');
-  banner.textContent = msg;
-  banner.classList.add('show');
-  setTimeout(() => banner.classList.remove('show'), 3200);
-}
-
-function triggerDash() {
-  if (player.dashCooldown > 0) return;
-  player.dashCooldown = 140;
-  player.dashActiveTimer = 18;
-  player.invulnTimer = 28;
-  const upg = getUpgrades();
-  const dashDmg = 95 * upg.dmgMult;
-
-  for (let i = enemies.length - 1; i >= 0; i--) {
-    const en = enemies[i];
-    if (Math.hypot(en.x - player.x, en.y - player.y) < 190) {
-      damageEnemy(en, i, dashDmg, true);
-    }
-  }
-}
-
-function toggleAutoClick() {
-  saveData.autoClickEnabled = !saveData.autoClickEnabled;
-  writeSave();
   updateHUD();
 }
 
-function toggleAdminPanel() {
-  isAdminPanelOpen = !isAdminPanelOpen;
-  document.getElementById('admin-bar').classList.toggle('hidden', !isAdminPanelOpen);
-}
-
-function toggleGodMode() {
-  saveData.godModeEnabled = !saveData.godModeEnabled;
-  writeSave();
-  updateHUD();
-}
-
-function adminGrantShubux(amount) {
-  saveData.shubux += amount;
-  writeSave(true);
-  updateHUD();
-  showMilestoneBanner(`👑 ADMIN支給: +${formatShubux(amount)} しゅばっくす！`);
-}
-
-function adminFullHeal() {
-  syncPlayerStats();
-  player.hp = player.maxHp;
-  updateHUD();
-  showMilestoneBanner('💚 シールドを完全回復しました！');
-}
-
-function adminNukeEnemies() {
-  for (let i = enemies.length - 1; i >= 0; i--) {
-    damageEnemy(enemies[i], i, 999999999, true);
-  }
-}
-
-function startGame() {
-  syncPlayerStats();
-  player.x = W / 2;
-  player.y = H / 2;
-  player.hp = player.maxHp;
-  player.dashCooldown = 0;
-  player.invulnTimer = 60;
-  score = 0;
-  wave = 1;
-  bullets = [];
-  enemies = [];
-  pickups = [];
-  particles = [];
-  floatingTexts = [];
-  gameState = 'playing';
-
-  document.querySelectorAll('.overlay-screen').forEach(el => el.classList.add('hidden'));
-  document.getElementById('save-and-quit-btn').classList.remove('hidden');
-  updateHUD();
-}
-
-function spawnEnemy() {
-  const diffCfg = DIFFICULTY_CONFIG[saveData.difficulty] || DIFFICULTY_CONFIG.normal;
-  const edge = Math.floor(Math.random() * 4);
-  let x, y;
-  if (edge === 0) { x = Math.random() * W; y = -30; }
-  else if (edge === 1) { x = W + 30; y = Math.random() * H; }
-  else if (edge === 2) { x = Math.random() * W; y = H + 30; }
-  else { x = -30; y = Math.random() * H; }
-
-  const baseHp = (25 + wave * 10) * diffCfg.enemyHp;
-  enemies.push({
-    x, y,
-    hp: baseHp,
-    maxHp: baseHp,
-    radius: 16,
-    speed: (2.0 + Math.random() * 1.1) * diffCfg.enemySpeed,
-    color: '#ff2a85',
-    reward: 6 + wave * 2,
-    scoreVal: 100
-  });
-}
-
-function fireWeapon() {
-  const upg = getUpgrades();
-  let aimAngle = player.angle;
-
-  if (upg.hasAutoAim && enemies.length > 0) {
-    let nearest = null;
-    let minD = 550;
-    for (const en of enemies) {
-      const d = Math.hypot(en.x - player.x, en.y - player.y);
-      if (d < minD) { minD = d; nearest = en; }
-    }
-    if (nearest) aimAngle = Math.atan2(nearest.y - player.y, nearest.x - player.x);
-  }
-
-  addShubux(1 * upg.shubuxMult, player.x, player.y - 28, false);
-
-  const totalWays = 1 + upg.extraWays;
-  const spread = 0.11;
-  const dmg = 16 * upg.dmgMult;
-
-  const emitters = [{ x: player.x, y: player.y }];
-  for (let c = 0; c < upg.cloneCount; c++) {
-    const orbit = (Math.PI * 2 * c) / upg.cloneCount + frameCount * 0.05;
-    emitters.push({ x: player.x + Math.cos(orbit) * 44, y: player.y + Math.sin(orbit) * 44 });
-  }
-
-  for (const em of emitters) {
-    for (let i = 0; i < totalWays; i++) {
-      const offset = (i - (totalWays - 1) / 2) * spread;
-      const a = aimAngle + offset;
-      bullets.push({
-        x: em.x + Math.cos(a) * 18,
-        y: em.y + Math.sin(a) * 18,
-        vx: Math.cos(a) * 14,
-        vy: Math.sin(a) * 14,
-        dmg,
-        pierce: upg.pierce,
-        hitList: [],
-        life: 65,
-        color: upg.hasRainbowPack ? `hsl(${(hueCycle + i * 30) % 360}, 100%, 60%)` : '#00f3ff'
-      });
-    }
-  }
-}
-
-function damageEnemy(en, index, dmg, skipHitReward = false) {
-  const upg = getUpgrades();
-  en.hp -= dmg;
-
-  if (!skipHitReward) {
-    addShubux(2 * upg.shubuxMult, en.x, en.y - 16, false);
-  }
-
-  if (en.hp <= 0) {
-    enemies.splice(index, 1);
-    score += en.scoreVal;
-    if (score > saveData.highScore) saveData.highScore = score;
-    saveData.totalKills += 1;
-
-    const killEarn = (en.reward + upg.killFlatBonus) * upg.shubuxMult;
-    addShubux(killEarn, en.x, en.y - 20, true);
-
-    pickups.push({
-      x: en.x, y: en.y,
-      val: (5 + wave * 2) * upg.shubuxMult,
-      life: 600
-    });
-
-    for (const m of KILL_MILESTONES) {
-      if (saveData.totalKills >= m.kills && !saveData.claimedMilestones.includes(m.kills)) {
-        saveData.claimedMilestones.push(m.kills);
-        const bonus = m.reward * upg.shubuxMult;
-        saveData.shubux += bonus;
-        showMilestoneBanner(`🏆 ${m.kills}体撃破達成！ +${formatShubux(bonus)} しゅばっくす！`);
-      }
-    }
-  }
-}
-
-function update() {
-  frameCount++;
-  hueCycle = (hueCycle + 4) % 360;
-  const upg = getUpgrades();
-  const diffCfg = DIFFICULTY_CONFIG[saveData.difficulty] || DIFFICULTY_CONFIG.normal;
-
-  if (frameCount % 60 === 0) {
-    if (upg.autoIncomePerSec > 0) {
-      addShubux(upg.autoIncomePerSec, player.x, player.y - 40, true);
-    }
-    if (frameCount % 300 === 0) writeSave();
-  }
-
-  if (gameState !== 'playing' || isShopOpen) return;
-
-  const dx = mouse.x - player.x;
-  const dy = mouse.y - player.y;
-  const dist = Math.hypot(dx, dy);
-  if (dist > 2) {
-    player.angle = Math.atan2(dy, dx);
-    const spd = (player.dashActiveTimer > 0 ? 15 : 6.2) * upg.speedMult;
-    const moveDist = Math.min(dist, spd);
-    player.x += Math.cos(player.angle) * moveDist;
-    player.y += Math.sin(player.angle) * moveDist;
-  }
-
-  if (player.dashCooldown > 0) player.dashCooldown--;
-  if (player.dashActiveTimer > 0) player.dashActiveTimer--;
-  if (player.invulnTimer > 0) player.invulnTimer--;
-
-  const isFiring = mouse.down || (upg.hasAutoClick && saveData.autoClickEnabled);
-  if (player.fireTimer > 0) player.fireTimer--;
-  if (isFiring && player.fireTimer <= 0) {
-    fireWeapon();
-    player.fireTimer = Math.max(2, Math.round(10 / upg.fireRateMult));
-  }
-
-  for (let i = bullets.length - 1; i >= 0; i--) {
-    const b = bullets[i];
-    b.x += b.vx;
-    b.y += b.vy;
-    b.life--;
-    if (b.life <= 0) { bullets.splice(i, 1); continue; }
-
-    for (let j = enemies.length - 1; j >= 0; j--) {
-      const en = enemies[j];
-      if (b.hitList.includes(en)) continue;
-      if (Math.hypot(b.x - en.x, b.y - en.y) < en.radius + 8) {
-        b.hitList.push(en);
-        damageEnemy(en, j, b.dmg, false);
-        if (b.pierce > 0) b.pierce--;
-        else { bullets.splice(i, 1); break; }
-      }
-    }
-  }
-
-  if (frameCount % Math.max(12, 42 - wave * 2) === 0 && enemies.length < 35) {
-    spawnEnemy();
-  }
-  wave = 1 + Math.floor(saveData.totalKills / 15);
-
-  for (let i = enemies.length - 1; i >= 0; i--) {
-    const en = enemies[i];
-    const ang = Math.atan2(player.y - en.y, player.x - en.x);
-    en.x += Math.cos(ang) * en.speed;
-    en.y += Math.sin(ang) * en.speed;
-
-    if (Math.hypot(player.x - en.x, player.y - en.y) < player.radius + en.radius) {
-      if (player.invulnTimer <= 0 && !(upg.hasAdminPack && saveData.godModeEnabled)) {
-        player.hp -= 15 * diffCfg.playerDmgTaken;
-        player.invulnTimer = 30;
-        if (player.hp <= 0) {
-          player.hp = 0;
-          gameState = 'gameover';
-          writeSave();
-          document.getElementById('final-diff').textContent = diffCfg.fullName;
-          document.getElementById('final-score').textContent = score.toLocaleString();
-          document.getElementById('final-kills').textContent = saveData.totalKills.toLocaleString();
-          document.getElementById('final-shubux').textContent = formatShubux(saveData.shubux);
-          document.getElementById('gameover-screen').classList.remove('hidden');
-        }
-      }
-    }
-  }
-
-  for (let i = pickups.length - 1; i >= 0; i--) {
-    const p = pickups[i];
-    p.life--;
-    if (p.life <= 0) { pickups.splice(i, 1); continue; }
-    const d = Math.hypot(player.x - p.x, player.y - p.y);
-    const magnetRange = upg.hasAutoMagnet ? 900 : 120;
-    if (d < magnetRange) {
-      const a = Math.atan2(player.y - p.y, player.x - p.x);
-      p.x += Math.cos(a) * 11;
-      p.y += Math.sin(a) * 11;
-    }
-    if (d < player.radius + 14) {
-      addShubux(p.val, p.x, p.y, true);
-      pickups.splice(i, 1);
-    }
-  }
-
-  for (let i = floatingTexts.length - 1; i >= 0; i--) {
-    floatingTexts[i].y += floatingTexts[i].vy;
-    floatingTexts[i].life--;
-    if (floatingTexts[i].life <= 0) floatingTexts.splice(i, 1);
-  }
-
-  updateHUD();
-}
-
-function draw() {
-  ctx.fillStyle = '#050814';
-  ctx.fillRect(0, 0, W, H);
-
-  ctx.fillStyle = '#ffffff';
-  for (const s of stars) {
-    s.y += s.spd;
-    if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
-    ctx.globalAlpha = 0.4;
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.globalAlpha = 1;
-
-  for (const p of pickups) {
-    ctx.fillStyle = '#ffd700';
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  for (const b of bullets) {
-    ctx.fillStyle = b.color;
-    ctx.beginPath();
-    ctx.arc(b.x, b.y, 5, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  for (const en of enemies) {
-    ctx.fillStyle = en.color;
-    ctx.beginPath();
-    ctx.arc(en.x, en.y, en.radius, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  if (gameState === 'playing') {
-    const upg = getUpgrades();
-    // 分身描画
-    for (let c = 0; c < upg.cloneCount; c++) {
-      const orbit = (Math.PI * 2 * c) / upg.cloneCount + frameCount * 0.05;
-      const cx = player.x + Math.cos(orbit) * 44;
-      const cy = player.y + Math.sin(orbit) * 44;
-      ctx.fillStyle = '#7c4dff';
-      ctx.beginPath();
-      ctx.arc(cx, cy, 10, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    // 自機描画
-    ctx.save();
-    ctx.translate(player.x, player.y);
-    ctx.rotate(player.angle);
-    ctx.fillStyle = upg.hasRainbowPack ? `hsl(${hueCycle}, 100%, 60%)` : '#00f3ff';
-    ctx.beginPath();
-    ctx.moveTo(22, 0);
-    ctx.lineTo(-14, -13);
-    ctx.lineTo(-8, 0);
-    ctx.lineTo(-14, 13);
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
-  }
-
-  ctx.font = '900 13px "Orbitron", sans-serif';
-  ctx.textAlign = 'center';
-  for (const ft of floatingTexts) {
-    ctx.globalAlpha = Math.max(0, ft.life / 45);
-    ctx.fillStyle = ft.color;
-    ctx.fillText(ft.text, ft.x, ft.y);
-  }
-  ctx.globalAlpha = 1;
-}
-
-function loop() {
-  update();
-  draw();
-  requestAnimationFrame(loop);
-}
-
-// ==========================================
-// 5. HUD & ショップ UI 更新
-// ==========================================
 function updateHUD() {
-  const upg = getUpgrades();
-  const rank = getHighestRank();
-  const diffCfg = DIFFICULTY_CONFIG[saveData.difficulty] || DIFFICULTY_CONFIG.normal;
+  const eff = getActiveEffects();
+  maxHp = 100 + eff.maxHpBonus;
+  if (hp > maxHp) hp = maxHp;
 
-  document.getElementById('hp-bar').style.width = `${Math.max(0, (player.hp / player.maxHp) * 100)}%`;
-  document.getElementById('hp-text').textContent = `${formatShubux(player.hp)} / ${formatShubux(player.maxHp)}`;
-  document.getElementById('dash-bar').style.width = `${100 - (player.dashCooldown / 140) * 100}%`;
-  document.getElementById('dash-text').textContent = player.dashCooldown <= 0 ? 'READY' : 'CHARGING';
+  document.getElementById('shubux-num').textContent = Math.floor(saveData.shubux).toLocaleString();
+  document.getElementById('score-num').textContent = score;
+  document.getElementById('hp-text').textContent = `${hp} / ${maxHp}`;
+  document.getElementById('shop-shubux').textContent = Math.floor(saveData.shubux).toLocaleString();
 
-  document.getElementById('wave-num').textContent = wave;
-  document.getElementById('score-num').textContent = score.toLocaleString();
-  document.getElementById('shubux-num').textContent = formatShubux(saveData.shubux);
-  document.getElementById('kills-num').textContent = `${saveData.totalKills.toLocaleString()} 体`;
-
-  document.getElementById('current-rank-pill').textContent = rank.rankTitle;
-  document.getElementById('current-diff-pill').textContent = diffCfg.label;
-
-  document.getElementById('attack-bonus-rate').textContent = `+${formatShubux(1 * upg.shubuxMult)} 射撃 / +${formatShubux(2 * upg.shubuxMult)} 命中`;
-  document.getElementById('kill-bonus-rate').textContent = `+${formatShubux((8 + upg.killFlatBonus) * upg.shubuxMult)} / 撃破`;
-
-  document.getElementById('legendary-active-badge').classList.toggle('hidden', !upg.hasLegendaryBridge);
-  document.getElementById('ultimate-active-badge').classList.toggle('hidden', !upg.hasUltimatePack);
-  document.getElementById('rainbow-active-badge').classList.toggle('hidden', !upg.hasRainbowPack);
-  document.getElementById('admin-active-badge').classList.toggle('hidden', !upg.hasAdminPack);
-
-  const autoBtn = document.getElementById('toggle-auto-btn');
-  autoBtn.classList.toggle('hidden', !upg.hasAutoClick);
-  autoBtn.textContent = saveData.autoClickEnabled ? '⚡ AUTO: ON' : '⚡ AUTO: OFF';
-  autoBtn.classList.toggle('auto-on', saveData.autoClickEnabled);
-
-  document.getElementById('toggle-admin-btn').classList.toggle('hidden', !upg.hasAdminPack);
-  document.getElementById('god-mode-btn').textContent = saveData.godModeEnabled ? '🛡️ 無敵モード (GOD): ON' : '🛡️ 無敵モード (GOD): OFF';
+  const badge = document.getElementById('legendary-active-badge');
+  if (saveData.ownedItems['rainbow_bridge_legendary_pack']) {
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
 }
 
 function setShopFilter(filter, btnEl) {
-  currentShopFilter = filter;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   if (btnEl) btnEl.classList.add('active');
   renderShop();
 }
 
 function renderShop() {
-  document.getElementById('shop-shubux').textContent = formatShubux(saveData.shubux);
-  document.getElementById('shop-milestone-info').textContent = `累計撃破: ${saveData.totalKills.toLocaleString()}体 / 所持アイテム: ${Object.keys(saveData.ownedItems).length}個`;
-
   const grid = document.getElementById('shop-grid');
   grid.innerHTML = '';
 
-  const filtered = currentShopFilter === 'all'
-    ? SHOP_ITEMS
-    : SHOP_ITEMS.filter(item => item.category === currentShopFilter);
-
-  for (const item of filtered) {
-    const owned = !!saveData.ownedItems[item.id];
-    const canAfford = saveData.shubux >= item.price;
-
-    const card = document.createElement('div');
-    card.className = `shop-item ${item.cardClass || ''} ${owned ? 'owned' : ''}`;
-    card.innerHTML = `
+  SHOP_ITEMS.forEach(item => {
+    const isOwned = !!saveData.ownedItems[item.id];
+    const div = document.createElement('div');
+    div.className = `shop-item ${item.cardClass || ''}`;
+    div.innerHTML = `
       <div>
-        <div class="item-top">
-          <div class="item-name">${item.name}</div>
-          <span class="item-tag">${item.tag}</span>
-        </div>
+        <div class="item-top"><span class="item-name">${item.name}</span><span class="item-tag">${item.tag}</span></div>
         <div class="item-desc">${item.desc}</div>
       </div>
-      <button type="button" class="buy-btn ${owned ? 'equipped-btn' : ''}" ${owned || !canAfford ? 'disabled' : ''}>
-        ${owned ? '✅ 購入済み（適用中）' : `💰 ${formatShubux(item.price)} しゅばっくすで購入`}
+      <button class="buy-btn ${isOwned ? 'equipped-btn' : ''}" onclick="buyItem('${item.id}')">
+        ${isOwned ? '✅ 購入済み' : `💰 ${item.price.toLocaleString()} 購入`}
       </button>
     `;
-
-    const btn = card.querySelector('button');
-    if (!owned && canAfford) {
-      btn.onclick = () => buyItem(item);
-    }
-    grid.appendChild(card);
-  }
+    grid.appendChild(div);
+  });
 }
 
-function buyItem(item) {
-  if (saveData.ownedItems[item.id] || saveData.shubux < item.price) return;
-  saveData.shubux -= item.price;
-  saveData.ownedItems[item.id] = true;
+function buyItem(id) {
+  const item = SHOP_ITEMS.find(i => i.id === id);
+  if (!item || saveData.ownedItems[id]) return;
 
-  if (item.id === 'starter_pack') saveData.shubux += 300;
-  if (item.id === 'auto_click' || item.id === 'rainbow_bridge_legendary_pack') saveData.autoClickEnabled = true;
-
-  syncPlayerStats();
-  writeSave(true);
-  updateHUD();
-  renderShop();
-  showMilestoneBanner(`🎉 【${item.name}】を購入しました！`);
-}
-
-function buyAllAffordable() {
-  let bought = 0;
-  for (const item of SHOP_ITEMS) {
-    if (!saveData.ownedItems[item.id] && saveData.shubux >= item.price) {
-      saveData.shubux -= item.price;
-      saveData.ownedItems[item.id] = true;
-      bought++;
+  if (saveData.shubux >= item.price) {
+    saveData.shubux -= item.price;
+    saveData.ownedItems[id] = true;
+    if (item.effect && item.effect.shubuxFlat) {
+      saveData.shubux += item.effect.shubuxFlat;
     }
-  }
-  if (bought > 0) {
-    syncPlayerStats();
-    writeSave(true);
+    playSound('buy');
     updateHUD();
     renderShop();
-    showMilestoneBanner(`💰 ${bought}個のアイテムを一括購入しました！`);
+    alert(`「${item.name}」を購入しました！`);
+  } else {
+    playSound('explosion');
+    alert('しゅばっくすが足りません！');
   }
 }
 
-// 初期起動
-syncPlayerStats();
-updateHUD();
-applyRouteView(getInitialRoute());
-loop();
+function triggerDash() {
+  playSound('dash');
+}
+
+function gameLoop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (gameState === 'playing') {
+    ctx.fillStyle = '#00f3ff';
+    ctx.beginPath();
+    ctx.arc(playerX, playerY, 12, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (Math.random() < 0.03) {
+      enemies.push({ x: Math.random() * canvas.width, y: -20, speed: 2 + Math.random() * 2 });
+    }
+
+    ctx.fillStyle = '#ff2a85';
+    enemies.forEach((en, index) => {
+      en.y += en.speed;
+      ctx.beginPath();
+      ctx.arc(en.x, en.y, 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      const dist = Math.hypot(playerX - en.x, playerY - en.y);
+      if (dist < 22) {
+        enemies.splice(index, 1);
+        hp -= 20;
+        playSound('explosion');
+        if (hp <= 0) {
+          gameState = 'gameover';
+          saveData.totalKills += 1;
+          document.getElementById('gameover-screen').classList.remove('hidden');
+        }
+      }
+    });
+
+    updateHUD();
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+loadSave();
+const initialPath = location.pathname.replace(/^\//, '') || 'home';
+applyRouteView(initialPath);
+gameLoop();
 </script>
 </body>
 </html>
