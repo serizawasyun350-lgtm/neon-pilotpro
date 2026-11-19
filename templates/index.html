@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>NEON PILOT - マウスカーソル対応版</title>
+<title>NEON PILOT - 銃撃マーク・エフェクト完全版</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&family=Orbitron:wght@600;800;900&display=swap');
 
@@ -22,17 +22,15 @@
     background-color: #050814;
     font-family: 'M PLUS Rounded 1c', sans-serif;
     color: #ffffff;
-    cursor: default;
   }
 
   canvas {
     display: block;
     width: 100%;
     height: 100%;
-    cursor: crosshair; /* ゲーム中は十字照準カーソル */
+    cursor: crosshair;
   }
 
-  /* クリックできる要素すべてにポインター（指先マーク）を適用 */
   button, .nav-link, .filter-btn, .diff-btn, .shop-item, .admin-cmd-btn, input {
     cursor: pointer !important;
   }
@@ -206,9 +204,6 @@
     vertical-align: middle;
   }
 
-  .x2-badge { background: linear-gradient(90deg, #ff2a85, #ffd700); color: #050814; }
-  .plus-badge { background: linear-gradient(90deg, #00f3ff, #00ff88); color: #050814; }
-  .clone-badge { background: linear-gradient(90deg, #00e5ff, #7c4dff); color: #ffffff; }
   .ultimate-badge { background: linear-gradient(90deg, #ff0055, #ffd700, #00ff88, #00f3ff, #b829ff); color: #fff; border: 1px solid #fff; text-shadow: 0 1px 3px #000; box-shadow: 0 0 10px #ffd700; }
 
   .kill-box {
@@ -246,10 +241,8 @@
   }
 
   .hud-btn.shop-btn { border-color: #ffd700; color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
-  .hud-btn.admin-btn { border-color: #d55cff; color: #f0b8ff; background: rgba(65, 15, 95, 0.9); box-shadow: 0 0 16px rgba(184, 41, 255, 0.55); }
   .hud-btn.save-btn { border-color: #00ff88; color: #00ff88; }
   .hud-btn.save-quit-btn { border-color: #ff6688; color: #ff99aa; background: rgba(60, 14, 28, 0.9); }
-  .hud-btn.auto-on { border-color: #00ff88; color: #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.45); }
   .hud-btn.sound-on { border-color: #00ff88; color: #00ff88; box-shadow: 0 0 12px rgba(0, 255, 136, 0.4); }
   .hud-btn.sound-off { border-color: #6b7b9c; color: #6b7b9c; background: rgba(20, 24, 38, 0.9); }
 
@@ -260,35 +253,6 @@
     padding: 3px 10px;
     border-radius: 8px;
   }
-
-  #admin-bar {
-    position: absolute;
-    top: 265px;
-    right: 16px;
-    padding: 10px 12px;
-    border-color: #d55cff;
-    background: rgba(28, 10, 48, 0.94);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    pointer-events: auto;
-    min-width: 245px;
-  }
-
-  .admin-cmd-btn {
-    padding: 6px 10px;
-    border-radius: 8px;
-    border: 1px solid #d55cff;
-    background: rgba(184, 41, 255, 0.22);
-    color: #fff;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-    font-weight: 700;
-    font-size: 11.5px;
-    cursor: pointer;
-    text-align: left;
-  }
-
-  .admin-cmd-btn:hover { background: rgba(184, 41, 255, 0.45); }
 
   #milestone-banner {
     position: absolute;
@@ -380,7 +344,6 @@
     margin-bottom: 6px;
   }
 
-  /* 難易度セレクター */
   .diff-selector {
     display: flex;
     flex-wrap: wrap;
@@ -426,22 +389,6 @@
   }
 
   .primary-btn:hover { transform: scale(1.05); }
-
-  /* ランキングテーブル */
-  .rank-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 14px;
-    font-size: 13px;
-  }
-
-  .rank-table th, .rank-table td {
-    padding: 10px;
-    border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-    text-align: left;
-  }
-
-  .rank-table th { color: #00f3ff; }
 
   /* ショップモーダル */
   #shop-modal .shop-container {
@@ -494,19 +441,6 @@
     background: #00f3ff;
     color: #050814;
     border-color: #00f3ff;
-  }
-
-  .bulk-buy-btn {
-    margin-left: auto;
-    padding: 5px 13px;
-    border-radius: 20px;
-    border: 1px solid #ffd700;
-    background: linear-gradient(90deg, #ffd700, #ff9900);
-    color: #050814;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-    font-weight: 900;
-    font-size: 11px;
-    cursor: pointer;
   }
 
   .shop-grid {
@@ -626,29 +560,14 @@
 
     <div class="btn-group">
       <button type="button" id="sound-toggle-btn" class="hud-btn sound-on" onclick="toggleSound()">🔊 SOUND: ON</button>
-      <button type="button" id="toggle-auto-btn" class="hud-btn hidden" onclick="toggleAutoClick()">⚡ AUTO: OFF</button>
-      <button type="button" id="toggle-admin-btn" class="hud-btn admin-btn hidden" onclick="toggleAdminPanel()">👑 ADMIN</button>
       <button type="button" class="hud-btn shop-btn" onclick="navigateTo(event, 'shop')">🛒 ショップ & ランク</button>
       <button type="button" class="hud-btn save-btn" onclick="manualSave()">💾 セーブ</button>
-      <button type="button" id="save-and-quit-btn" class="hud-btn save-quit-btn hidden" onclick="saveAndQuit()">🚪 セーブして終了</button>
+      <button type="button" id="save-and-quit-btn" class="hud-btn save-quit-btn hidden" onclick="saveAndQuit()">🚪 ホームへ</button>
     </div>
-    <div id="save-status-text">💾 localStorage 自動セーブ有効</div>
-  </div>
-
-  <!-- ADMIN パネル -->
-  <div id="admin-bar" class="hud-panel hidden">
-    <div style="font-size:12px; font-weight:900; color:#f0b8ff; border-bottom:1px solid rgba(213,92,255,0.4); padding-bottom:4px;">
-      👑 OP & ADMIN コマンド
-    </div>
-    <button type="button" class="admin-cmd-btn" id="god-mode-btn" onclick="toggleGodMode()">🛡️ 無敵モード (GOD): OFF</button>
-    <button type="button" class="admin-cmd-btn" onclick="adminNukeEnemies()">💥 画面内の敵を全滅 (NUKE)</button>
-    <button type="button" class="admin-cmd-btn" onclick="adminGrantShubux(100000)">💰 +100,000 しゅばっくす</button>
-    <button type="button" class="admin-cmd-btn" onclick="adminGrantShubux(1e26)">🌈 +100𥝱 しゅばっくす</button>
-    <button type="button" class="admin-cmd-btn" onclick="adminFullHeal()">💚 シールド完全回復</button>
+    <div id="save-status-text">💾 自動セーブ有効</div>
   </div>
 
   <div id="milestone-banner">🏆 マイルストーン達成！</div>
-
   <button type="button" id="dash-mobile-btn" onclick="triggerDash()">⚡ DASH (右クリック)</button>
 </div>
 
@@ -657,7 +576,7 @@
   <div class="modal-card">
     <div class="game-title">NEON PILOT</div>
     <p style="color:#a8c8ff; font-size:13.5px; line-height:1.6; margin-bottom:8px;">
-      サウンド＆マウスカーソル対応版！難易度を選んで出撃しよう！
+      銃撃エフェクト＆マーク対応版！難易度を選んで出撃しよう！
     </p>
 
     <div style="font-size:12px; color:#9be7ff; font-weight:900; margin-top:8px;">🎯 難易度を選択</div>
@@ -667,31 +586,25 @@
     <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:10px;">
       <button type="button" class="primary-btn" onclick="navigateTo(event, 'game')">🚀 出撃する (/game)</button>
       <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo(event, 'shop')">🛒 ショップ (/shop)</button>
-      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#b829ff,#ff2a85); color:#fff;" onclick="navigateTo(event, 'ranking')">🏆 ランキング (/ranking)</button>
+      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#00f3ff,#38bdf8);" onclick="navigateTo(event, 'ranking')">🏆 ランキング</button>
     </div>
   </div>
 </div>
 
-<!-- /ranking ランキング画面 -->
+<!-- ランキング画面 -->
 <div id="ranking-screen" class="overlay-screen hidden">
   <div class="modal-card">
-    <h2 style="font-family:'Orbitron'; font-size:26px; color:#ffd700; margin-bottom:6px;">🏆 ランキング</h2>
-    <table class="rank-table">
-      <thead>
-        <tr><th>順位</th><th>パイロット</th><th>ハイスコア</th><th>累計撃破</th></tr>
-      </thead>
-      <tbody id="ranking-tbody"></tbody>
-    </table>
-    <button type="button" class="primary-btn" style="margin-top:16px;" onclick="navigateTo(event, 'home')">🏠 ホームに戻る</button>
+    <h2 style="font-family:'Orbitron'; font-size:26px; color:#ffd700; margin-bottom:6px;">🏆 ランクボード</h2>
+    <button type="button" class="primary-btn" style="margin-top:16px;" onclick="navigateTo(event, 'home')">🏠 ホーム</button>
   </div>
 </div>
 
-<!-- /settings 設定画面 -->
+<!-- 設定画面 -->
 <div id="settings-screen" class="overlay-screen hidden">
   <div class="modal-card">
     <h2 style="font-family:'Orbitron'; font-size:26px; color:#00f3ff; margin-bottom:8px;">⚙️ 設定</h2>
     <div class="diff-selector" id="settings-diff-selector"></div>
-    <button type="button" class="primary-btn" onclick="navigateTo(event, 'game')">🚀 出撃</button>
+    <button type="button" class="primary-btn" onclick="navigateTo(event, 'home')">🏠 ホーム</button>
   </div>
 </div>
 
@@ -822,7 +735,7 @@ const DIFFICULTY_CONFIG = {
   god: { id: 'god', label: '🟣 GOD', rewardMult: 25.0 }
 };
 
-const SAVE_KEY = 'neon_pilot_shubux_save_v14';
+const SAVE_KEY = 'neon_pilot_shubux_save_v15';
 let saveData = {
   shubux: 0,
   totalKills: 0,
@@ -841,15 +754,6 @@ const SHOP_ITEMS = [
     price: 100000,
     cardClass: 'ultimate-pack',
     desc: '【機能100,000】獲得量 100,000倍・攻撃力 100,000倍・シールド +100,000・毎秒 +100,000 自動入金！'
-  },
-  {
-    id: 'starter_pack',
-    category: 'special',
-    name: '🌟 スターターパック',
-    tag: 'お得',
-    price: 100,
-    desc: '+1,000しゅばっくす支給＆攻撃力2倍！',
-    effect: { shubuxFlat: 1000, dmgMult: 2 }
   }
 ];
 
@@ -860,6 +764,8 @@ let maxHp = 100;
 let playerX = window.innerWidth / 2;
 let playerY = window.innerHeight / 2;
 let enemies = [];
+let bullets = [];
+let effects = []; // 銃撃の火花やヒットマーク用のエフェクトループ
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -876,11 +782,27 @@ window.addEventListener('mousemove', (e) => {
   playerY = e.clientY;
 });
 
-window.addEventListener('click', () => {
+// 銃撃アクション（クリックで弾発射＆火花エフェクト）
+window.addEventListener('click', (e) => {
   if (gameState === 'playing') {
     saveData.shubux += 5;
     score += 10;
     playSound('laser');
+
+    // 銃口の火花（マズルフラッシュ）エフェクトを生成
+    const angle = Math.atan2(e.clientY - playerY, e.clientX - playerX);
+    const muzzleX = playerX + Math.cos(angle) * 22;
+    const muzzleY = playerY + Math.sin(angle) * 22;
+    effects.push({ x: muzzleX, y: muzzleY, radius: 18, color: '#00f3ff', life: 6 });
+
+    // 弾を発射して敵を攻撃
+    bullets.push({
+      x: muzzleX,
+      y: muzzleY,
+      vx: Math.cos(angle) * 14,
+      vy: Math.sin(angle) * 14
+    });
+
     updateHUD();
   }
 });
@@ -906,26 +828,19 @@ function applyRouteView(route) {
   document.getElementById('settings-screen').classList.add('hidden');
   document.getElementById('gameover-screen').classList.add('hidden');
 
-  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-
   if (route === 'home') {
     gameState = 'start';
     document.getElementById('home-screen').classList.remove('hidden');
-    document.getElementById('nav-home').classList.add('active');
     renderDifficultySelectors();
   } else if (route === 'game') {
     if (gameState !== 'playing') startGame();
-    document.getElementById('nav-game').classList.add('active');
   } else if (route === 'shop') {
     document.getElementById('shop-modal').classList.remove('hidden');
-    document.getElementById('nav-shop').classList.add('active');
     renderShop();
   } else if (route === 'ranking') {
     document.getElementById('ranking-screen').classList.remove('hidden');
-    document.getElementById('nav-ranking').classList.add('active');
   } else if (route === 'settings') {
     document.getElementById('settings-screen').classList.remove('hidden');
-    document.getElementById('nav-settings').classList.add('active');
     renderDifficultySelectors();
   }
 }
@@ -956,9 +871,10 @@ function startGame() {
   maxHp = 100;
   hp = maxHp;
   enemies = [];
+  bullets = [];
+  effects = [];
   document.querySelectorAll('.overlay-screen').forEach(el => el.classList.add('hidden'));
   history.pushState({ route: 'game' }, '', '/game');
-  document.getElementById('nav-game').classList.add('active');
   playSound('dash');
 }
 
@@ -1038,20 +954,67 @@ function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (gameState === 'playing') {
+    // 自機の描画（マウス方向を向く）
+    const angle = Math.atan2(playerY - playerY, playerX - playerX);
+    ctx.save();
+    ctx.translate(playerX, playerY);
+    ctx.rotate(angle);
     ctx.fillStyle = '#00f3ff';
     ctx.beginPath();
-    ctx.arc(playerX, playerY, 12, 0, Math.PI * 2);
+    ctx.moveTo(16, 0);
+    ctx.lineTo(-10, -10);
+    ctx.lineTo(-6, 0);
+    ctx.lineTo(-10, 10);
+    ctx.closePath();
     ctx.fill();
+    ctx.restore();
 
-    if (Math.random() < 0.03) {
-      enemies.push({ x: Math.random() * canvas.width, y: -20, speed: 2 + Math.random() * 2 });
+    // 弾の更新・描画
+    for (let i = bullets.length - 1; i >= 0; i--) {
+      const b = bullets[i];
+      b.x += b.vx;
+      b.y += b.vy;
+
+      ctx.fillStyle = '#00ffff';
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 画面外に出たら削除
+      if (b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
+        bullets.splice(i, 1);
+        continue;
+      }
+
+      // 敵との当たり判定
+      for (let j = enemies.length - 1; j >= 0; j--) {
+        const en = enemies[j];
+        if (Math.hypot(b.x - en.x, b.y - en.y) < en.radius + 6) {
+          // ヒットマーク（着弾エフェクト）を生成
+          effects.push({ x: en.x, y: en.y, radius: 14, color: '#ffea00', life: 8 });
+          bullets.splice(i, 1);
+
+          // 敵撃破
+          enemies.splice(j, 1);
+          score += 50;
+          saveData.totalKills += 1;
+          playSound('explosion');
+          break;
+        }
+      }
     }
 
+    // 敵の自動生成
+    if (Math.random() < 0.03) {
+      enemies.push({ x: Math.random() * canvas.width, y: -20, radius: 12, speed: 2 + Math.random() * 2 });
+    }
+
+    // 敵の描画と移動
     ctx.fillStyle = '#ff2a85';
     enemies.forEach((en, index) => {
       en.y += en.speed;
       ctx.beginPath();
-      ctx.arc(en.x, en.y, 10, 0, Math.PI * 2);
+      ctx.arc(en.x, en.y, en.radius, 0, Math.PI * 2);
       ctx.fill();
 
       const dist = Math.hypot(playerX - en.x, playerY - en.y);
@@ -1065,6 +1028,19 @@ function gameLoop() {
         }
       }
     });
+
+    // 銃撃・ヒットエフェクトの描画
+    for (let i = effects.length - 1; i >= 0; i--) {
+      const ef = effects[i];
+      ef.life--;
+      ef.radius += 1.5;
+      ctx.strokeStyle = ef.color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(ef.x, ef.y, ef.radius, 0, Math.PI * 2);
+      ctx.stroke();
+      if (ef.life <= 0) effects.splice(i, 1);
+    }
 
     updateHUD();
   }
