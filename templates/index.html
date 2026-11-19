@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>NEON PILOT - ショップ連動＆シューティング完全版</title>
+<title>NEON PILOT - ショップ・銃撃完全版</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&family=Orbitron:wght@600;800;900&display=swap');
 
@@ -136,13 +136,6 @@
     transition: width 0.15s ease;
   }
 
-  #dash-bar {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, #b829ff, #ff2a85);
-    transition: width 0.08s linear;
-  }
-
   #top-right {
     position: absolute;
     top: 16px;
@@ -190,25 +183,6 @@
     margin-left: 4px;
   }
 
-  .badge-pill {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 900;
-    padding: 2px 7px;
-    border-radius: 6px;
-    margin-left: 4px;
-    vertical-align: middle;
-  }
-
-  .x2-badge { background: linear-gradient(90deg, #ff2a85, #ffd700); color: #050814; }
-  .plus-badge { background: linear-gradient(90deg, #00f3ff, #00ff88); color: #050814; }
-  .clone-badge { background: linear-gradient(90deg, #00e5ff, #7c4dff); color: #ffffff; }
-  .diamond-badge { background: linear-gradient(90deg, #00f3ff, #bae6fd); color: #050814; box-shadow: 0 0 8px #00f3ff; }
-  .gold-badge { background: linear-gradient(90deg, #ffd700, #f59e0b); color: #050814; box-shadow: 0 0 8px #ffd700; }
-  .rainbow-badge { background: linear-gradient(90deg, #ff3366, #ffd700, #00ff88, #00f3ff, #b829ff); color: #fff; text-shadow: 0 1px 2px #000; }
-  .admin-badge { background: linear-gradient(90deg, #b829ff, #00f3ff); color: #ffffff; }
-  .ultimate-badge { background: linear-gradient(90deg, #ff0055, #ffd700, #00ff88, #00f3ff, #b829ff); color: #fff; border: 1px solid #fff; text-shadow: 0 1px 3px #000; box-shadow: 0 0 10px #ffd700; }
-
   .kill-box {
     padding: 8px 14px;
     border-color: rgba(255, 75, 130, 0.5);
@@ -244,10 +218,7 @@
   }
 
   .hud-btn.shop-btn { border-color: #ffd700; color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
-  .hud-btn.admin-btn { border-color: #d55cff; color: #f0b8ff; background: rgba(65, 15, 95, 0.9); box-shadow: 0 0 16px rgba(184, 41, 255, 0.55); }
   .hud-btn.save-btn { border-color: #00ff88; color: #00ff88; }
-  .hud-btn.save-quit-btn { border-color: #ff6688; color: #ff99aa; background: rgba(60, 14, 28, 0.9); }
-  .hud-btn.auto-on { border-color: #00ff88; color: #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.45); }
 
   #save-status-text {
     font-size: 11px;
@@ -255,87 +226,6 @@
     background: rgba(5, 12, 28, 0.75);
     padding: 3px 10px;
     border-radius: 8px;
-  }
-
-  #admin-bar {
-    position: absolute;
-    top: 265px;
-    right: 16px;
-    padding: 10px 12px;
-    border-color: #d55cff;
-    background: rgba(28, 10, 48, 0.94);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    pointer-events: auto;
-    min-width: 245px;
-  }
-
-  .admin-cmd-btn {
-    padding: 6px 10px;
-    border-radius: 8px;
-    border: 1px solid #d55cff;
-    background: rgba(184, 41, 255, 0.22);
-    color: #fff;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-    font-weight: 700;
-    font-size: 11.5px;
-    cursor: pointer;
-    text-align: left;
-  }
-
-  .admin-cmd-btn:hover { background: rgba(184, 41, 255, 0.45); }
-
-  #milestone-banner {
-    position: absolute;
-    top: 85px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-30px);
-    background: linear-gradient(90deg, rgba(255, 180, 0, 0.94), rgba(255, 50, 120, 0.94));
-    border: 2px solid #fff;
-    border-radius: 50px;
-    padding: 10px 28px;
-    font-weight: 900;
-    font-size: 15px;
-    color: #fff;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
-    box-shadow: 0 0 30px rgba(255, 200, 0, 0.8);
-    opacity: 0;
-    transition: all 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-    pointer-events: none;
-    white-space: nowrap;
-    z-index: 95;
-  }
-
-  #milestone-banner.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  #bottom-left {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    padding: 10px 14px;
-    font-size: 12px;
-    color: #b0c8f0;
-    line-height: 1.5;
-  }
-
-  #dash-mobile-btn {
-    position: absolute;
-    bottom: 175px;
-    right: 20px;
-    pointer-events: auto;
-    padding: 12px 18px;
-    border-radius: 50px;
-    border: 2px solid #ff2a85;
-    background: rgba(255, 42, 133, 0.25);
-    color: #fff;
-    font-weight: 900;
-    font-size: 13px;
-    cursor: pointer;
-    box-shadow: 0 0 15px rgba(255, 42, 133, 0.5);
   }
 
   /* 画面・モーダル共通 */
@@ -422,28 +312,13 @@
 
   .primary-btn:hover { transform: scale(1.05); }
 
-  .rank-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 14px;
-    font-size: 13px;
-  }
-
-  .rank-table th, .rank-table td {
-    padding: 10px;
-    border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-    text-align: left;
-  }
-
-  .rank-table th { color: #00f3ff; }
-
-  /* ショップモーダル */
-  #shop-modal .shop-container {
+  /* ショップ画面コンテナ */
+  .shop-container {
     background: #091024;
     border: 2px solid #ffd700;
     border-radius: 20px;
     width: 96%;
-    max-width: 1200px;
+    max-width: 1000px;
     max-height: 88vh;
     display: flex;
     flex-direction: column;
@@ -490,25 +365,12 @@
     border-color: #00f3ff;
   }
 
-  .bulk-buy-btn {
-    margin-left: auto;
-    padding: 5px 13px;
-    border-radius: 20px;
-    border: 1px solid #ffd700;
-    background: linear-gradient(90deg, #ffd700, #ff9900);
-    color: #050814;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-    font-weight: 900;
-    font-size: 11px;
-    cursor: pointer;
-  }
-
   .shop-grid {
     flex: 1;
     overflow-y: auto;
     padding: 16px 20px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 12px;
   }
 
@@ -516,7 +378,7 @@
     background: rgba(18, 28, 60, 0.85);
     border: 1.5px solid rgba(0, 243, 255, 0.28);
     border-radius: 14px;
-    padding: 13px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -524,7 +386,7 @@
   }
 
   .shop-item:hover { transform: translateY(-2px); border-color: #ffd700; }
-  .shop-item.owned { border-color: rgba(120, 255, 180, 0.45); }
+  .shop-item.owned { border-color: rgba(120, 255, 180, 0.45); background: rgba(15, 35, 45, 0.85); }
 
   .buy-btn {
     width: 100%;
@@ -537,6 +399,7 @@
     cursor: pointer;
     background: linear-gradient(90deg, #ffd700, #ffaa00);
     color: #080c1a;
+    margin-top: 10px;
   }
   .buy-btn:disabled { background: rgba(255, 255, 255, 0.12); color: #6b7b9c; cursor: not-allowed; }
 </style>
@@ -562,12 +425,6 @@
     </div>
     <div class="bar-bg"><div id="hp-bar"></div></div>
 
-    <div class="stat-row">
-      <span class="label-sm">SHOCKWAVE DASH</span>
-      <span id="dash-text" class="val-orbitron" style="font-size:12px; color:#ff66aa;">READY</span>
-    </div>
-    <div class="bar-bg"><div id="dash-bar"></div></div>
-
     <div class="stat-row" style="margin-bottom:0; margin-top:4px;">
       <span class="label-sm">WAVE <span id="wave-num" class="val-orbitron" style="color:#fff;">1</span></span>
       <span class="label-sm">SCORE <span id="score-num" class="val-orbitron" style="color:#00f3ff;">0</span></span>
@@ -592,38 +449,27 @@
     </div>
 
     <div class="btn-group">
-      <button type="button" id="toggle-auto-btn" class="hud-btn hidden" onclick="toggleAutoClick()">⚡ AUTO: OFF</button>
-      <button type="button" id="toggle-admin-btn" class="hud-btn admin-btn hidden" onclick="toggleAdminPanel()">👑 ADMIN</button>
       <button type="button" class="hud-btn shop-btn" onclick="navigateTo(event, 'shop')">🛒 ショップ & ランク</button>
       <button type="button" class="hud-btn save-btn" onclick="manualSave()">💾 セーブ</button>
-      <button type="button" id="save-and-quit-btn" class="hud-btn save-quit-btn hidden" onclick="saveAndQuit()">🚪 セーブして終了</button>
     </div>
-    <div id="save-status-text">💾 localStorage 自動セーブ有効</div>
+    <div id="save-status-text">💾 自動セーブ有効</div>
   </div>
-
-  <div id="milestone-banner">🏆 撃破マイルストーン達成！ +150 しゅばっくす！</div>
 
   <div id="bottom-left" class="hud-panel">
-    🖱️ <b>マウス / タッチ移動:</b> 自機が移動<br>
-    🔥 <b>クリック / タップ:</b> 銃弾を発射して敵を攻撃・撃破！<br>
-    ⚡ <b>右クリック / SPACE:</b> ショックウェーブダッシュ
+    🖱️ <b>移動:</b> マウス・タッチ追従<br>
+    🔥 <b>攻撃:</b> クリックで銃弾（マーク付き）を発射！
   </div>
-
-  <button type="button" id="dash-mobile-btn" onclick="triggerDash()">⚡ DASH</button>
 </div>
 
 <!-- ホーム画面 -->
 <div id="home-screen" class="overlay-screen">
   <div class="modal-card">
     <div class="game-title">NEON PILOT</div>
-    <p style="color:#a8c8ff; font-size:13.5px; line-height:1.6; margin-bottom:8px;">
-      銃弾（マーク付き）を発射して敵を攻撃！<b style="color:#ffd700;">「しゅばっくす」</b>を稼いでショップで強力なアイテムやランクを購入しよう！
+    <p style="color:#a8c8ff; font-size:13.5px; line-height:1.6; margin-bottom:12px;">
+      銃弾マークを発射して敵を撃破！<b style="color:#ffd700;">「しゅばっくす」</b>を稼いでショップで強力なアイテムやランクをゲットしよう！
     </p>
     <div class="diff-selector" id="home-diff-selector"></div>
-    <div id="home-diff-desc" style="font-size:12px; color:#00ff88; margin-bottom:8px;">🔵 NORMAL：標準バランス</div>
-    <div id="start-save-summary" style="background:rgba(0,243,255,0.1); border:1px solid rgba(0,243,255,0.35); border-radius:10px; padding:10px; font-size:13px; color:#9be7ff; margin-bottom:10px;">
-      💾 セーブデータ読込中...
-    </div>
+    <div id="home-diff-desc" style="font-size:12px; color:#00ff88; margin-bottom:12px;">🔵 NORMAL：標準バランス</div>
     <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
       <button type="button" class="primary-btn" onclick="navigateTo(event, 'game')">🚀 出撃する (/game)</button>
       <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo(event, 'shop')">🛒 ショップ (/shop)</button>
@@ -635,10 +481,7 @@
 <div id="ranking-screen" class="overlay-screen hidden">
   <div class="modal-card">
     <h2 style="font-family:'Orbitron'; font-size:26px; color:#ffd700; margin-bottom:6px;">🏆 LEADERBOARD</h2>
-    <table class="rank-table">
-      <thead><tr><th>順位</th><th>パイロット</th><th>スコア</th><th>撃破</th></tr></thead>
-      <tbody id="ranking-tbody"><tr><td>#1</td><td>PILOT_01</td><td style="color:#00f3ff">0</td><td>0体</td></tr></tbody>
-    </table>
+    <p style="color:#a8c8ff; font-size:13px; margin-bottom:10px;">現在のハイスコアと戦績レコード</p>
     <button type="button" class="primary-btn" style="margin-top:16px;" onclick="navigateTo(event, 'home')">🏠 ホームに戻る</button>
   </div>
 </div>
@@ -656,13 +499,15 @@
 <div id="gameover-screen" class="overlay-screen hidden">
   <div class="modal-card" style="border-color:#ff2a85;">
     <h2 style="font-family:'Orbitron'; font-size:32px; color:#ff2a85; margin-bottom:10px;">SHIELD DEPLETED</h2>
-    <p style="color:#cde0ff; margin-bottom:14px;">獲得した「しゅばっくす」はすべてセーブされました！</p>
-    <button type="button" class="primary-btn" onclick="startGame()">もう一度出撃</button>
-    <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo(event, 'shop')">🛒 ショップ</button>
+    <p style="color:#cde0ff; margin-bottom:14px;">獲得した「しゅばっくす」はすべて自動セーブされました！</p>
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button type="button" class="primary-btn" onclick="startGame()">もう一度出撃</button>
+      <button type="button" class="primary-btn" style="background:linear-gradient(90deg,#ffd700,#ff9900);" onclick="navigateTo(event, 'shop')">🛒 ショップ</button>
+    </div>
   </div>
 </div>
 
-<!-- ショップモーダル -->
+<!-- ショップ画面（モーダル） -->
 <div id="shop-modal" class="overlay-screen hidden">
   <div class="shop-container">
     <div class="shop-header">
@@ -672,10 +517,9 @@
       <div style="display:flex; align-items:center; gap:10px;">
         <div style="text-align:right;">
           <div style="font-size:11px; color:#ffe680;">所持残高</div>
-          <div class="val-orbitron" style="font-size:20px; color:#ffd700;"><span id="shop-shubux">0</span> しゅばっくす</div>
+          <div class="val-orbitron" style="font-size:18px; color:#ffd700;"><span id="shop-shubux">0</span> しゅばっくす</div>
         </div>
-        <button type="button" class="hud-btn save-quit-btn" onclick="saveAndQuit()">🏠 ホームへ</button>
-        <button type="button" class="hud-btn" style="border-color:#00ff88; color:#00ff88;" onclick="navigateTo(event, 'game')">🚀 ゲームに戻る</button>
+        <button type="button" class="hud-btn" style="border-color:#00ff88; color:#00ff88;" onclick="navigateTo(event, 'game')">🚀 ゲームへ</button>
       </div>
     </div>
     <div class="shop-filters" id="shop-filters">
@@ -688,9 +532,9 @@
 </div>
 
 <script>
-const SAVE_KEY = 'neon_pilot_shubux_save_v9';
+const SAVE_KEY = 'neon_pilot_shubux_save_v10';
 let saveData = {
-  shubux: 1000,
+  shubux: 500,
   totalKills: 0,
   highScore: 0,
   pilotName: 'PILOT_01',
@@ -705,26 +549,32 @@ const DIFFICULTY_CONFIG = {
 };
 
 const SHOP_ITEMS = [
-  { id: 'rank_bronze', category: 'rank', name: '🥉 ブロンズランク', price: 10000, desc: '報酬 1.5倍・攻撃力アップ' },
-  { id: 'rank_silver', category: 'rank', name: '🥈 シルバーランク', price: 100000, desc: '報酬 3倍・強力な弾丸' },
-  { id: 'auto_click', category: 'weapon', name: '⚡ オート連射', price: 100, desc: '自動で銃弾を連射する' },
-  { id: 'plasma_gun', category: 'weapon', name: '🔥 プラズマガン強化', price: 400, desc: '攻撃力と弾丸スピードがアップ' }
+  { id: 'rank_bronze', category: 'rank', name: '🥉 ブロンズランク', price: 5000, desc: '報酬 1.5倍 ＆ 初期シールドアップ' },
+  { id: 'rank_silver', category: 'rank', name: '🥈 シルバーランク', price: 25000, desc: '報酬 3倍 ＆ 高性能アーマー' },
+  { id: 'auto_click', category: 'weapon', name: '⚡ オート連射機能', price: 100, desc: 'クリックしなくても自動で銃弾を連射！' },
+  { id: 'plasma_gun', category: 'weapon', name: '🔥 プラズマガン強化', price: 300, desc: '同時発射弾数が3WAYに増加して広範囲攻撃！' }
 ];
 
-// --- ルーティング ---
+// --- ルーティング管理 ---
 function navigateTo(event, route) {
   if (event) event.preventDefault();
-  try { window.history.pushState({ route }, '', `/${route}`); } catch (e) {}
+  try {
+    window.history.pushState({ route }, '', `/${route}`);
+  } catch (e) {}
   applyRouteView(route);
 }
 
 window.addEventListener('popstate', () => {
-  applyRouteView(window.location.pathname.replace('/', '') || 'home');
+  const path = window.location.pathname.replace('/', '') || 'home';
+  applyRouteView(path);
 });
 
 function applyRouteView(route) {
+  const validRoutes = ['home', 'game', 'shop', 'ranking', 'settings'];
+  const activeRoute = validRoutes.includes(route) ? route : 'home';
+
   document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-  const nav = document.getElementById(`nav-${route}`);
+  const nav = document.getElementById(`nav-${activeRoute}`);
   if (nav) nav.classList.add('active');
 
   document.getElementById('home-screen').classList.add('hidden');
@@ -733,18 +583,18 @@ function applyRouteView(route) {
   document.getElementById('settings-screen').classList.add('hidden');
   document.getElementById('gameover-screen').classList.add('hidden');
 
-  if (route === 'home') {
+  if (activeRoute === 'home') {
     gameState = 'start';
     document.getElementById('home-screen').classList.remove('hidden');
     renderDifficultySelectors();
-  } else if (route === 'game') {
+  } else if (activeRoute === 'game') {
     if (gameState !== 'playing') startGame();
-  } else if (route === 'shop') {
+  } else if (activeRoute === 'shop') {
     document.getElementById('shop-modal').classList.remove('hidden');
     renderShop();
-  } else if (route === 'ranking') {
+  } else if (activeRoute === 'ranking') {
     document.getElementById('ranking-screen').classList.remove('hidden');
-  } else if (route === 'settings') {
+  } else if (activeRoute === 'settings') {
     document.getElementById('settings-screen').classList.remove('hidden');
     renderDifficultySelectors();
   }
@@ -770,7 +620,7 @@ function renderDifficultySelectors() {
   });
 }
 
-// --- セーブ・ロード ---
+// --- セーブ機能 ---
 function loadSave() {
   try {
     const raw = localStorage.getItem(SAVE_KEY);
@@ -783,11 +633,10 @@ function writeSave() {
   updateHUD();
 }
 function manualSave() { writeSave(); alert('セーブしました！'); }
-function saveAndQuit() { writeSave(); navigateTo(null, 'home'); }
 
 loadSave();
 
-// --- ショップ描画 ---
+// --- ショップ描画処理 ---
 let currentShopFilter = 'all';
 function setShopFilter(filter, btn) {
   currentShopFilter = filter;
@@ -811,7 +660,7 @@ function renderShop() {
         <div style="font-size:11.5px; color:#a8c0e8; margin-bottom:10px;">${item.desc}</div>
       </div>
       <div>
-        <div style="font-size:12px; color:#ffd700; font-weight:800; margin-bottom:6px;">価格: ${item.price.toLocaleString()} しゅばっくす</div>
+        <div style="font-size:12px; color:#ffd700; font-weight:800; margin-bottom:4px;">価格: ${item.price.toLocaleString()} しゅばっくす</div>
         <button type="button" class="buy-btn" ${owned ? 'disabled' : ''} onclick="buyItem('${item.id}', ${item.price})">
           ${owned ? '✅ 購入済み' : '🛒 購入する'}
         </button>
@@ -827,21 +676,21 @@ function buyItem(id, price) {
     saveData.ownedItems[id] = true;
     writeSave();
     renderShop();
-    alert('購入しました！');
+    alert('アイテムを購入しました！');
   } else {
     alert('しゅばっくすが足りません！');
   }
 }
 
 // ==========================================
-// 4. ゲーム本体（銃弾マークつき攻撃システム）
+// ゲーム本体 & 銃撃マーク攻撃システム
 // ==========================================
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 let gameState = 'start';
 let score = 0, wave = 1;
-let player = { x: 0, y: 0, hp: 100, maxHp: 100, dashCooldown: 0 };
-let bullets = [], enemies = [], particles = [];
+let player = { x: 0, y: 0, hp: 100, maxHp: 100 };
+let bullets = [], enemies = [], effects = [];
 let mouse = { x: 0, y: 0, down: false };
 
 window.addEventListener('resize', resizeCanvas);
@@ -854,61 +703,51 @@ resizeCanvas();
 window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
 window.addEventListener('mousedown', () => { mouse.down = true; fireBullet(); });
 window.addEventListener('mouseup', () => { mouse.down = false; });
-window.addEventListener('contextmenu', e => { e.preventDefault(); triggerDash(); });
-window.addEventListener('keydown', e => { if (e.code === 'Space') triggerDash(); });
 
 function startGame() {
   gameState = 'playing';
   score = 0; wave = 1;
   player.x = canvas.width / 2;
   player.y = canvas.height / 2;
-  player.hp = player.maxHp = 100 + (saveData.ownedItems['rank_bronze'] ? 500 : 0);
-  bullets = []; enemies = []; particles = [];
+  player.hp = player.maxHp = 100 + (saveData.ownedItems['rank_bronze'] ? 400 : 0);
+  bullets = []; enemies = []; effects = [];
   document.getElementById('gameover-screen').classList.add('hidden');
   navigateTo(null, 'game');
   spawnWave();
 }
 
 function spawnWave() {
-  for (let i = 0; i < 5 + wave * 2; i++) {
+  for (let i = 0; i < 4 + wave * 2; i++) {
     enemies.push({
       x: Math.random() * canvas.width,
-      y: -50 - Math.random() * 200,
-      radius: 18,
-      speed: 1.5 + Math.random() * 1.2,
-      hp: 3 + wave
+      y: -40 - Math.random() * 150,
+      radius: 16,
+      speed: 1.4 + Math.random() * 1.2,
+      hp: 2 + wave
     });
   }
 }
 
-// 銃弾を発射する関数（銃のマークやエフェクト付き弾丸を作成）
+// 銃弾（マーク付き）を発射
 function fireBullet() {
   if (gameState !== 'playing') return;
   const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
   
-  // 複数WAY対応（ショップ購入に応じて強化）
   let count = saveData.ownedItems['plasma_gun'] ? 3 : 1;
   for (let i = 0; i < count; i++) {
-    let offset = (i - (count - 1) / 2) * 0.2;
+    let offset = (i - (count - 1) / 2) * 0.22;
     bullets.push({
       x: player.x,
       y: player.y,
-      vx: Math.cos(angle + offset) * 12,
-      vy: Math.sin(angle + offset) * 12,
-      damage: saveData.ownedItems['plasma_gun'] ? 3 : 1
+      vx: Math.cos(angle + offset) * 15,
+      vy: Math.sin(angle + offset) * 15,
+      damage: 1
     });
   }
-  // 射撃報酬
+  // 発射火花エフェクト
+  effects.push({ x: player.x, y: player.y, radius: 12, color: '#00f3ff', life: 5 });
   saveData.shubux += 1;
   writeSave();
-}
-
-function triggerDash() {
-  if (player.dashCooldown > 0) return;
-  player.dashCooldown = 120;
-  for (let i = 0; i < 15; i++) {
-    particles.push({ x: player.x, y: player.y, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, color: '#ff2a85', life: 20 });
-  }
 }
 
 function updateHUD() {
@@ -918,12 +757,9 @@ function updateHUD() {
   document.getElementById('hp-bar').style.width = `${Math.max(0, (player.hp / player.maxHp) * 100)}%`;
   document.getElementById('score-num').textContent = score.toLocaleString();
   document.getElementById('wave-num').textContent = wave;
-  if (saveData.ownedItems['auto_click']) {
-    document.getElementById('toggle-auto-btn').classList.remove('hidden');
-  }
 }
 
-// ゲームループ
+// メインゲームループ
 function gameLoop() {
   ctx.fillStyle = '#050814';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -933,55 +769,51 @@ function gameLoop() {
     player.x += (mouse.x - player.x) * 0.12;
     player.y += (mouse.y - player.y) * 0.12;
 
-    if (mouse.down && saveData.ownedItems['auto_click'] && Math.random() < 0.3) {
+    if (mouse.down && saveData.ownedItems['auto_click'] && Math.random() < 0.28) {
       fireBullet();
     }
 
-    if (player.dashCooldown > 0) player.dashCooldown--;
-
-    // 銃弾（マーク付き発射物）の更新と描画
+    // 銃弾とマークの更新・描画
     for (let i = bullets.length - 1; i >= 0; i--) {
       let b = bullets[i];
       b.x += b.vx;
       b.y += b.vy;
 
-      // 画面外削除
       if (b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
         bullets.splice(i, 1);
         continue;
       }
 
-      // 銃の弾丸マーク描画 (ネオン弾 & 照準マーク)
+      // 弾丸マーク（照準十字デザイン）
       ctx.save();
       ctx.translate(b.x, b.y);
       ctx.fillStyle = '#00ff88';
-      ctx.shadowBlur = 12;
+      ctx.shadowBlur = 10;
       ctx.shadowColor = '#00ff88';
       ctx.beginPath();
-      ctx.arc(0, 0, 5, 0, Math.PI * 2);
+      ctx.arc(0, 0, 4, 0, Math.PI * 2);
       ctx.fill();
-      // 十字の銃マーク
       ctx.strokeStyle = '#fff';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.moveTo(-7, 0); ctx.lineTo(7, 0);
-      ctx.moveTo(0, -7); ctx.lineTo(0, 7);
+      ctx.moveTo(-6, 0); ctx.lineTo(6, 0);
+      ctx.moveTo(0, -6); ctx.lineTo(0, 6);
       ctx.stroke();
       ctx.restore();
 
-      // 敵との当たり判定
+      // 当たり判定
       for (let j = enemies.length - 1; j >= 0; j--) {
         let e = enemies[j];
-        let dist = Math.hypot(b.x - e.x, b.y - e.y);
-        if (dist < e.radius + 5) {
+        if (Math.hypot(b.x - e.x, b.y - e.y) < e.radius + 6) {
           e.hp -= b.damage;
           bullets.splice(i, 1);
-          // ヒット報酬
+          effects.push({ x: e.x, y: e.y, radius: 10, color: '#ffea00', life: 6 }); // ヒットエフェクト
           saveData.shubux += 2;
+
           if (e.hp <= 0) {
             enemies.splice(j, 1);
             saveData.totalKills++;
-            saveData.shubux += 15;
+            saveData.shubux += 20;
             score += 100;
             if (enemies.length === 0) { wave++; spawnWave(); }
           }
@@ -990,23 +822,35 @@ function gameLoop() {
       }
     }
 
-    // 敵の更新と描画
+    // エフェクト描画
+    for (let i = effects.length - 1; i >= 0; i--) {
+      let ef = effects[i];
+      ef.life--;
+      ef.radius += 1.2;
+      ctx.strokeStyle = ef.color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(ef.x, ef.y, ef.radius, 0, Math.PI * 2);
+      ctx.stroke();
+      if (ef.life <= 0) effects.splice(i, 1);
+    }
+
+    // 敵の描画
     enemies.forEach(e => {
       e.y += e.speed;
       if (e.y > canvas.height + 50) e.y = -20;
 
       ctx.save();
       ctx.fillStyle = '#ff2a85';
-      ctx.shadowBlur = 15;
+      ctx.shadowBlur = 14;
       ctx.shadowColor = '#ff2a85';
       ctx.beginPath();
       ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
 
-      // プレイヤーとの接触判定
-      if (Math.hypot(player.x - e.x, player.y - e.y) < e.radius + 15) {
-        player.hp -= 0.8;
+      if (Math.hypot(player.x - e.x, player.y - e.y) < e.radius + 14) {
+        player.hp -= 0.7;
         if (player.hp <= 0) {
           gameState = 'gameover';
           saveData.highScore = Math.max(score, saveData.highScore);
@@ -1016,14 +860,14 @@ function gameLoop() {
       }
     });
 
-    // プレイヤー機体の描画
+    // プレイヤー機体描画
     ctx.save();
     ctx.translate(player.x, player.y);
     ctx.fillStyle = '#00f3ff';
-    ctx.shadowBlur = 20;
+    ctx.shadowBlur = 18;
     ctx.shadowColor = '#00f3ff';
     ctx.beginPath();
-    ctx.moveTo(0, -18);
+    ctx.moveTo(0, -16);
     ctx.lineTo(12, 14);
     ctx.lineTo(-12, 14);
     ctx.closePath();
